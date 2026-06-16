@@ -39,13 +39,137 @@
         
         .hero-badges { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
         .hero .badge { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); font-size: 14px; font-weight: 800; padding: 10px 20px; border-radius: 30px; letter-spacing: -0.5px; }
-        .hero h1 { font-size: 50px; font-weight: 900; line-height: 1.3; margin-bottom: 20px; letter-spacing: -1.5px; }
+        
+        /* ✨ 타이틀 세련된 페이드 인 드롭 + 블러 애니메이션 효과 */
+        .hero h1 { 
+            font-size: 50px; 
+            font-weight: 900; 
+            line-height: 1.3; 
+            margin-bottom: 20px; 
+            letter-spacing: -1.5px;
+            opacity: 0;
+            transform: translateY(-20px);
+            filter: blur(8px);
+            animation: titleFadeDrop 1.2s cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
+            animation-delay: 0.1s;
+        }
         .hero h1 span.logo-main { color: #fff; }
         .hero h1 span.logo-point { color: var(--point-green); text-shadow: 0 0 15px rgba(34, 197, 94, 0.3); }
         .hero .hero-sub { font-size: 22px; font-weight: 500; color: #a1a1aa; display: block; margin-top: 12px; letter-spacing: -0.5px; }
-        .hero p { font-size: 17px; color: #d4d4d8; line-height: 1.7; margin-bottom: 40px; max-width: 700px; margin-left: auto; margin-right: auto; word-break: keep-all;}
         
-        .two-track-container { display: flex; gap: 16px; justify-content: center; max-width: 800px; margin: 0 auto; }
+        /* 서브 텍스트와 하단 카드도 자연스럽게 이어지도록 순차적 등장(Stagger) 효과 부여 */
+        .hero p { 
+            font-size: 17px; 
+            color: #d4d4d8; 
+            line-height: 1.7; 
+            margin-bottom: 40px; 
+            max-width: 700px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            word-break: keep-all;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: elementFadeUp 0.8s ease-out forwards;
+            animation-delay: 0.6s;
+        }
+        
+        .two-track-container { 
+            display: flex; 
+            gap: 16px; 
+            justify-content: center; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            opacity: 0;
+            transform: translateY(15px);
+            animation: elementFadeUp 0.8s ease-out forwards;
+            animation-delay: 0.8s;
+        }
+        
+        /* 타이틀 등장 애니메이션 정의 */
+        @keyframes titleFadeDrop {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+                filter: blur(0);
+            }
+        }
+        
+        @keyframes elementFadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- 메인 타이틀 어르신 맞춤형 직통 전화 버튼 --- */
+        .hero-direct-call {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 2px solid var(--point-green);
+            padding: 16px 36px;
+            border-radius: 50px;
+            text-decoration: none;
+            margin: 10px 0 40px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.15);
+            opacity: 0;
+            transform: translateY(-15px);
+            animation: titleFadeDrop 1.2s cubic-bezier(0.215, 0.610, 0.355, 1) forwards, pulseGlow 2.5s infinite;
+            animation-delay: 0.4s; /* 타이틀 바로 다음에 자연스럽게 떨어짐 */
+        }
+
+        .hero-direct-call:hover {
+            background: var(--point-green);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.4);
+        }
+
+        .hero-direct-call:hover .call-number {
+            color: #ffffff;
+        }
+
+        .hero-direct-call .call-icon {
+            font-size: 28px;
+            animation: phoneRing 2.5s infinite;
+        }
+
+        .hero-direct-call .call-number {
+            font-size: 32px;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 1.5px;
+            transition: color 0.3s;
+        }
+
+        .hero-direct-call .call-badge {
+            font-size: 14px;
+            font-weight: 800;
+            color: #ffffff;
+            background: #ef4444;
+            padding: 6px 12px;
+            border-radius: 20px;
+            margin-left: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        /* 버튼 펄스(숨쉬기) 애니메이션 */
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5); }
+            70% { box-shadow: 0 0 0 20px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
+        /* 전화기 달랑거리는 애니메이션 */
+        @keyframes phoneRing {
+            0%, 100% { transform: rotate(0); }
+            10%, 30%, 50% { transform: rotate(-15deg); }
+            20%, 40%, 60% { transform: rotate(15deg); }
+            70%, 80%, 90% { transform: rotate(0); }
+        }
+        
         .track-card { flex: 1; padding: 32px 24px; border-radius: 24px; text-align: left; text-decoration: none; cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); border: 2px solid transparent; display: flex; flex-direction: column; justify-content: space-between; }
         .track-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
         
@@ -83,8 +207,8 @@
         .divider-text { position: absolute; top: 50%; left: 50%; background: #ffffff; padding: 10px 28px; color: var(--point-green); font-weight: 900; font-size: 17px; letter-spacing: -0.5px; border-radius: 30px; border: 2px solid var(--point-green); white-space: nowrap; animation: floatBadge 2.5s ease-in-out infinite; transform: translate(-50%, -50%); }
 
         /* 🚨 FULL-WIDTH BLACK & WHITE 계산기 섹션 (색상 및 효과 차분하게 개선) */
-/* 🤍 FULL-WIDTH WHITE 계산기 섹션 (신뢰감 있고 깔끔한 테마) */
-.calc-section-full { 
+        /* 🤍 FULL-WIDTH WHITE 계산기 섹션 (신뢰감 있고 깔끔한 테마) */
+        .calc-section-full { 
             width: 100%; 
             padding: 100px 20px; 
             background: var(--bg-light); /* 기존 배경과 자연스럽게 연결 */
@@ -246,6 +370,23 @@
             .hero .hero-sub { font-size: 18px; margin-top: 10px; }
             .hero p { font-size: 15px; margin-bottom: 30px; }
             
+            .hero-direct-call {
+                padding: 12px 20px;
+                gap: 8px;
+                margin: 5px 0 25px 0;
+            }
+            .hero-direct-call .call-number {
+                font-size: 26px;
+            }
+            .hero-direct-call .call-icon {
+                font-size: 24px;
+            }
+            .hero-direct-call .call-badge {
+                font-size: 12px;
+                padding: 4px 8px;
+                margin-left: 4px;
+            }
+            
             .track-card { padding: 24px 20px; border-radius: 20px; }
             .track-title { font-size: 20px; }
             .track-action { padding: 14px; font-size: 16px; }
@@ -309,6 +450,13 @@
             <span class="logo-main"> 🚚</span><br>
             <span class="hero-sub">유품정리 · 쓰레기집 · 특수청소 전문</span>
         </h1>
+
+        <!-- 👇 메인 직통 전화 버튼 👇 -->
+        <a href="tel:010-4535-9907" class="hero-direct-call">
+            <span class="call-icon">📞</span>
+            <span class="call-number">010-4535-9907</span>
+            <span class="call-badge">24시간 바로 연결</span>
+        </a>
 
         <p>
             혼자 속앓이하며 막막하셨을 그 마음, 누구보다 잘 알고 있습니다.<br>
@@ -715,31 +863,27 @@
         else if (step.type === 'sido') inputHtml = `<div class="input-group"><div class="bot-chip-grid">${Object.keys(REGION_MAP).map(sido => `<button class="bot-chip-option ${botAnswers.sidos === sido ? 'active' : ''}" onclick="handleBotSido('${sido}')">${sido}</button>`).join('')}</div></div>`;
         else if (step.type === 'gugun') { const currentSido = botAnswers.sidos || "서울특별시"; inputHtml = `<div class="input-group"><div class="bot-chip-grid">${(REGION_MAP[currentSido]||[]).map(gugun => `<button class="bot-chip-option ${botAnswers.guguns === gugun ? 'active' : ''}" onclick="handleBotGugun('${gugun}')">${gugun}</button>`).join('')}</div></div>`; }
         else if (step.type === 'select') inputHtml = `<div class="input-group"><div class="bot-chip-grid">${step.options.map(opt => `<button class="bot-chip-option ${botAnswers[step.id] === opt ? 'active' : ''}" onclick="handleBotSelect('${step.id}', '${opt}')">${opt}</button>`).join('')}</div></div>`;
+        
+        // ✨ [개선] 달력 입력창 아무 데나 눌러도 팝업 띄우도록 이벤트 바인딩
         else if (step.type === 'date') inputHtml = `<div class="input-group"><input type="date" class="date-input" id="bot-input-${step.id}" value="${botAnswers[step.id] || ''}" onchange="validateBotInput()" onclick="try{this.showPicker()}catch(e){}" onfocus="try{this.showPicker()}catch(e){}"></div>`;
         else if (step.type === 'file') { const count = botAnswers.photoFiles.length; inputHtml = `<div class="input-group"><label class="file-label" for="bot-file-upload" id="botFileLabel">${count > 0 ? `📸 사진 ${count}장 첨부됨` : `📸 현장 사진 첨부하기`}</label><input type="file" id="bot-file-upload" style="display:none;" accept="image/*" multiple onchange="handleBotFiles(this)"><div class="thumbnail-container" id="botThumbnails"></div></div>`; }
 
         box.innerHTML = `<h2 class="question-title">${step.title}</h2><p class="question-desc">${step.desc || ''}</p>${inputHtml}`;
         if (step.type === 'file' && botAnswers.photoFiles.length > 0) renderBotThumbnails();
         validateBotInput();
-// ... 기존 코드 ...
-box.innerHTML = `<h2 class="question-title">${step.title}</h2><p class="question-desc">${step.desc || ''}</p>${inputHtml}`;
-    if (step.type === 'file' && botAnswers.photoFiles.length > 0) renderBotThumbnails();
-    validateBotInput();
 
-    // 👇 여기서부터 밑에 새로 추가 (해당 단계에 오면 달력 강제로 띄우기)
-    if (step.type === 'date') {
-        setTimeout(() => {
-            const dateInput = document.getElementById(`bot-input-${step.id}`);
-            if (dateInput) {
-                try {
-                    dateInput.showPicker();
-                } catch(e) {
-                    // 구형 브라우저나 정책상 자동 팝업이 막힌 경우 에러 방지용
+        // ✨ [개선] 달력 단계 진입 시 자동으로 달력 띄우기
+        if (step.type === 'date') {
+            setTimeout(() => {
+                const dateInput = document.getElementById(`bot-input-${step.id}`);
+                if (dateInput) {
+                    try {
+                        dateInput.showPicker();
+                    } catch(e) {}
                 }
-            }
-        }, 100); 
+            }, 100); 
+        }
     }
-} // renderBotStep() 함수 끝나는 괄호
 
     window.handleBotSido = (val) => { botAnswers.sidos = val; botAnswers.guguns = ''; setTimeout(() => { botStepIdx++; renderBotStep(); }, 150); };
     window.handleBotGugun = (val) => { botAnswers.guguns = val; setTimeout(() => { botStepIdx++; renderBotStep(); }, 150); };
@@ -828,25 +972,47 @@ box.innerHTML = `<h2 class="question-title">${step.title}</h2><p class="question
 
             const TELEGRAM_TOKEN = '여기에_토큰을_붙여넣어주세요'; 
             const TELEGRAM_CHAT_ID = '여기에_숫자아이디를_붙여넣어주세요'; 
-            const tgMessage = `🚨 [새로운 견적 문의 도착!] 🚨\n\n👤 이름: ${botAnswers.name}\n📞 연락처: ${botAnswers.phone}\n📍 지역: ${botAnswers.sidos} ${botAnswers.guguns}\n📅 희망일: ${botAnswers.date_exact}\n🏠 형태: ${botAnswers.structure} (${botAnswers.elevator})\n📏 평수: ${botAnswers.size}\n🖼️ 사진: ${botAnswers.photoFiles.length}장 첨부됨\n\n👉 어드민 페이지에서 당장 확인하세요!`;
+            const tgMessage = `🚨 [새로운 견적 문의 도착!] 🚨
+
+👤 이름: ${botAnswers.name}
+📞 연락처: ${botAnswers.phone}
+📍 지역: ${botAnswers.sidos} ${botAnswers.guguns}
+📅 희망일: ${botAnswers.date_exact}
+🏠 형태: ${botAnswers.structure} (${botAnswers.elevator})
+📏 평수: ${botAnswers.size}
+🖼️ 사진: ${botAnswers.photoFiles.length}장 첨부됨
+
+👉 어드민 페이지에서 당장 확인하세요!`;
             fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: tgMessage }) }).catch(err => console.error(err));
         } catch(err) { console.error(err); }
 
-        let urlsText = uploadedUrls.length > 0 ? uploadedUrls.map((url, idx) => `사진${idx+1}: ${url}`).join('\n') : '첨부된 사진 없음';
-        const report = `[정리맨 간편견적 요청]\n성함: ${botAnswers.name}\n지역: ${botAnswers.sidos} ${botAnswers.guguns}\n희망일: ${botAnswers.date_exact}\n형태: ${botAnswers.structure} (${botAnswers.elevator})\n평수: ${botAnswers.size}\n연락처: ${botAnswers.phone}\n\n[현장 사진 링크]\n${urlsText}`;
+        let urlsText = uploadedUrls.length > 0 ? uploadedUrls.map((url, idx) => `사진${idx+1}: ${url}`).join('
+') : '첨부된 사진 없음';
+        const report = `[정리맨 간편견적 요청]
+성함: ${botAnswers.name}
+지역: ${botAnswers.sidos} ${botAnswers.guguns}
+희망일: ${botAnswers.date_exact}
+형태: ${botAnswers.structure} (${botAnswers.elevator})
+평수: ${botAnswers.size}
+연락처: ${botAnswers.phone}
+
+[현장 사진 링크]
+${urlsText}`;
         
         box.innerHTML = `
             <h2 class="question-title">상담 접수 준비가 끝났습니다 ✨</h2>
             <p class="question-desc" style="margin-bottom:20px;">정보와 사진이 시스템에 안전하게 저장됐어요. 
                 아래 버튼을 눌러 카톡으로 견적을 보내보세요!</p>
-            <div style="background:var(--toss-gray-100); padding:20px; border-radius:16px; margin-bottom:24px; font-size:14px; line-height:1.6; color:var(--toss-gray-700); height:180px; overflow-y:auto;">${report.replace(/\n/g, '<br>')}</div>
+            <div style="background:var(--toss-gray-100); padding:20px; border-radius:16px; margin-bottom:24px; font-size:14px; line-height:1.6; color:var(--toss-gray-700); height:180px; overflow-y:auto;">${report.replace(/
+/g, '<br>')}</div>
             
             <button class="btn btn-next" style="width:100%; margin-bottom:10px; background:var(--toss-yellow-kakao); color:#3c1e1e;" onclick="sendToKakao(\`${report}\`)">💬 카톡으로 견적서 보내기 (추천)</button>
             <button class="btn btn-next" style="width:100%; background:var(--toss-gray-800);" onclick="closeBotModal();">📞 알겠어요 (창 닫기)</button>
         `;
     };
 
-    window.sendToKakao = function(text) { navigator.clipboard.writeText(text).then(() => { alert('✅ 견적 내용이 복사됐어요.\n카톡 창이 열리면 대화창에 "붙여넣기" 해 주세요.'); window.open('https://open.kakao.com/o/sQbZ2nzi', '_blank'); closeBotModal(); }).catch(err => { alert('복사 실패'); }); };
+    window.sendToKakao = function(text) { navigator.clipboard.writeText(text).then(() => { alert('✅ 견적 내용이 복사됐어요.
+카톡 창이 열리면 대화창에 "붙여넣기" 해 주세요.'); window.open('https://open.kakao.com/o/sQbZ2nzi', '_blank'); closeBotModal(); }).catch(err => { alert('복사 실패'); }); };
 </script>
 </body>
 </html>
