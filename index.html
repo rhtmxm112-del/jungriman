@@ -474,7 +474,7 @@
                     <strong class="track-title">🚨 당장 빠른 조치가<br>필요하다면?</strong>
                     <span class="track-desc">정리맨 대표가 직접 전화를 받아<br>현장 상황에 맞춰 즉시 안내해 드립니다.</span>
                 </div>
-                <div class="track-action">📞 010-4535-9907 연결하기</div>
+                <div class="track-action">📞 대표 전화 상담 연결하기</div>
             </a>
 
             <button onclick="openBotModal()" class="track-card bot-track" style="border: none; font-family: inherit;">
@@ -491,8 +491,8 @@
 
 <div class="middle-container">
     <div class="brand-stats">
-        <div class="stat-item"><div class="stat-num">12,500<span>+</span></div><div class="stat-desc">누적 작업 완료 건수</div></div>
-        <div class="stat-item"><div class="stat-num">99.8<span>%</span></div><div class="stat-desc">고객 만족도</div></div>
+        <div class="stat-item"><div class="stat-num">2,000<span>+</span></div><div class="stat-desc">누적 작업 완료 건수</div></div>
+        <div class="stat-item"><div class="stat-num">97.8<span>%</span></div><div class="stat-desc">고객 만족도</div></div>
         <div class="stat-item"><div class="stat-num">100<span>%</span></div><div class="stat-desc">사후 A/S 보장</div></div>
     </div>
 
@@ -972,47 +972,25 @@
 
             const TELEGRAM_TOKEN = '여기에_토큰을_붙여넣어주세요'; 
             const TELEGRAM_CHAT_ID = '여기에_숫자아이디를_붙여넣어주세요'; 
-            const tgMessage = `🚨 [새로운 견적 문의 도착!] 🚨
-
-👤 이름: ${botAnswers.name}
-📞 연락처: ${botAnswers.phone}
-📍 지역: ${botAnswers.sidos} ${botAnswers.guguns}
-📅 희망일: ${botAnswers.date_exact}
-🏠 형태: ${botAnswers.structure} (${botAnswers.elevator})
-📏 평수: ${botAnswers.size}
-🖼️ 사진: ${botAnswers.photoFiles.length}장 첨부됨
-
-👉 어드민 페이지에서 당장 확인하세요!`;
+            const tgMessage = `🚨 [새로운 견적 문의 도착!] 🚨\n\n👤 이름: ${botAnswers.name}\n📞 연락처: ${botAnswers.phone}\n📍 지역: ${botAnswers.sidos} ${botAnswers.guguns}\n📅 희망일: ${botAnswers.date_exact}\n🏠 형태: ${botAnswers.structure} (${botAnswers.elevator})\n📏 평수: ${botAnswers.size}\n🖼️ 사진: ${botAnswers.photoFiles.length}장 첨부됨\n\n👉 어드민 페이지에서 당장 확인하세요!`;
             fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: tgMessage }) }).catch(err => console.error(err));
         } catch(err) { console.error(err); }
 
-        let urlsText = uploadedUrls.length > 0 ? uploadedUrls.map((url, idx) => `사진${idx+1}: ${url}`).join('
-') : '첨부된 사진 없음';
-        const report = `[정리맨 간편견적 요청]
-성함: ${botAnswers.name}
-지역: ${botAnswers.sidos} ${botAnswers.guguns}
-희망일: ${botAnswers.date_exact}
-형태: ${botAnswers.structure} (${botAnswers.elevator})
-평수: ${botAnswers.size}
-연락처: ${botAnswers.phone}
-
-[현장 사진 링크]
-${urlsText}`;
+        let urlsText = uploadedUrls.length > 0 ? uploadedUrls.map((url, idx) => `사진${idx+1}: ${url}`).join('\n') : '첨부된 사진 없음';
+        const report = `[정리맨 간편견적 요청]\n성함: ${botAnswers.name}\n지역: ${botAnswers.sidos} ${botAnswers.guguns}\n희망일: ${botAnswers.date_exact}\n형태: ${botAnswers.structure} (${botAnswers.elevator})\n평수: ${botAnswers.size}\n연락처: ${botAnswers.phone}\n\n[현장 사진 링크]\n${urlsText}`;
         
         box.innerHTML = `
             <h2 class="question-title">상담 접수 준비가 끝났습니다 ✨</h2>
             <p class="question-desc" style="margin-bottom:20px;">정보와 사진이 시스템에 안전하게 저장됐어요. 
                 아래 버튼을 눌러 카톡으로 견적을 보내보세요!</p>
-            <div style="background:var(--toss-gray-100); padding:20px; border-radius:16px; margin-bottom:24px; font-size:14px; line-height:1.6; color:var(--toss-gray-700); height:180px; overflow-y:auto;">${report.replace(/
-/g, '<br>')}</div>
+            <div style="background:var(--toss-gray-100); padding:20px; border-radius:16px; margin-bottom:24px; font-size:14px; line-height:1.6; color:var(--toss-gray-700); height:180px; overflow-y:auto;">${report.replace(/\n/g, '<br>')}</div>
             
             <button class="btn btn-next" style="width:100%; margin-bottom:10px; background:var(--toss-yellow-kakao); color:#3c1e1e;" onclick="sendToKakao(\`${report}\`)">💬 카톡으로 견적서 보내기 (추천)</button>
             <button class="btn btn-next" style="width:100%; background:var(--toss-gray-800);" onclick="closeBotModal();">📞 알겠어요 (창 닫기)</button>
         `;
     };
 
-    window.sendToKakao = function(text) { navigator.clipboard.writeText(text).then(() => { alert('✅ 견적 내용이 복사됐어요.
-카톡 창이 열리면 대화창에 "붙여넣기" 해 주세요.'); window.open('https://open.kakao.com/o/sQbZ2nzi', '_blank'); closeBotModal(); }).catch(err => { alert('복사 실패'); }); };
-</script>
+    window.sendToKakao = function(text) { navigator.clipboard.writeText(text).then(() => { alert('✅ 견적 내용이 복사됐어요.\n카톡 창이 열리면 대화창에 "붙여넣기" 해 주세요.'); window.open('https://open.kakao.com/o/sQbZ2nzi', '_blank'); closeBotModal(); }).catch(err => { alert('복사 실패'); }); };
+    </script>
 </body>
 </html>
