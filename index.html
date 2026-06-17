@@ -648,6 +648,67 @@
         </div>
     </section>
 
+    <section style="padding: 60px 20px; background: #fff; max-width: 1200px; margin: 0 auto;">
+        <div style="text-align: center; margin-bottom: 40px;">
+            <h2 style="font-size: 28px; font-weight: 800; color: #191f28; margin-bottom: 10px;">정리맨 생생한 작업 현장 🎥</h2>
+            <p style="font-size: 16px; color: #4e5968;">말로만 하지 않습니다. 실제 작업 과정을 영상으로 확인하세요.</p>
+        </div>
+        
+        <div id="youtube-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+            </div>
+    </section>
+    
+    <script>
+        // 유튜브 URL에서 동영상 ID만 뽑아내는 꿀팁 함수
+        function getYoutubeVideoId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+    
+        async function loadMainYoutubeVideos() {
+            // 메인 페이지에도 Supabase 클라이언트 세팅되어 있어야 해 (var supabase = ...)
+            // 최신순으로 딱 3개만 가져옴
+            const { data: videos, error } = await supabase
+                .from('youtube_videos')
+                .select('*')
+                .order('created_at', { ascending: false })
+                .limit(3);
+    
+            if (error || !videos) return;
+    
+            const grid = document.getElementById('youtube-grid');
+            grid.innerHTML = '';
+    
+            videos.forEach(video => {
+                const videoId = getYoutubeVideoId(video.youtube_url);
+                if (!videoId) return; // 이상한 주소면 패스
+    
+                grid.innerHTML += `
+                    <div style="border-radius: 16px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.05); background:#fff;">
+                        <div style="position: relative; padding-bottom: 56.25%; height: 0;">
+                            <iframe src="https://www.youtube.com/embed/${videoId}" 
+                                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div style="padding: 16px;">
+                            <h3 style="font-size: 16px; font-weight: 700; color: #191f28; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                ${video.title}
+                            </h3>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+    
+        // 페이지 로딩될 때 실행
+        document.addEventListener('DOMContentLoaded', () => {
+            loadMainYoutubeVideos();
+        });
+    </script>
+
     <section class="common-section" id="reviews">
         <div class="common-header" style="margin-bottom: 30px;">
             <span class="common-sub">REVIEW</span>

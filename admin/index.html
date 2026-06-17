@@ -133,7 +133,37 @@
         }
     </style>
 </head>
-<body>
+<body><div id="tab-youtube" class="tab-content">
+    <div class="page-header-wrap">
+        <h2 class="page-title">대표 유튜브 영상 관리</h2>
+    </div>
+    <div class="admin-card">
+        <div class="card-title">새 유튜브 영상 등록 (메인에 노출됨)</div>
+        <div class="form-row">
+            <div style="flex: 1;">
+                <label class="form-label">영상 제목</label>
+                <input type="text" id="ytTitle" class="form-input" placeholder="예: 역대급 쓰레기집 청소 현장">
+            </div>
+            <div style="flex: 2;">
+                <label class="form-label">유튜브 링크 (URL)</label>
+                <input type="url" id="ytUrl" class="form-input" placeholder="예: https://www.youtube.com/watch?v=어쩌고저쩌고">
+            </div>
+        </div>
+        <div style="text-align: right;">
+            <button class="btn-submit" onclick="saveYoutubePost()">서버에 등록하기</button>
+        </div>
+    </div>
+
+    <div class="admin-card">
+        <div class="card-title">등록된 영상 목록</div>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead><tr><th style="width: 30%">제목</th><th style="width: 50%">유튜브 링크</th><th style="width: 20%">관리</th></tr></thead>
+                <tbody id="youtubeTbody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 <div id="login-screen">
     <div class="login-box">
@@ -149,12 +179,44 @@
         <ul class="nav-menu">
             <li class="nav-item active" onclick="switchTab('upload')">📸 실제 작업 사례 관리</li>
             <li class="nav-item" onclick="switchTab('review')">💬 생생한 고객 후기 관리</li>
+            <li class="nav-item" onclick="switchTab('youtube')">📺 대표 유튜브 영상 관리</li>
             <li class="nav-item" onclick="switchTab('consult')">📝 실시간 견적 접수 현황</li>
             <li class="nav-item" style="color: #ef4444; font-weight: 800; background: var(--bg-light);" onclick="logout()">🚪 로그아웃</li>
         </ul>
     </aside>
 
     <main class="main-content">
+        <div id="tab-youtube" class="tab-content">
+            <div class="page-header-wrap">
+                <h2 class="page-title">대표 유튜브 영상 관리</h2>
+            </div>
+            <div class="admin-card">
+                <div class="card-title">새 유튜브 영상 등록 (메인에 노출됨)</div>
+                <div class="form-row">
+                    <div style="flex: 1;">
+                        <label class="form-label">영상 제목</label>
+                        <input type="text" id="ytTitle" class="form-input" placeholder="예: 역대급 쓰레기집 청소 현장">
+                    </div>
+                    <div style="flex: 2;">
+                        <label class="form-label">유튜브 링크 (URL)</label>
+                        <input type="url" id="ytUrl" class="form-input" placeholder="예: https://www.youtube.com/watch?v=어쩌고저쩌고">
+                    </div>
+                </div>
+                <div style="text-align: right;">
+                    <button class="btn-submit" onclick="saveYoutubePost()">서버에 등록하기</button>
+                </div>
+            </div>
+
+            <div class="admin-card">
+                <div class="card-title">등록된 영상 목록</div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead><tr><th style="width: 30%">제목</th><th style="width: 50%">유튜브 링크</th><th style="width: 20%">관리</th></tr></thead>
+                        <tbody id="youtubeTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
         <div id="tab-upload" class="tab-content active">
             <div class="page-header-wrap">
                 <h2 class="page-title">실제 작업 사례 관리</h2>
@@ -532,6 +594,41 @@
             else if (table === 'reviews') loadReviewsFromServer();
             else if (table === 'consultations') loadConsultsFromServer();
         }
+    }
+    async function saveYoutubePost() {
+        const title = document.getElementById('ytTitle').value;
+        const url = document.getElementById('ytUrl').value;
+
+        if(!title || !url) { alert('제목이랑 링크는 필수로 적어줘.'); return; }
+        
+        const { error } = await supabase.from('youtube_videos').insert([{ title, youtube_url: url }]);
+        if(error) { alert('에러 발생: ' + error.message); return; }
+
+        alert('✅ 유튜브 영상 등록 완료!');
+        document.getElementById('ytTitle').value = ''; 
+        document.getElementById('ytUrl').value = '';
+        loadYoutubesFromServer();
+    }
+
+    async function loadYoutubesFromServer() {
+        const tbody = document.getElementById('youtubeTbody');
+        const { data: videos, error } = await supabase.from('youtube_videos').select('*').order('created_at', { ascending: false });
+        
+        if(!videos || videos.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#94a3b8; padding:30px;">등록된 유튜브 영상이 없어.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = '';
+        videos.forEach(item => {
+            tbody.innerHTML += `
+                <tr>
+                    <td style="font-weight:700;">${item.title}</td>
+                    <td><a href="${item.youtube_url}" target="_blank" style="color:var(--toss-blue); text-decoration:underline;">${item.youtube_url}</a></td>
+                    <td><button style="padding:6px 12px; background:#ef4444; color:#fff; border:none; border-radius:6px; cursor:pointer;" onclick="deleteRecord('youtube_videos', ${item.id})">삭제</button></td>
+                </tr>
+            `;
+        });
     }
 </script>
 </body>
