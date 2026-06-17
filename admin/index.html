@@ -90,14 +90,12 @@
             .btn-submit { width: 100%; text-align: center; }
             .login-box { padding: 30px 20px; }
 
-            /* 🚨 [핵심] 모바일 수직형 카드 테이블 (견적 현황 전용) 완전 강제화 */
-            /* 브라우저 기본 table 스타일을 완전히 부숴버리기 위해 !important 떡칠 */
             .mobile-vertical-table { display: block !important; width: 100% !important; border: none !important; }
             .mobile-vertical-table thead { display: none !important; }
             .mobile-vertical-table tbody { display: block !important; width: 100% !important; }
             .mobile-vertical-table tr { 
                 display: flex !important;
-                flex-direction: column !important; /* 내부 요소들을 수직으로 쌓기 */
+                flex-direction: column !important;
                 margin-bottom: 20px !important; 
                 padding: 20px !important; 
                 background: #fff !important; 
@@ -108,7 +106,7 @@
             .mobile-vertical-table tr:hover td { background: transparent !important; }
             .mobile-vertical-table td { 
                 display: flex !important; 
-                flex-direction: column !important; /* 라벨 밑에 데이터가 오도록 수직 정렬 */
+                flex-direction: column !important;
                 align-items: flex-start !important;
                 padding: 12px 0 !important; 
                 border-bottom: 1px dashed var(--toss-gray-200) !important; 
@@ -119,7 +117,6 @@
             }
             .mobile-vertical-table td:last-child { border-bottom: none !important; padding-bottom: 0 !important; margin-top: 10px !important; }
             
-            /* 가짜 라벨 (데이터 제목) 눈에 확 띄게 강조 */
             .mobile-vertical-table td::before { 
                 content: attr(data-label); 
                 font-size: 12px !important; 
@@ -179,6 +176,10 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="form-label">블로그/포스트 연결 링크 (선택사항)</label>
+                    <input type="url" id="caseLinkUrl" class="form-input" placeholder="예: https://blog.naver.com/...">
+                </div>
+                <div class="form-group">
                     <label class="form-label">현장 완료 사진 첨부</label>
                     <input type="file" id="caseImage" class="form-input" accept="image/*">
                 </div>
@@ -195,7 +196,7 @@
                 <div class="card-title">서버에 등록된 작업 사례</div>
                 <div class="table-responsive">
                     <table class="data-table">
-                        <thead><tr><th style="width: 15%">카테고리</th><th style="width: 35%">제목</th><th style="width: 35%">내용 요약</th><th style="width: 15%">관리</th></tr></thead>
+                        <thead><tr><th style="width: 15%">카테고리</th><th style="width: 25%">제목</th><th style="width: 30%">내용 요약</th><th style="width: 20%">링크</th><th style="width: 10%">관리</th></tr></thead>
                         <tbody id="caseTbody"></tbody>
                     </table>
                 </div>
@@ -370,7 +371,6 @@
                 photoHtml += `</div>`;
             }
 
-            // 각 셀마다 data-label이 붙어있어서 모바일에서 제목 역할 수행함
             tbody.innerHTML += `
                 <tr>
                     <td data-label="🕒 접수일시" style="font-size:12px; color:var(--toss-gray-600); white-space:nowrap;">${dateStr}</td>
@@ -388,6 +388,7 @@
         const category = document.getElementById('caseCategory').value;
         const title = document.getElementById('caseTitle').value;
         const description = document.getElementById('caseDesc').value;
+        const link_url = document.getElementById('caseLinkUrl').value;
         const fileInput = document.getElementById('caseImage');
         const btn = document.getElementById('btnUploadCase');
 
@@ -403,36 +404,44 @@
                 const img = new Image();
                 img.src = URL.createObjectURL(fileInput.files[0]);
                 
-                await new Promise((resolve) => {
+                await new Promise((resolve, reject) => {
                     img.onload = async function() {
-                        const canvas = document.createElement('canvas');
-                        let width = img.width, height = img.height;
-                        const MAX_SIZE = 800;
-                        if (width > height && width > MAX_SIZE) { height *= MAX_SIZE / width; width = MAX_SIZE; } 
-                        else if (height > MAX_SIZE) { width *= MAX_SIZE / height; height = MAX_SIZE; }
-                        canvas.width = width; canvas.height = height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, width, height);
-                        
-                        const compressedImg = canvas.toDataURL('image/jpeg', 0.8);
-                        const blob = dataURItoBlob(compressedImg);
-                        const fileName = `case_${Date.now()}.jpg`;
+                        try {
+                            const canvas = document.createElement('canvas');
+                            let width = img.width, height = img.height;
+                            const MAX_SIZE = 800;
+                            if (width > height && width > MAX_SIZE) { height *= MAX_SIZE / width; width = MAX_SIZE; } 
+                            else if (height > MAX_SIZE) { width *= MAX_SIZE / height; height = MAX_SIZE; }
+                            canvas.width = width; canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+                            
+                            const compressedImg = canvas.toDataURL('image/jpeg', 0.8);
+                            const blob = dataURItoBlob(compressedImg);
+                            const fileName = `case_${Date.now()}.jpg`;
 
-                        const { data: uploadData, error: uploadError } = await supabase.storage.from('case-images').upload(fileName, blob, { contentType: 'image/jpeg' });
-                        if(uploadError) throw uploadError;
+                            const { data: uploadData, error: uploadError } = await supabase.storage.from('case-images').upload(fileName, blob, { contentType: 'image/jpeg' });
+                            if(uploadError) throw uploadError;
 
-                        const { data: urlData } = supabase.storage.from('case-images').getPublicUrl(fileName);
-                        imageUrl = urlData.publicUrl;
-                        resolve();
+                            const { data: urlData } = supabase.storage.from('case-images').getPublicUrl(fileName);
+                            imageUrl = urlData.publicUrl;
+                            resolve();
+                        } catch (e) {
+                            reject(e);
+                        }
                     };
+                    img.onerror = () => reject(new Error('이미지 로딩 중 에러가 발생했습니다.'));
                 });
             }
 
-            const { error } = await supabase.from('cases').insert([{ category, title, description, image_url: imageUrl }]);
+            const { error } = await supabase.from('cases').insert([{ category, title, description, image_url: imageUrl, link_url: link_url }]);
             if (error) throw error;
 
             alert('✅ 찐 서버에 안전하게 저장 완료!');
-            document.getElementById('caseTitle').value = ''; document.getElementById('caseDesc').value = ''; document.getElementById('caseImage').value = '';
+            document.getElementById('caseTitle').value = ''; 
+            document.getElementById('caseDesc').value = ''; 
+            document.getElementById('caseImage').value = '';
+            document.getElementById('caseLinkUrl').value = ''; 
             loadCasesFromServer();
         } catch (err) {
             console.error(err);
@@ -445,24 +454,27 @@
 
     async function loadCasesFromServer() {
         const tbody = document.getElementById('caseTbody');
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">서버에서 불러오는 중...</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">서버에서 불러오는 중...</td></tr>`;
         
         const { data: cases, error } = await supabase.from('cases').select('*').order('created_at', { ascending: false });
         if (error) { console.error(error); return; }
 
         if(!cases || cases.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94a3b8; padding:30px;">서버에 등록된 작업 사례가 없어.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#94a3b8; padding:30px;">서버에 등록된 작업 사례가 없어.</td></tr>`;
             return;
         }
 
         tbody.innerHTML = '';
         cases.forEach(item => {
             const shortDesc = item.description.length > 30 ? item.description.substring(0, 30) + '...' : item.description;
+            const linkDisplay = item.link_url ? `<a href="${item.link_url}" target="_blank" style="color:var(--toss-blue); text-decoration:underline;">링크 보기</a>` : '<span style="color:#94a3b8;">없음</span>';
+
             tbody.innerHTML += `
                 <tr>
                     <td style="white-space:nowrap;"><span style="padding:4px 8px; background:var(--toss-blue-light); color:var(--toss-blue); border-radius:6px; font-weight:800; font-size:12px;">${item.category}</span></td>
                     <td class="td-wrap" style="font-weight:700; min-width:150px;">${item.title}</td>
                     <td class="td-wrap" style="color:var(--toss-gray-600); font-size:13px; min-width:200px;">${shortDesc}</td>
+                    <td class="td-wrap" style="font-size:13px;">${linkDisplay}</td>
                     <td><button style="padding:6px 12px; background:#ef4444; color:#fff; border:none; border-radius:6px; cursor:pointer; white-space:nowrap;" onclick="deleteRecord('cases', ${item.id})">삭제</button></td>
                 </tr>
             `;
