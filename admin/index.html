@@ -328,21 +328,39 @@
         loadConsultsFromServer();
     }
 
-    function checkPwd() {
-        if(document.getElementById('pwdInput').value === '4711') {
-            localStorage.setItem('jungriman_admin_logged_in', 'true');
-            showDashboard();
-        } else {
-            alert('비밀번호가 틀렸어!');
-            document.getElementById('pwdInput').value = '';
-        }
-    }
+// 기존 checkPwd 함수를 이걸로 교체해
+async function checkPwd() {
+    const email = "admin@정리맨.com"; // 아까 만든 관리자 이메일
+    const password = document.getElementById('pwdInput').value;
 
-    function logout() {
-        localStorage.removeItem('jungriman_admin_logged_in');
-        location.reload(); 
-    }
+    const { data, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+    });
 
+    if (error) {
+        alert('비밀번호가 틀렸거나 문제가 발생했어!');
+        document.getElementById('pwdInput').value = '';
+    } else {
+        alert('로그인 성공!');
+        document.getElementById('pwdInput').value = '';
+        showDashboard();
+    }
+}
+
+// 기존 window.onload를 이걸로 교체해서 새로고침해도 로그인 유지되게 만들어
+window.onload = async function() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+        showDashboard();
+    }
+};
+
+// 기존 logout 함수도 이걸로 교체
+async function logout() {
+    await supabase.auth.signOut();
+    location.reload(); 
+}
     window.onload = function() {
         if(localStorage.getItem('jungriman_admin_logged_in') === 'true') {
             showDashboard();
