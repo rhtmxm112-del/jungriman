@@ -830,17 +830,17 @@
     /* --- 계산기 로직 --- */
     const CONFIG = {
         trash: {
-            steps: [ { label: '5평↓', min: 25, max: 35 }, { label: '10평', min: 35, max: 50 }, { label: '20평', min: 60, max: 90 }, { label: '30평', min: 90, max: 130 }, { label: '40평', min: 120, max: 170 }, { label: '50평', min: 150, max: 210 }, { label: '60평', min: 180, max: 250 }, { label: '80평', min: 240, max: 330 }, { label: '100평+', min: 300, max: 420 } ],
+            steps: [ { label: '5평↓', min: 25, max: 35 }, { label: '10평', min: 35, max: 50 }, { label: '20평', min: 60, max: 90 }, { label: '30평', min: 90, max: 130 }, { label: '40평', min: 120, max: 170 }, { label: '50평', min: 150, max: 210 }, { label: '60평', min: 180, max: 250 } ],
             singles: { title: '오염 정도', key: 'level', options: [ { name: '경미 (쓰레기 조금)', weight: 1.0 }, { name: '보통 (방 한두개)', weight: 1.4 }, { name: '심함 (전 공간)', weight: 1.8 }, { name: '매우 심함 (악취·해충)', weight: 2.3 } ] },
             multis: { title: '추가 옵션', key: 'opts', options: [ { id: 't_night', name: '야간·새벽 작업', minAdd: 10, maxAdd: 15 }, { id: 't_disinfect', name: '강력 소독·탈취', minAdd: 5, maxAdd: 10 }, { id: 't_waste', name: '폐기물 처리 병행', minAdd: 20, maxAdd: 35 } ] }
         },
         special: {
-            steps: [ { label: '5평↓', min: 90, max: 185 }, { label: '10평', min: 130, max: 265 }, { label: '20평', min: 200, max: 420 }, { label: '30평', min: 280, max: 580 }, { label: '40평', min: 360, max: 740 }, { label: '60평', min: 490, max: 990 }, { label: '80평+', min: 620, max: 1300 } ],
+            steps: [ { label: '5평↓', min: 90, max: 185 }, { label: '10평', min: 120, max: 165 }, { label: '20평', min: 150, max: 250 }, { label: '30평', min: 200, max: 350 }, { label: '40평', min: 300, max: 440 }, { label: '50평', min: 440, max: 660 }, ],
             singles: { title: '현장 종류', key: 'type', options: [ { name: '고독사·사망', weight: 1.0 }, { name: '혈흔·체액', weight: 0.85 }, { name: '화재·그을음', weight: 1.2 }, { name: '동물 오염', weight: 0.7 }, { name: '침수·곰팡이', weight: 0.5 } ] },
             extraSingles: { title: '오염 범위', key: 'range', options: [ { name: '일부 (방 1개)', weight: 1.0 }, { name: '절반', weight: 1.7 }, { name: '전체', weight: 2.4 } ] }
         },
         funeral: {
-            steps: [ { label: '5평↓', min: 25, max: 35 }, { label: '10평', min: 35, max: 50 }, { label: '20평', min: 65, max: 85 }, { label: '30평', min: 95, max: 130 }, { label: '40평', min: 130, max: 175 }, { label: '50평', min: 170, max: 230 }, { label: '60평', min: 210, max: 290 }, { label: '80평+', min: 290, max: 400 } ],
+            steps: [ { label: '5평↓', min: 25, max: 35 }, { label: '10평', min: 35, max: 50 }, { label: '20평', min: 65, max: 85 }, { label: '30평', min: 95, max: 130 }, { label: '40평', min: 130, max: 175 }, { label: '50평', min: 170, max: 230 }, { label: '60평', min: 210, max: 290 } ],
             singles: { title: '물건 양', key: 'volume', options: [ { name: '적음', weight: 1.0 }, { name: '보통', weight: 1.3 }, { name: '많음', weight: 1.6 }, { name: '매우 많음', weight: 2.2 } ] },
             multis: { title: '추가 옵션', key: 'opts', options: [ { id: 'f_clean', name: '청소 병행', minAdd: 10, maxAdd: 15 }, { id: 'f_special', name: '특수청소 병행', minAdd: 30, maxAdd: 50 }, { id: 'f_secret', name: '야간 비밀 작업', minAdd: 15, maxAdd: 20 } ] }
         }
