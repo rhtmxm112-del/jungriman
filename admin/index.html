@@ -133,38 +133,9 @@
         }
     </style>
 </head>
-<body><div id="tab-youtube" class="tab-content">
-    <div class="page-header-wrap">
-        <h2 class="page-title">대표 유튜브 영상 관리</h2>
-    </div>
-    <div class="admin-card">
-        <div class="card-title">새 유튜브 영상 등록 (메인에 노출됨)</div>
-        <div class="form-row">
-            <div style="flex: 1;">
-                <label class="form-label">영상 제목</label>
-                <input type="text" id="ytTitle" class="form-input" placeholder="예: 역대급 쓰레기집 청소 현장">
-            </div>
-            <div style="flex: 2;">
-                <label class="form-label">유튜브 링크 (URL)</label>
-                <input type="url" id="ytUrl" class="form-input" placeholder="예: https://www.youtube.com/watch?v=어쩌고저쩌고">
-            </div>
-        </div>
-        <div style="text-align: right;">
-            <button class="btn-submit" onclick="saveYoutubePost()">서버에 등록하기</button>
-        </div>
-    </div>
+<body>
 
-    <div class="admin-card">
-        <div class="card-title">등록된 영상 목록</div>
-        <div class="table-responsive">
-            <table class="data-table mobile-vertical-table">
-                <thead><tr><th style="width: 30%">제목</th><th style="width: 50%">유튜브 링크</th><th style="width: 20%">관리</th></tr></thead>
-                <tbody id="youtubeTbody"></tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
+<!-- 로그인 스크린 -->
 <div id="login-screen">
     <div class="login-box">
         <h2>정리맨 관리자</h2>
@@ -173,6 +144,7 @@
     </div>
 </div>
 
+<!-- 대시보드 메인 레이아웃 -->
 <div id="admin-dashboard">
     <aside class="sidebar">
         <div class="sidebar-logo">정리맨 Admin 🚚</div>
@@ -186,40 +158,10 @@
     </aside>
 
     <main class="main-content">
-        <div id="tab-youtube" class="tab-content">
-            <div class="page-header-wrap">
-                <h2 class="page-title">대표 유튜브 영상 관리</h2>
-            </div>
-            <div class="admin-card">
-                <div class="card-title">새 유튜브 영상 등록 (메인에 노출됨)</div>
-                <div class="form-row">
-                    <div style="flex: 1;">
-                        <label class="form-label">영상 제목</label>
-                        <input type="text" id="ytTitle" class="form-input" placeholder="예: 역대급 쓰레기집 청소 현장">
-                    </div>
-                    <div style="flex: 2;">
-                        <label class="form-label">유튜브 링크 (URL)</label>
-                        <input type="url" id="ytUrl" class="form-input" placeholder="예: https://www.youtube.com/watch?v=어쩌고저쩌고">
-                    </div>
-                </div>
-                <div style="text-align: right;">
-                    <button class="btn-submit" onclick="saveYoutubePost()">서버에 등록하기</button>
-                </div>
-            </div>
-
-            <div class="admin-card">
-                <div class="card-title">등록된 영상 목록</div>
-                <div class="table-responsive">
-                    <table class="data-table">
-                        <thead><tr><th style="width: 30%">제목</th><th style="width: 50%">유튜브 링크</th><th style="width: 20%">관리</th></tr></thead>
-                        <tbody id="youtubeTbody"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+        <!-- 1. 실제 작업 사례 관리 탭 -->
         <div id="tab-upload" class="tab-content active">
             <div class="page-header-wrap">
-                <h2 class="page-title">실제 작업 사례 관리</h2>
+                <h2 class="page-title">실실제 작업 사례 관리</h2>
             </div>
             <div class="admin-card">
                 <div class="card-title">새 작업 사례 업로드 (서버 연동)</div>
@@ -265,6 +207,7 @@
             </div>
         </div>
 
+        <!-- 2. 고객 후기 관리 탭 -->
         <div id="tab-review" class="tab-content">
             <div class="page-header-wrap">
                 <h2 class="page-title">고객 후기 관리</h2>
@@ -297,6 +240,40 @@
             </div>
         </div>
 
+        <!-- 3. 대표 유튜브 영상 관리 탭 -->
+        <div id="tab-youtube" class="tab-content">
+            <div class="page-header-wrap">
+                <h2 class="page-title">대표 유튜브 영상 관리</h2>
+            </div>
+            <div class="admin-card">
+                <div class="card-title">새 유튜브 영상 등록 (메인에 노출됨)</div>
+                <div class="form-row">
+                    <div style="flex: 1;">
+                        <label class="form-label">영상 제목</label>
+                        <input type="text" id="ytTitle" class="form-input" placeholder="예: 역대급 쓰레기집 청소 현장">
+                    </div>
+                    <div style="flex: 2;">
+                        <label class="form-label">유튜브 링크 (URL)</label>
+                        <input type="url" id="ytUrl" class="form-input" placeholder="예: https://www.youtube.com/watch?v=어쩌고저쩌고">
+                    </div>
+                </div>
+                <div style="text-align: right;">
+                    <button class="btn-submit" onclick="saveYoutubePost()">서버에 등록하기</button>
+                </div>
+            </div>
+
+            <div class="admin-card">
+                <div class="card-title">등록된 영상 목록</div>
+                <div class="table-responsive">
+                    <table class="data-table mobile-vertical-table">
+                        <thead><tr><th style="width: 30%">제목</th><th style="width: 50%">유튜브 링크</th><th style="width: 20%">관리</th></tr></thead>
+                        <tbody id="youtubeTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. 실시간 견적 접수 현황 탭 -->
         <div id="tab-consult" class="tab-content">
             <div class="page-header-wrap">
                 <h2 class="page-title">실시간 견적 접수 현황</h2>
@@ -326,56 +303,52 @@
         loadCasesFromServer();
         loadReviewsFromServer();
         loadConsultsFromServer();
+        loadYoutubesFromServer();
     }
 
-// 기존 checkPwd 함수를 이걸로 교체해
-async function checkPwd() {
-    const email = "admin@정리맨.com"; // 아까 만든 관리자 이메일
-    const password = document.getElementById('pwdInput').value;
+    // 1. 진짜 수파베이스 기반 로그인 함수
+    async function checkPwd() {
+        const email = "admin@정리맨.com"; // 네 수파베이스 관리자 이메일
+        const password = document.getElementById('pwdInput').value;
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password,
-    });
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password,
+        });
 
-    if (error) {
-        alert('비밀번호가 틀렸거나 문제가 발생했어!');
-        document.getElementById('pwdInput').value = '';
-    } else {
-        alert('로그인 성공!');
-        document.getElementById('pwdInput').value = '';
-        showDashboard();
+        if (error) {
+            alert('비밀번호가 틀렸거나 문제가 발생했어!');
+            document.getElementById('pwdInput').value = '';
+        } else {
+            alert('로그인 성공!');
+            document.getElementById('pwdInput').value = '';
+            showDashboard();
+        }
     }
-}
 
-// 기존 window.onload를 이걸로 교체해서 새로고침해도 로그인 유지되게 만들어
-window.onload = async function() {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (session) {
-        showDashboard();
-    }
-};
-
-// 기존 logout 함수도 이걸로 교체
-async function logout() {
-    await supabase.auth.signOut();
-    location.reload(); 
-}
-    window.onload = function() {
-        if(localStorage.getItem('jungriman_admin_logged_in') === 'true') {
+    // 2. 페이지 열릴 때 세션 체크 (중복 제거 완료)
+    window.onload = async function() {
+        localStorage.removeItem('jungriman_admin_logged_in');
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
             showDashboard();
         }
     };
+
+    // 3. 진짜 수파베이스 기반 로그아웃 함수
+    async function logout() {
+        await supabase.auth.signOut();
+        localStorage.removeItem('jungriman_admin_logged_in');
+        location.reload(); 
+    }
 
     function switchTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
         
-        // 해당 탭 콘텐츠 열기
         const targetTab = document.getElementById(`tab-${tabId}`);
         if(targetTab) targetTab.classList.add('active');
         
-        // 사이드바 메뉴 활성화 안전하게 처리
         const navItems = document.querySelectorAll('.nav-menu .nav-item');
         navItems.forEach(item => {
             if(item.getAttribute('onclick') && item.getAttribute('onclick').includes(tabId)) {
@@ -621,6 +594,7 @@ async function logout() {
             if (table === 'cases') loadCasesFromServer();
             else if (table === 'reviews') loadReviewsFromServer();
             else if (table === 'consultations') loadConsultsFromServer();
+            else if (table === 'youtube_videos') loadYoutubesFromServer();
         }
     }
     async function saveYoutubePost() {
