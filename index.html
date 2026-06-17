@@ -663,16 +663,21 @@
 <footer class="brand-footer">
     <div class="footer-inner">
         <div class="footer-logo">정리맨<span>.</span></div>
-        <div class="footer-cs">고객센터 010-4535-9907</div>
+        <div class="footer-cs">고객센터 010-4585-9907</div>
         <div class="footer-info">
-            <span>상호명: 정리맨</span>
-            <span>대표: 홍길동</span>
-            <span>사업자등록번호: 123-45-67890</span><br>
-            <span>주소: 서울특별시 강남구 테헤란로 123, 4층</span>
-            <span>이메일: contact@jungriman.com</span>
+            <span>상호: 튜니티</span>
+            <span>대표: 김경희</span>
+            <span>사업자등록번호: 557-18-01325</span><br>
+            <span>통신판매번호: 신고면제</span>
+            <span>주소: 경기도 부천시 장말로 209번길 7</span>
+            <span>이메일: vlrtlvfhr11@naver.com</span>
         </div>
-        <div class="footer-copyright">
-            © 2026 JUNGRIMAN. All rights reserved.
+        <div class="footer-copyright" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+            <span>© 2026 TUNITY. All rights reserved.</span>
+            <div style="gap: 16px; display: flex;">
+                <a href="#" style="color: #a1a1aa; text-decoration: none;">이용약관</a>
+                <a href="#" style="color: #a1a1aa; text-decoration: none; font-weight: 800;">개인정보처리방침</a>
+            </div>
         </div>
     </div>
 </footer>
@@ -944,7 +949,6 @@
         renderBotStep(); 
     };
     window.closeBotModal = function() { document.getElementById('botModal').classList.remove('active'); };
-
     function renderBotStep() {
         const step = BOT_STEPS[botStepIdx]; const box = document.getElementById('questionBox');
         document.getElementById('progressBar').style.width = `${((botStepIdx + 1) / BOT_STEPS.length) * 100}%`;
@@ -959,6 +963,16 @@
         else if (step.type === 'select') inputHtml = `<div class="input-group"><div class="bot-chip-grid">${step.options.map(opt => `<button class="bot-chip-option ${botAnswers[step.id] === opt ? 'active' : ''}" onclick="handleBotSelect('${step.id}', '${opt}')">${opt}</button>`).join('')}</div></div>`;
         else if (step.type === 'date') inputHtml = `<div class="input-group"><input type="date" class="date-input" id="bot-input-${step.id}" value="${botAnswers[step.id] || ''}" onchange="validateBotInput()" onclick="try{this.showPicker()}catch(e){}" onfocus="try{this.showPicker()}catch(e){}"></div>`;
         else if (step.type === 'file') { const count = botAnswers.photoFiles.length; inputHtml = `<div class="input-group"><label class="file-label" for="bot-file-upload" id="botFileLabel">${count > 0 ? `📸 사진 ${count}장 첨부됨` : `📸 현장 사진 첨부하기`}</label><input type="file" id="bot-file-upload" style="display:none;" accept="image/*" multiple onchange="handleBotFiles(this)"><div class="thumbnail-container" id="botThumbnails"></div></div>`; }
+
+        // 🔥 여기가 핵심: 마지막 단계일 때만 체크박스 UI 그려줌
+        if (botStepIdx === BOT_STEPS.length - 1) {
+            inputHtml += `
+            <label style="display:flex; align-items:center; gap:8px; margin-top:24px; font-size:14px; font-weight:700; color:var(--toss-gray-700); cursor:pointer;">
+                <input type="checkbox" id="bot-consent-checkbox" onchange="validateBotInput()" style="width:20px; height:20px; cursor:pointer; accent-color:var(--toss-blue);">
+                [필수] 개인정보 수집 및 이용에 동의합니다.
+            </label>
+            `;
+        }
 
         box.innerHTML = `<h2 class="question-title">${step.title}</h2><p class="question-desc">${step.desc || ''}</p>${inputHtml}`;
         if (step.type === 'file' && botAnswers.photoFiles.length > 0) renderBotThumbnails();
@@ -975,6 +989,25 @@
             }, 100); 
         }
     }
+
+    // 다음 버튼 활성화 여부 검증하는 로직
+    window.validateBotInput = function() {
+        const step = BOT_STEPS[botStepIdx]; const nextBtn = document.getElementById('nextBtn'); if (!step) return; let valid = false;
+        
+        if (step.type === 'text' || step.type === 'tel') { const el = document.getElementById(`bot-input-${step.id}`); valid = el && el.value.trim().length > 0; if(valid) botAnswers[step.id] = el.value.trim(); }
+        else if (step.type === 'sido') valid = !!botAnswers.sidos; else if (step.type === 'gugun') valid = !!botAnswers.guguns; else if (step.type === 'select') valid = !!botAnswers[step.id];
+        else if (step.type === 'date') { const el = document.getElementById(`bot-input-${step.id}`); valid = el && el.value; if(valid) botAnswers[step.id] = el.value; } else if (step.type === 'file') valid = true;
+        
+        // 🔥 여기가 핵심: 마지막 단계면 체크박스 체크됐는지 확인해서 안 돼 있으면 막음
+        if (botStepIdx === BOT_STEPS.length - 1) {
+            const consentBox = document.getElementById('bot-consent-checkbox');
+            if (consentBox && !consentBox.checked) {
+                valid = false;
+            }
+        }
+
+        nextBtn.disabled = !valid;
+    };
 
     window.handleBotSido = (val) => { botAnswers.sidos = val; botAnswers.guguns = ''; setTimeout(() => { botStepIdx++; renderBotStep(); }, 150); };
     window.handleBotGugun = (val) => { botAnswers.guguns = val; setTimeout(() => { botStepIdx++; renderBotStep(); }, 150); };
