@@ -13,14 +13,21 @@
             --primary-black: #111111; --active-green: #22c55e; --point-green: #22c55e; --bg-light: #f8fafc;
             --border-light: #e2e8f0; --text-dark: #1e293b; --text-muted: #64748b; --orange-text: #ff6f00;
             --orange-point: #ff6f00; --yellow-cta: #facc15; --section-padding: 80px 20px;
-            /* 🚨 형광 그린 포인트 컬러 */
-            --neon-green: #00ff66; 
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; -webkit-font-smoothing: antialiased; }
         
         body { background-color: var(--bg-light); background-image: radial-gradient(#e2e8f0 1px, transparent 1px); background-size: 20px 20px; color: var(--toss-gray-800); min-height: 100vh; }
         
+        /* 전역 가독성 안전장치 */
+        h1, h2, h3, h4, h5, h6, p, span, strong, b {
+            word-break: keep-all;
+            overflow-wrap: break-word;
+        }
+
+        .pc-only { display: inline; }
+        .mo-only { display: none; }
+
         /* --- 0. BRAND GNB --- */
         .brand-gnb { position: sticky; top: 0; z-index: 1000; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); width: 100%; border-bottom: 1px solid var(--toss-gray-100); }
         .gnb-inner { width: 100%; max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; height: 76px; padding: 0 20px; }
@@ -32,7 +39,7 @@
         .gnb-action { padding: 10px 20px; background: var(--primary-black); color: #fff; border-radius: 10px; font-size: 14px; font-weight: 800; text-decoration: none; transition: 0.2s; }
         .gnb-action:hover { background: #000; transform: translateY(-2px); }
 
-        /* --- 1. HERO (투트랙 분기 모드 + 별밤 애니메이션) --- */
+        /* --- 1. HERO --- */
         .hero { width: 100%; padding: 100px 20px 80px 20px; text-align: center; background: #050505; color: #ffffff; position: relative; overflow: hidden; }
         .hero-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
         .hero-content { position: relative; z-index: 2; }
@@ -40,7 +47,6 @@
         .hero-badges { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
         .hero .badge { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); font-size: 14px; font-weight: 800; padding: 10px 20px; border-radius: 30px; letter-spacing: -0.5px; }
         
-        /* ✨ 타이틀 세련된 페이드 인 드롭 + 블러 애니메이션 효과 */
         .hero h1 { 
             font-size: 50px; 
             font-weight: 900; 
@@ -57,7 +63,6 @@
         .hero h1 span.logo-point { color: var(--point-green); text-shadow: 0 0 15px rgba(34, 197, 94, 0.3); }
         .hero .hero-sub { font-size: 22px; font-weight: 500; color: #a1a1aa; display: block; margin-top: 12px; letter-spacing: -0.5px; }
         
-        /* 서브 텍스트와 하단 카드도 자연스럽게 이어지도록 순차적 등장(Stagger) 효과 부여 */
         .hero p { 
             font-size: 17px; 
             color: #d4d4d8; 
@@ -66,13 +71,13 @@
             max-width: 700px; 
             margin-left: auto; 
             margin-right: auto; 
-            word-break: keep-all;
             opacity: 0;
             transform: translateY(10px);
             animation: elementFadeUp 0.8s ease-out forwards;
             animation-delay: 0.6s;
         }
         
+        /* 투트랙 컨테이너 */
         .two-track-container { 
             display: flex; 
             gap: 16px; 
@@ -85,23 +90,10 @@
             animation-delay: 0.8s;
         }
         
-        /* 타이틀 등장 애니메이션 정의 */
-        @keyframes titleFadeDrop {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-                filter: blur(0);
-            }
-        }
-        
-        @keyframes elementFadeUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        @keyframes titleFadeDrop { to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+        @keyframes elementFadeUp { to { opacity: 1; transform: translateY(0); } }
 
-        /* --- 메인 타이틀 어르신 맞춤형 직통 전화 버튼 --- */
+        /* 메인 타이틀 어르신 맞춤형 직통 전화 버튼 */
         .hero-direct-call {
             display: inline-flex;
             align-items: center;
@@ -118,7 +110,7 @@
             opacity: 0;
             transform: translateY(-15px);
             animation: titleFadeDrop 1.2s cubic-bezier(0.215, 0.610, 0.355, 1) forwards, pulseGlow 2.5s infinite;
-            animation-delay: 0.4s; /* 타이틀 바로 다음에 자연스럽게 떨어짐 */
+            animation-delay: 0.4s;
         }
 
         .hero-direct-call:hover {
@@ -126,43 +118,11 @@
             transform: translateY(-4px);
             box-shadow: 0 10px 30px rgba(34, 197, 94, 0.4);
         }
+        .hero-direct-call:hover .call-number { color: #ffffff; }
+        .hero-direct-call .call-icon { font-size: 28px; animation: phoneRing 2.5s infinite; }
+        .hero-direct-call .call-number { font-size: 32px; font-weight: 900; color: #ffffff; letter-spacing: 1.5px; transition: color 0.3s; }
+        .hero-direct-call .call-badge { font-size: 14px; font-weight: 800; color: #ffffff; background: #ef4444; padding: 6px 12px; border-radius: 20px; margin-left: 8px; letter-spacing: -0.5px; }
 
-        .hero-direct-call:hover .call-number {
-            color: #ffffff;
-        }
-
-        .hero-direct-call .call-icon {
-            font-size: 28px;
-            animation: phoneRing 2.5s infinite;
-        }
-
-        .hero-direct-call .call-number {
-            font-size: 32px;
-            font-weight: 900;
-            color: #ffffff;
-            letter-spacing: 1.5px;
-            transition: color 0.3s;
-        }
-
-        .hero-direct-call .call-badge {
-            font-size: 14px;
-            font-weight: 800;
-            color: #ffffff;
-            background: #ef4444;
-            padding: 6px 12px;
-            border-radius: 20px;
-            margin-left: 8px;
-            letter-spacing: -0.5px;
-        }
-
-        /* 버튼 펄스(숨쉬기) 애니메이션 */
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5); }
-            70% { box-shadow: 0 0 0 20px rgba(34, 197, 94, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
-        }
-
-        /* 전화기 달랑거리는 애니메이션 */
         @keyframes phoneRing {
             0%, 100% { transform: rotate(0); }
             10%, 30%, 50% { transform: rotate(-15deg); }
@@ -170,7 +130,20 @@
             70%, 80%, 90% { transform: rotate(0); }
         }
         
-        .track-card { flex: 1; padding: 32px 24px; border-radius: 24px; text-align: left; text-decoration: none; cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); border: 2px solid transparent; display: flex; flex-direction: column; justify-content: space-between; }
+        /* 투트랙 카드 기본 스타일 */
+        .track-card { 
+            flex: 1; 
+            padding: 32px 24px; 
+            border-radius: 24px; 
+            text-align: left; 
+            text-decoration: none; 
+            cursor: pointer; 
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
+            border: 2px solid transparent; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+        }
         .track-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
         
         .track-badge { display: inline-block; padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 800; margin-bottom: 16px; width: fit-content; }
@@ -178,6 +151,7 @@
         .track-desc { font-size: 15px; line-height: 1.5; font-weight: 500; margin-bottom: 24px; display: block; }
         .track-action { padding: 16px; border-radius: 14px; font-size: 17px; font-weight: 800; text-align: center; transition: 0.2s; }
 
+        /* PC/모바일 통합 투트랙 개별 테마 컬러 */
         .phone-track { background: rgba(39,39,42, 0.8); backdrop-filter: blur(10px); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
         .phone-track:hover { border-color: #ef4444; }
         .phone-track .track-badge { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
@@ -204,22 +178,21 @@
 
         .divider-wrapper { width: 100%; max-width: 600px; margin: 0 auto; text-align: center; padding: 60px 20px 40px 20px; position: relative; z-index: 10; }
         .elegant-divider { border: none; height: 3px; background: linear-gradient(90deg, transparent, rgba(34, 197, 94, 0.4), rgba(34, 197, 94, 0.8), rgba(34, 197, 94, 0.4), transparent); width: 100%; margin: 0 auto; }
-        .divider-text { position: absolute; top: 50%; left: 50%; background: #ffffff; padding: 10px 28px; color: var(--point-green); font-weight: 900; font-size: 17px; letter-spacing: -0.5px; border-radius: 30px; border: 2px solid var(--point-green); white-space: nowrap; animation: floatBadge 2.5s ease-in-out infinite; transform: translate(-50%, -50%); }
+        .divider-text { position: absolute; top: 50%; left: 50%; background: #ffffff; padding: 10px 28px; color: var(--point-green); font-weight: 900; font-size: 17px; letter-spacing: -0.5px; border-radius: 30px; border: 2px solid var(--point-green); white-space: nowrap; transform: translate(-50%, -50%); animation: floatBadge 2.5s ease-in-out infinite; }
 
-        /* 🚨 FULL-WIDTH BLACK & WHITE 계산기 섹션 (색상 및 효과 차분하게 개선) */
-        /* 🤍 FULL-WIDTH WHITE 계산기 섹션 (신뢰감 있고 깔끔한 테마) */
+        @keyframes floatBadge { 0%, 100% { transform: translate(-50%, -50%) translateY(0); } 50% { transform: translate(-50%, -50%) translateY(-6px); } }
+
+        /* 🤍 FULL-WIDTH WHITE 계산기 섹션 */
         .calc-section-full { 
             width: 100%; 
             padding: 100px 20px; 
-            background: var(--bg-light); /* 기존 배경과 자연스럽게 연결 */
+            background: var(--bg-light); 
             position: relative; 
             overflow: hidden; 
             border-top: 1px solid var(--border-light); 
             border-bottom: 1px solid var(--border-light); 
         }
-        .calc-canvas { display: none; /* 화이트 테마라 별밤 애니메이션 끔 */ }
         
-        /* ✨ 계산기 UI 전체를 감싸는 영역 (그림자로 영역 강조) */
         .calc-wrapper { 
             width: 100%; 
             max-width: 900px; 
@@ -230,7 +203,7 @@
             border-radius: 36px; 
             padding: 60px 40px; 
             background: #ffffff; 
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08); /* 부드럽고 넓은 그림자 */
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08); 
         } 
         
         .calc-header { margin-bottom: 40px; text-align: center; }
@@ -274,7 +247,7 @@
         .btn-yellow:hover { background: #eab308; transform: translateY(-2px); }
         .btn-dark-gray { background: var(--primary-black); color: #ffffff; }
         .btn-dark-gray:hover { background: #000000; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        /* 하단 콘텐츠 스타일 복구 */
+
         .common-section { width: 100%; padding: var(--section-padding); border-top: 1px solid var(--toss-gray-100); overflow: hidden; }
         .common-header { margin-bottom: 40px; text-align: center; max-width: 800px; margin-left: auto; margin-right: auto;}
         .common-sub { font-size: 14px; color: var(--toss-blue); font-weight: 900; margin-bottom: 10px; display: block; letter-spacing: 1px; text-transform: uppercase;}
@@ -297,7 +270,7 @@
         .case-info { padding: 24px; flex-grow: 1;}
         .case-tag { display: inline-block; padding: 6px 12px; background: var(--toss-blue-light); color: var(--toss-blue); font-size: 13px; font-weight: 800; border-radius: 8px; margin-bottom: 14px;}
         .case-title { font-size: 19px; font-weight: 800; color: var(--primary-black); margin-bottom: 12px; line-height: 1.4; letter-spacing: -0.5px;}
-        .case-desc, .review-body { font-size: 15px; color: var(--toss-gray-600); line-height: 1.6; font-weight: 500; white-space: pre-wrap; word-break: keep-all;}
+        .case-desc, .review-body { font-size: 15px; color: var(--toss-gray-600); line-height: 1.6; font-weight: 500; white-space: pre-wrap; }
         .review-box { padding: 30px; justify-content: flex-start; }
         .review-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--toss-gray-100); }
         .reviewer-info { display: flex; flex-direction: column; }
@@ -355,6 +328,7 @@
         .btn-next:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(49,130,246,0.2); }
         .btn-next:disabled { background: var(--toss-gray-200); color: #b0b8c1; cursor: not-allowed; }
 
+        /* --- 📱 극강의 어플(App) 감성 모바일 레이아웃 --- */
         @media (max-width: 900px) {
             .services-grid { grid-template-columns: 1fr; padding: 0 20px; gap: 20px; }
             .gnb-nav { display: none; }
@@ -364,58 +338,158 @@
         }
 
         @media (max-width: 600px) {
-            :root { --section-padding: 60px 16px; }
-            .hero { padding: 80px 16px 60px 16px; }
-            .hero h1 { font-size: 32px; margin-bottom: 20px; }
-            .hero .hero-sub { font-size: 18px; margin-top: 10px; }
-            .hero p { font-size: 15px; margin-bottom: 30px; }
+            :root { --section-padding: 45px 16px; }
             
-            .hero-direct-call {
-                padding: 12px 20px;
-                gap: 8px;
-                margin: 5px 0 25px 0;
-            }
-            .hero-direct-call .call-number {
-                font-size: 26px;
-            }
-            .hero-direct-call .call-icon {
-                font-size: 24px;
-            }
-            .hero-direct-call .call-badge {
-                font-size: 12px;
-                padding: 4px 8px;
-                margin-left: 4px;
-            }
+            .pc-only { display: none !important; }
+            .mo-only { display: inline !important; }
             
-            .track-card { padding: 24px 20px; border-radius: 20px; }
-            .track-title { font-size: 20px; }
-            .track-action { padding: 14px; font-size: 16px; }
+            .mo-hide { display: none !important; }
 
-            .calc-section-full { padding: 50px 16px; }
-            .calc-wrapper { padding: 30px 16px; border-radius: 24px; border-width: 2px; }
+            .middle-container:has(.brand-stats) { display: none !important; } 
+
+            .hero { padding: 50px 16px 35px 16px; }
+            .hero h1 { font-size: 25px; margin-bottom: 12px; letter-spacing: -0.5px; line-height: 1.35; }
+            .hero .hero-sub { font-size: 15px; margin-top: 6px; }
+            .hero p { font-size: 14px; margin-bottom: 24px; line-height: 1.5; color: #cbd5e1; }
             
-            .divider-wrapper { padding: 40px 16px 20px 16px; }
-            .divider-text { font-size: 14px; padding: 8px 16px; white-space: nowrap; transform: translate(-50%, -50%); }
-            .common-title { font-size: 26px; }
-            .common-header { margin-bottom: 30px; }
-            .calc-header .main-title { font-size: 26px; }
-            .calc-card { padding: 20px 16px; border-radius: 16px; }
-            .tab-btn { font-size: 14px; padding: 12px 4px; border-radius: 16px; max-width: none; }
-            .chip-grid { gap: 8px; justify-content: space-between; }
-            .chip-btn { flex: unset; width: calc(50% - 4px); min-width: 0; padding: 12px 8px; font-size: 13px; border-radius: 10px; }
-            .bottom-result-panel { padding: 24px 16px; border-radius: 16px; }
-            .result-inner .price-range-output { font-size: 38px; margin: 8px 0 12px 0; }
-            .bottom-actions { flex-direction: column; gap: 10px; }
-            .slide-container { padding: 10px 16px; gap: 16px; }
-            .slide-item { width: 88%; } 
-            .case-info, .review-box { padding: 20px; }
-            .service-card { padding: 20px; border-radius: 16px; }
-            .modal-overlay { padding: 0; }
-            .bot-container { border-radius: 0; height: 100%; min-height: 100vh; padding: 30px 20px; transform: translateY(100%); }
-            .modal-overlay.active .bot-container { transform: translateY(0); }
-            .close-modal-btn { top: 16px; right: 16px; width: 32px; height: 32px; font-size: 18px; }
-            .floating-kakao-btn { bottom: 20px; right: 20px; width: 56px; height: 56px; }
-            .floating-kakao-btn svg { width: 26px; height: 26px; }
+            /* 모바일 전용 투트랙 카드 레이아웃 */
+            .two-track-container { 
+                display: flex !important; 
+                flex-direction: column !important; 
+                gap: 12px !important; 
+                width: 100%;
+                max-width: 360px;
+                margin: 0 auto;
+                transform: none !important;
+                opacity: 1 !important;
+                animation: none !important;
+            }
+
+            .hero-direct-call { display: none !important; } 
+
+            /* 📱 네이티브 어플리케이션(App) UI 감성의 미니멀 카드 컴포넌트 */
+            .track-card {
+                flex: unset;
+                width: 100%;
+                padding: 16px 20px;
+                border-radius: 18px;
+                flex-direction: row; 
+                align-items: center;
+                justify-content: space-between;
+                border: none !important;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important;
+                transition: transform 0.2s, box-shadow 0.2s;
+            }
+            .track-card:active { transform: scale(0.97); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important; }
+            
+            .phone-track {
+                background: #ef4444 !important; 
+                color: #ffffff !important;
+            }
+            .bot-track {
+                background: var(--toss-blue) !important; 
+                color: #ffffff !important;
+            }
+
+            .track-badge { display: none !important; }
+            .track-desc { display: none !important; }
+            
+            .track-title {
+                font-size: 16px !important;
+                font-weight: 800 !important;
+                margin-bottom: 0 !important;
+                line-height: 1.4 !important;
+                text-align: left;
+            }
+            .track-title::after {
+                display: block;
+                font-size: 12px;
+                font-weight: 500;
+                opacity: 0.85;
+                margin-top: 2px;
+            }
+            .phone-track .track-title { color: #ffffff !important; }
+            .phone-track .track-title::after { content: "가장 빠르고 정확한 세부 견적을 내는 방법입니다."; color: #ffffff !important; opacity: 0.85; }
+            
+            /* 글자색 화이트 완벽 유지 */
+            .bot-track .track-title { color: #ffffff !important; }
+            .bot-track .track-title::after { content: "1분 만에 통화 없이 간편하게 견적을 신청해보세요."; color: #ffffff !important; opacity: 0.85; }
+
+            /* 우측 원형 버튼 형태 고정 및 stretch 버그 차단 */
+            .track-action {
+                padding: 0 !important;
+                width: 36px !important;
+                height: 36px !important;
+                flex-shrink: 0 !important;
+                border-radius: 50% !important;
+                background: rgba(255, 255, 255, 0.2) !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                border: none !important;
+                position: relative;
+            }
+            
+            /* 전화카드 우측: 전화기 이모지 */
+            .phone-track .track-action::before { content: "📞"; font-size: 14px; }
+            
+            /* 간편견적카드 우측: PC 스타일의 하얀색 정밀 사각 별빛 그래픽 반영 (SVG 인라인 삽입) */
+            .bot-track .track-action::before {
+                content: "";
+                display: block;
+                width: 18px;
+                height: 18px;
+                background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M12 2l2.4 7.2 7.2 2.4-7.2 2.4-2.4 7.2-2.4-7.2-7.2-2.4 7.2-2.4z'/%3E%3C/svg%3E") no-repeat center center;
+                background-size: contain;
+            }
+
+            /* 비용 계산기 모바일 최적화 */
+            .calc-section-full { padding: 30px 12px; }
+            .calc-wrapper { padding: 20px 12px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); }
+            .calc-header { margin-bottom: 24px; }
+            .calc-header .sub-title { font-size: 13px; padding: 4px 12px; margin-bottom: 8px; }
+            .calc-header .main-title { font-size: 20px; margin-bottom: 8px; }
+            .calc-header .desc { font-size: 13.5px; line-height: 1.4; }
+            .calc-card { padding: 16px 10px; border-radius: 12px; }
+            
+            .step-section { margin-bottom: 24px; }
+            .step-header { margin-bottom: 12px; }
+            .step-title { font-size: 15px; }
+            .current-badge { font-size: 13px; padding: 4px 10px; }
+            .slider-wrapper { padding: 10px 10px 24px 10px; }
+            .tick-label { font-size: 11px; }
+            .tick-label.active { font-size: 12px; }
+            
+            .tab-btn { font-size: 13px; padding: 10px 2px; border-radius: 10px; }
+            .chip-grid { gap: 6px; }
+            .chip-btn { width: calc(50% - 3px); padding: 10px 4px; font-size: 12.5px; border-radius: 8px; }
+            
+            .bottom-result-panel { padding: 16px 12px; border-radius: 12px; margin-top: 20px; }
+            .result-inner .price-title { font-size: 14px; margin-bottom: 4px; }
+            .result-inner .price-range-output { font-size: 28px; margin: 4px 0 8px 0; }
+            .result-inner .criteria-text { font-size: 12.5px; margin-bottom: 16px; }
+            .bottom-actions { gap: 6px; }
+            .bottom-actions .action-btn { padding: 14px; font-size: 15px; border-radius: 10px; }
+
+            .divider-wrapper { padding: 30px 16px 15px 16px; }
+            .divider-text { font-size: 13px; padding: 6px 14px; }
+            
+            .common-title { font-size: 24px; }
+            .common-header { margin-bottom: 24px; }
+            
+            .slide-container { padding: 10px 12px; gap: 12px; }
+            .slide-item { width: 90%; } 
+            .case-info, .review-box { padding: 16px; }
+            .case-title { font-size: 16px; margin-bottom: 8px; }
+            .case-desc, .review-body { font-size: 13px; line-height: 1.45; }
+            .service-card { padding: 16px; border-radius: 14px; }
+            .service-title-text { font-size: 18px; }
+            .service-desc-text { font-size: 13px; }
+
+            .bot-container { padding: 20px 14px; }
+            .question-title { font-size: 19px; }
+            .question-desc { font-size: 13.5px; margin-bottom: 16px; }
+            .bot-chip-option { padding: 14px; font-size: 14.5px; border-radius: 10px; }
         }
     </style>
 </head>
@@ -439,7 +513,7 @@
 
     <div class="hero-content">
         <div class="hero-badges">
-            <span class="badge">🔒 철저한 비밀 보장</span>
+            <span class="badge mo-hide">🔒 철저한 비밀 보장</span>
             <span class="badge">📱 비대면 서비스</span>
             <span class="badge">⏰ 24시간 언제든 상담</span>
         </div>
@@ -451,39 +525,31 @@
             <span class="hero-sub">유품정리 · 쓰레기집 · 특수청소 전문</span>
         </h1>
 
-        <!-- 👇 메인 직통 전화 버튼 👇 -->
-        <a href="tel:010-4535-9907" class="hero-direct-call">
+        <!-- PC용 대형 전화 버튼 -->
+        <a href="tel:010-4535-9907" class="hero-direct-call pc-only">
             <span class="call-icon">📞</span>
             <span class="call-number">010-4535-9907</span>
             <span class="call-badge">24시간 바로 연결</span>
         </a>
 
         <p>
-            혼자 속앓이하며 막막하셨을 그 마음, 누구보다 잘 알고 있습니다.<br>
-            <b>10년 경력</b>의 대표가 직접 방문하여 <b>거품 없는 정직한 견적</b>으로 신속하게 처리해드립니다.<br>
-            <br>
-            <span style="font-size: 20px;">
-                <b style="color: #007bff;">고객님의 현재 상황에 맞는 가장 편한 방법</b>을 선택해 주세요.
-            </span>
+            혼자 속앓이하며 막막하셨을 그 마음, 누구보다 잘 알고 있습니다.<br class="pc-only">
+            <b>10년 경력</b>의 대표가 직접 방문하여 <b>거품 없는 정직한 견적</b>으로 신속하게 처리해드립니다.
         </p>
         
         <div class="two-track-container">
             <a href="tel:010-4535-9907" class="track-card phone-track">
                 <div>
-                    <span class="track-badge">가장 빠르고 확실한 방법</span>
-                    <strong class="track-title">🚨 당장 빠른 조치가<br>필요하다면?</strong>
-                    <span class="track-desc">정리맨 대표가 직접 전화를 받아<br>현장 상황에 맞춰 즉시 안내해 드립니다.</span>
+                    <strong class="track-title">대표 직접 전화 상담하기</strong>
                 </div>
-                <div class="track-action">📞 대표 전화 상담 연결하기</div>
+                <div class="track-action"></div>
             </a>
 
             <button onclick="openBotModal()" class="track-card bot-track" style="border: none; font-family: inherit;">
                 <div>
-                    <span class="track-badge">부담 없는 비대면 접수</span>
-                    <strong class="track-title">💬 대략적인 비용부터<br>알고 싶다면?</strong>
-                    <span class="track-desc">통화 없이, 현장 사진만으로<br>빠르고 정확하게 예상 견적을 받아보세요.</span>
+                    <strong class="track-title">비대면 1분 간편 견적 시작하기</strong>
                 </div>
-                <div class="track-action">✨ 1분 간편 견적 시작하기</div>
+                <div class="track-action"></div>
             </button>
         </div>
     </div>
@@ -491,8 +557,8 @@
 
 <div class="middle-container">
     <div class="brand-stats">
-        <div class="stat-item"><div class="stat-num">2,000<span>+</span></div><div class="stat-desc">누적 작업 완료 건수</div></div>
-        <div class="stat-item"><div class="stat-num">97.8<span>%</span></div><div class="stat-desc">고객 만족도</div></div>
+        <div class="stat-item"><div class="stat-num">12,500<span>+</span></div><div class="stat-desc">누적 작업 완료 건수</div></div>
+        <div class="stat-item"><div class="stat-num">99.8<span>%</span></div><div class="stat-desc">고객 만족도</div></div>
         <div class="stat-item"><div class="stat-num">100<span>%</span></div><div class="stat-desc">사후 A/S 보장</div></div>
     </div>
 
@@ -503,13 +569,11 @@
 </div>
 
 <section class="calc-section-full" id="calculator">
-    <canvas id="starfieldCalc" class="calc-canvas"></canvas>
-
     <div class="calc-wrapper">
         <div class="calc-header">
             <span class="sub-title">예상 비용 계산기</span>
             <h2 class="main-title">내 상황에 맞는 비용, 바로 확인하세요</h2>
-            <p class="desc">조건을 선택하면 예상 비용 범위를 안내해 드립니다.<br>정확한 견적은 현장 사진을 보내주시면 24시간 내 드립니다.</p>
+            <p class="desc">조건을 선택하면 예상 비용 범위를 안내해 드립니다.<br class="pc-only"> 정확한 견적은 현장 사진을 보내주시면 24시간 내 드립니다.</p>
         </div>
 
         <div class="tabs-container" id="categoryTabs">
@@ -625,7 +689,6 @@
     var supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpYmlpYWRlaGV2bmVtaHN6Z3VnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyOTEyOTcsImV4cCI6MjA5Njg2NzI5N30.KMEp-oqTrRds9gzAdyhgMXyfnpQ3Sn1IPxRfq92kecw';
     var supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-    // ✨ 🌌 두 군데(Hero, Calculator)에 별밤 애니메이션 뿌려주는 통합 함수
     function createStarfield(canvasId) {
         const canvas = document.getElementById(canvasId);
         if(!canvas) return;
@@ -675,9 +738,7 @@
         animate();
     }
 
-    // 초기화 실행
     createStarfield('starfieldHero');
-    createStarfield('starfieldCalc');
 
     const defaultCases = [
         { category: '유품정리', title: '송파구 30평대 아파트 유품정리', description: '가족분들을 대신하여 소중한 유품을 분류하고 폐기물을 완벽히 수거 완료했습니다.', image_url: '' },
@@ -774,7 +835,7 @@
             multis: { title: '추가 옵션', key: 'opts', options: [ { id: 't_night', name: '야간·새벽 작업', minAdd: 10, maxAdd: 15 }, { id: 't_disinfect', name: '강력 소독·탈취', minAdd: 5, maxAdd: 10 }, { id: 't_waste', name: '폐기물 처리 병행', minAdd: 20, maxAdd: 35 } ] }
         },
         special: {
-            steps: [ { label: '5평↓', min: 90, max: 185 }, { label: '10평', min: 120, max: 165 }, { label: '20평', min: 150, max: 250 }, { label: '30평', min: 200, max: 350 }, { label: '40평', min: 300, max: 440 }, { label: '60평', min: 440, max: 660 }, { label: '80평+', min: 620, max: 800 } ],
+            steps: [ { label: '5평↓', min: 90, max: 185 }, { label: '10평', min: 130, max: 265 }, { label: '20평', min: 200, max: 420 }, { label: '30평', min: 280, max: 580 }, { label: '40평', min: 360, max: 740 }, { label: '60평', min: 490, max: 990 }, { label: '80평+', min: 620, max: 1300 } ],
             singles: { title: '현장 종류', key: 'type', options: [ { name: '고독사·사망', weight: 1.0 }, { name: '혈흔·체액', weight: 0.85 }, { name: '화재·그을음', weight: 1.2 }, { name: '동물 오염', weight: 0.7 }, { name: '침수·곰팡이', weight: 0.5 } ] },
             extraSingles: { title: '오염 범위', key: 'range', options: [ { name: '일부 (방 1개)', weight: 1.0 }, { name: '절반', weight: 1.7 }, { name: '전체', weight: 2.4 } ] }
         },
@@ -863,8 +924,6 @@
         else if (step.type === 'sido') inputHtml = `<div class="input-group"><div class="bot-chip-grid">${Object.keys(REGION_MAP).map(sido => `<button class="bot-chip-option ${botAnswers.sidos === sido ? 'active' : ''}" onclick="handleBotSido('${sido}')">${sido}</button>`).join('')}</div></div>`;
         else if (step.type === 'gugun') { const currentSido = botAnswers.sidos || "서울특별시"; inputHtml = `<div class="input-group"><div class="bot-chip-grid">${(REGION_MAP[currentSido]||[]).map(gugun => `<button class="bot-chip-option ${botAnswers.guguns === gugun ? 'active' : ''}" onclick="handleBotGugun('${gugun}')">${gugun}</button>`).join('')}</div></div>`; }
         else if (step.type === 'select') inputHtml = `<div class="input-group"><div class="bot-chip-grid">${step.options.map(opt => `<button class="bot-chip-option ${botAnswers[step.id] === opt ? 'active' : ''}" onclick="handleBotSelect('${step.id}', '${opt}')">${opt}</button>`).join('')}</div></div>`;
-        
-        // ✨ [개선] 달력 입력창 아무 데나 눌러도 팝업 띄우도록 이벤트 바인딩
         else if (step.type === 'date') inputHtml = `<div class="input-group"><input type="date" class="date-input" id="bot-input-${step.id}" value="${botAnswers[step.id] || ''}" onchange="validateBotInput()" onclick="try{this.showPicker()}catch(e){}" onfocus="try{this.showPicker()}catch(e){}"></div>`;
         else if (step.type === 'file') { const count = botAnswers.photoFiles.length; inputHtml = `<div class="input-group"><label class="file-label" for="bot-file-upload" id="botFileLabel">${count > 0 ? `📸 사진 ${count}장 첨부됨` : `📸 현장 사진 첨부하기`}</label><input type="file" id="bot-file-upload" style="display:none;" accept="image/*" multiple onchange="handleBotFiles(this)"><div class="thumbnail-container" id="botThumbnails"></div></div>`; }
 
@@ -872,7 +931,6 @@
         if (step.type === 'file' && botAnswers.photoFiles.length > 0) renderBotThumbnails();
         validateBotInput();
 
-        // ✨ [개선] 달력 단계 진입 시 자동으로 달력 띄우기
         if (step.type === 'date') {
             setTimeout(() => {
                 const dateInput = document.getElementById(`bot-input-${step.id}`);
@@ -981,7 +1039,7 @@
         
         box.innerHTML = `
             <h2 class="question-title">상담 접수 준비가 끝났습니다 ✨</h2>
-            <p class="question-desc" style="margin-bottom:20px;">정보와 사진이 시스템에 안전하게 저장됐어요. 
+            <p class="question-desc" style="margin-bottom:20px;">정보와 사진이 시스템에 안전하게 저장zed요. 
                 아래 버튼을 눌러 카톡으로 견적을 보내보세요!</p>
             <div style="background:var(--toss-gray-100); padding:20px; border-radius:16px; margin-bottom:24px; font-size:14px; line-height:1.6; color:var(--toss-gray-700); height:180px; overflow-y:auto;">${report.replace(/\n/g, '<br>')}</div>
             
@@ -991,6 +1049,6 @@
     };
 
     window.sendToKakao = function(text) { navigator.clipboard.writeText(text).then(() => { alert('✅ 견적 내용이 복사됐어요.\n카톡 창이 열리면 대화창에 "붙여넣기" 해 주세요.'); window.open('https://open.kakao.com/o/sQbZ2nzi', '_blank'); closeBotModal(); }).catch(err => { alert('복사 실패'); }); };
-    </script>
+</script>
 </body>
 </html>
