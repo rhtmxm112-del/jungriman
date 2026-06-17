@@ -367,7 +367,17 @@
                 animation: none !important;
             }
 
-            .hero-direct-call { display: none !important; } 
+/* 📱 모바일용 커다란 전화 버튼 스타일 */
+.hero-direct-call {
+    display: inline-flex !important;
+    width: 100%;
+    max-width: 340px;
+    padding: 14px 20px;
+    margin: 15px auto 25px auto;
+}
+.hero-direct-call .call-number { font-size: 28px !important; letter-spacing: 0.5px; }
+.hero-direct-call .call-icon { font-size: 24px; }
+.hero-direct-call .call-badge { font-size: 12px; padding: 4px 8px; margin-left: 4px; }
 
             /* 📱 네이티브 어플리케이션(App) UI 감성의 미니멀 카드 컴포넌트 */
             .track-card {
@@ -515,7 +525,7 @@
             <span class="hero-sub">유품정리 · 쓰레기집 · 특수청소 전문</span>
         </h1>
 
-        <a href="tel:010-4535-9907" class="hero-direct-call pc-only">
+        <a href="tel:010-4535-9907" class="hero-direct-call">
             <span class="call-icon">📞</span>
             <span class="call-number">010-4535-9907</span>
             <span class="call-badge">24시간 바로 연결</span>
