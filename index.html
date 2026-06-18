@@ -1174,10 +1174,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }]);
             if (dbError) throw dbError;
 
-            const TELEGRAM_TOKEN = '여기에_토큰을_붙여넣어주세요'; 
-            const TELEGRAM_CHAT_ID = '여기에_숫자아이디를_붙여넣어주세요'; 
+            // 🔥 [수정 포인트] 가짜 텔레그램 토큰/주소 다 치워버리고, 보안 배포한 Edge Function 호출
             const tgMessage = `🚨 [새로운 견적 문의 도착!] 🚨\n\n👤 이름: ${botAnswers.name}\n📞 연락처: ${botAnswers.phone}\n📍 지역: ${botAnswers.sidos} ${botAnswers.guguns}\n📅 희망일: ${botAnswers.date_exact}\n🏠 형태: ${botAnswers.structure} (${botAnswers.elevator})\n📏 평수: ${botAnswers.size}\n🖼️ 사진: ${botAnswers.photoFiles.length}장 첨부됨\n\n👉 어드민 페이지에서 당장 확인하세요!`;
-            fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: tgMessage }) }).catch(err => console.error(err));
+            
+            supabase.functions.invoke('telegram-notify', {
+                body: { message: tgMessage }
+            }).catch(err => console.error('텔레그램 알림 실패:', err));
+
         } catch(err) { console.error(err); }
 
         let urlsText = uploadedUrls.length > 0 ? uploadedUrls.map((url, idx) => `사진${idx+1}: ${url}`).join('\n') : '첨부된 사진 없음';
@@ -1193,7 +1196,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <button class="btn btn-next" style="width:100%; background:var(--toss-gray-800);" onclick="closeBotModal();">📞 알겠어요 (창 닫기)</button>
         `;
     };
-
+    
     window.sendToKakao = function(text) { navigator.clipboard.writeText(text).then(() => { alert('✅ 견적 내용이 복사됐어요.\n카톡 창이 열리면 대화창에 "붙여넣기" 해 주세요.'); window.open('https://open.kakao.com/o/seIDHWzi', '_blank'); closeBotModal(); }).catch(err => { alert('복사 실패'); }); };
 </script>
 </body>
