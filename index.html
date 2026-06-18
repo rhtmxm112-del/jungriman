@@ -741,7 +741,7 @@
             <span>© 2026 TUNITY. All rights reserved.</span>
             <div style="gap: 16px; display: flex;">
                 <a href="#" style="color: #a1a1aa; text-decoration: none;">이용약관</a>
-                <a href="#" style="color: #a1a1aa; text-decoration: none; font-weight: 800;">개인정보처리방침</a>
+                <a href="네_노션_또는_약관_페이지_주소" target="_blank" style="color: #a1a1aa; text-decoration: none; font-weight: 800;">개인정보처리방침</a>
             </div>
         </div>
     </div>
@@ -1034,18 +1034,22 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (step.type === 'date') inputHtml = `<div class="input-group"><input type="date" class="date-input" id="bot-input-${step.id}" value="${botAnswers[step.id] || ''}" onchange="validateBotInput()" onclick="try{this.showPicker()}catch(e){}" onfocus="try{this.showPicker()}catch(e){}"></div>`;
         else if (step.type === 'file') { const count = botAnswers.photoFiles.length; inputHtml = `<div class="input-group"><label class="file-label" for="bot-file-upload" id="botFileLabel">${count > 0 ? `📸 사진 ${count}장 첨부됨` : `📸 현장 사진 첨부하기`}</label><input type="file" id="bot-file-upload" style="display:none;" accept="image/*" multiple onchange="handleBotFiles(this)"><div class="thumbnail-container" id="botThumbnails"></div></div>`; }
 
-        // 🔥 여기가 핵심: 마지막 단계일 때만 체크박스 UI 그려줌
+        // 마지막 단계일 때만 체크박스 UI 그려줌
         if (botStepIdx === BOT_STEPS.length - 1) {
             inputHtml += `
             <label style="display:flex; align-items:center; gap:8px; margin-top:24px; font-size:14px; font-weight:700; color:var(--toss-gray-700); cursor:pointer;">
                 <input type="checkbox" id="bot-consent-checkbox" onchange="validateBotInput()" style="width:20px; height:20px; cursor:pointer; accent-color:var(--toss-blue);">
-                [필수] 개인정보 수집 및 이용에 동의합니다.
+                [필수] <a href="네_노션_또는_약관_페이지_주소" target="_blank" style="color:var(--toss-blue); text-decoration:underline; font-weight:800; margin:0 2px;">개인정보 수집 및 이용</a>에 동의합니다.
             </label>
             `;
         }
 
+        // 🔥 [수정 포인트 1] HTML 구조를 화면(box.innerHTML)에 완벽하게 먼저 주입해서 체크박스 요소를 생성함
         box.innerHTML = `<h2 class="question-title">${step.title}</h2><p class="question-desc">${step.desc || ''}</p>${inputHtml}`;
+        
         if (step.type === 'file' && botAnswers.photoFiles.length > 0) renderBotThumbnails();
+        
+        // 🔥 [수정 포인트 2] 화면에 체크박스가 렌더링된 이후에 검증 함수를 실행해야 ROCKS가 정상 작동함
         validateBotInput();
 
         if (step.type === 'date') {
@@ -1059,19 +1063,32 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 100); 
         }
     }
-
-    // 다음 버튼 활성화 여부 검증하는 로직
+// 다음/완료 버튼 활성화 여부 검증하는 단일 통합 로직
     window.validateBotInput = function() {
-        const step = BOT_STEPS[botStepIdx]; const nextBtn = document.getElementById('nextBtn'); if (!step) return; let valid = false;
+        const step = BOT_STEPS[botStepIdx]; 
+        const nextBtn = document.getElementById('nextBtn'); 
+        if (!step) return; 
+        let valid = false;
         
-        if (step.type === 'text' || step.type === 'tel') { const el = document.getElementById(`bot-input-${step.id}`); valid = el && el.value.trim().length > 0; if(valid) botAnswers[step.id] = el.value.trim(); }
-        else if (step.type === 'sido') valid = !!botAnswers.sidos; else if (step.type === 'gugun') valid = !!botAnswers.guguns; else if (step.type === 'select') valid = !!botAnswers[step.id];
-        else if (step.type === 'date') { const el = document.getElementById(`bot-input-${step.id}`); valid = el && el.value; if(valid) botAnswers[step.id] = el.value; } else if (step.type === 'file') valid = true;
+        if (step.type === 'text' || step.type === 'tel') { 
+            const el = document.getElementById(`bot-input-${step.id}`); 
+            valid = el && el.value.trim().length > 0; 
+            if(valid) botAnswers[step.id] = el.value.trim(); 
+        }
+        else if (step.type === 'sido') valid = !!botAnswers.sidos; 
+        else if (step.type === 'gugun') valid = !!botAnswers.guguns; 
+        else if (step.type === 'select') valid = !!botAnswers[step.id];
+        else if (step.type === 'date') { 
+            const el = document.getElementById(`bot-input-${step.id}`); 
+            valid = el && el.value; 
+            if(valid) botAnswers[step.id] = el.value; 
+        } 
+        else if (step.type === 'file') valid = true;
         
-        // 🔥 여기가 핵심: 마지막 단계면 체크박스 체크됐는지 확인해서 안 돼 있으면 막음
+        // 🔥 핵심 락: 마지막 연락처 단계에서 체크박스가 체크 안 되어 있으면 무조건 '다음/완료' 버튼 비활성화
         if (botStepIdx === BOT_STEPS.length - 1) {
             const consentBox = document.getElementById('bot-consent-checkbox');
-            if (consentBox && !consentBox.checked) {
+            if (!consentBox || !consentBox.checked) {
                 valid = false;
             }
         }
@@ -1091,13 +1108,6 @@ document.addEventListener('DOMContentLoaded', () => {
         botAnswers.photoFiles.forEach(file => { const r = new FileReader(); r.onload = (e) => { container.innerHTML += `<div class="thumbnail-wrapper"><img src="${e.target.result}" class="thumbnail-img"></div>`; }; r.readAsDataURL(file); });
     }
 
-    window.validateBotInput = function() {
-        const step = BOT_STEPS[botStepIdx]; const nextBtn = document.getElementById('nextBtn'); if (!step) return; let valid = false;
-        if (step.type === 'text' || step.type === 'tel') { const el = document.getElementById(`bot-input-${step.id}`); valid = el && el.value.trim().length > 0; if(valid) botAnswers[step.id] = el.value.trim(); }
-        else if (step.type === 'sido') valid = !!botAnswers.sidos; else if (step.type === 'gugun') valid = !!botAnswers.guguns; else if (step.type === 'select') valid = !!botAnswers[step.id];
-        else if (step.type === 'date') { const el = document.getElementById(`bot-input-${step.id}`); valid = el && el.value; if(valid) botAnswers[step.id] = el.value; } else if (step.type === 'file') valid = true;
-        nextBtn.disabled = !valid;
-    };
     
     window.moveNext = function() { if (botStepIdx < BOT_STEPS.length - 1) { botStepIdx++; renderBotStep(); } else { buildBotReport(); } };
     window.movePrev = function() { if (botStepIdx > 0) { botStepIdx--; renderBotStep(); } };
