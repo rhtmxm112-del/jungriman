@@ -3,14 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>정리맨 - 모두 다 싹! 유품정리/쓰레기집청소/특수청소 전문업체</title>
+    <title>정리맨 - 유품정리/쓰레기집청소/특수청소/고독사청소 전문업체 | 서울 강서구·관악구·구로구·양천구 · 인천 · 경기 고양·부천·성남·수원 등</title>
+    <meta name="description" content="유품정리, 쓰레기집청소, 고독사청소, 특수청소 전문 정리맨입니다. 고인유품정리, 부모님유품정리, 원룸쓰레기처리, 빈집정리, 짐치우기까지 24시간 상담 가능. 서울 강서구·관악구·구로구·양천구, 인천, 경기 고양·과천·광명·군포·김포·부천·성남·수원·시흥·안산·안양·일산·파주 전 지역 출동.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="정리맨 - 유품정리·쓰레기집청소·특수청소 전문업체">
+    <meta property="og:description" content="고독사청소, 유품정리, 쓰레기집청소, 원룸폐기물 처리까지. 서울·인천·경기 전 지역 출동 가능한 정리맨입니다.">
     <link rel="icon" href="./favicon.svg" type="image/svg+xml">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <style>
         /* --- 글로벌 디자인 변수 --- */
         :root {
             --toss-blue: #3182f6; --toss-blue-light: #e8f3ff; --toss-gray-100: #f2f4f6; --toss-gray-200: #e5e8eb;
-            --toss-gray-600: #4e5968; --toss-gray-700: #333d4b; --toss-gray-800: #191f28; --toss-yellow-kakao: #fee500;
+            --toss-gray-400: #b0b8c1; --toss-gray-600: #4e5968; --toss-gray-700: #333d4b; --toss-gray-800: #191f28; --toss-yellow-kakao: #fee500;
             --primary-black: #111111; --active-green: #22c55e; --point-green: #22c55e; --bg-light: #f8fafc;
             --border-light: #e2e8f0; --text-dark: #1e293b; --text-muted: #64748b; --orange-text: #ff6f00;
             --orange-point: #ff6f00; --yellow-cta: #facc15; --section-padding: 80px 20px;
@@ -253,6 +258,36 @@
         .common-header { margin-bottom: 40px; text-align: center; max-width: 800px; margin-left: auto; margin-right: auto;}
         .common-sub { font-size: 14px; color: var(--toss-blue); font-weight: 900; margin-bottom: 10px; display: block; letter-spacing: 1px; text-transform: uppercase;}
         .common-title { font-size: 32px; font-weight: 900; color: var(--primary-black); letter-spacing: -1px; line-height: 1.3;}
+
+        /* --- SEO 서비스 안내 섹션 --- */
+        .guide-group { max-width: 900px; margin: 0 auto 40px auto; }
+        .guide-group:last-child { margin-bottom: 0; }
+        .guide-group-title { font-size: 19px; font-weight: 900; color: var(--primary-black); margin-bottom: 16px; letter-spacing: -0.5px; }
+        .guide-item-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+        .guide-item { background: var(--toss-gray-100); border-radius: 16px; padding: 20px 22px; }
+        .guide-item strong { display: block; font-size: 15px; font-weight: 900; color: var(--toss-blue); margin-bottom: 8px; letter-spacing: -0.3px; }
+        .guide-item p { font-size: 14px; line-height: 1.6; color: var(--toss-gray-600); font-weight: 500; }
+        .guide-item p b { color: var(--toss-gray-800); font-weight: 800; }
+
+        /* --- 서비스 지역 섹션 --- */
+        .area-lead { max-width: 780px; margin: 0 auto 28px auto; text-align: center; font-size: 15px; line-height: 1.8; color: var(--toss-gray-600); font-weight: 500; }
+        .area-lead b { color: var(--primary-black); font-weight: 900; }
+        .area-badge-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 800px; margin: 0 auto; }
+        .area-badge { padding: 10px 18px; border-radius: 30px; background: var(--toss-blue-light); color: var(--toss-blue); font-size: 14px; font-weight: 800; }
+
+        @media (max-width: 600px) {
+            .guide-item-grid { grid-template-columns: 1fr; }
+            .guide-group-title { font-size: 17px; }
+        }
+
+        /* --- 롱테일 파생 키워드 아코디언 (기본 접힘, 화면 압박 없이 필요시에만 펼쳐서 확인) --- */
+        .longtail-wrap { max-width: 820px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
+        .longtail-item { border: 1px solid var(--toss-gray-100); border-radius: 12px; padding: 14px 18px; background: #fff; }
+        .longtail-item summary { cursor: pointer; font-size: 14px; font-weight: 700; color: var(--toss-gray-600); list-style: none; }
+        .longtail-item summary::-webkit-details-marker { display: none; }
+        .longtail-item summary::after { content: '＋'; float: right; color: var(--toss-gray-400); font-weight: 400; }
+        .longtail-item[open] summary::after { content: '－'; }
+        .longtail-item p { margin-top: 10px; font-size: 12px; line-height: 1.9; color: var(--toss-gray-400); font-weight: 400; border-top: 1px solid var(--toss-gray-100); padding-top: 10px; }
         .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1000px; margin: 0 auto; padding: 0 20px; }
         .service-card { background: #ffffff; border-radius: 24px; padding: 30px; border: 1px solid var(--border-light); transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
         .service-card:hover { transform: translateY(-8px); box-shadow: 0 16px 30px rgba(0,0,0,0.06); border-color: var(--toss-blue); }
@@ -722,6 +757,168 @@
         </div>
         <div class="slide-wrapper">
             <div class="slide-container" id="mainReviewGrid"></div>
+        </div>
+    </section>
+
+    <section class="common-section" id="service-guide">
+        <div class="common-header">
+            <span class="common-sub">SERVICE GUIDE</span>
+            <h2 class="common-title">이런 상황이라면, 정리맨이 도와드립니다</h2>
+            <p style="color:var(--toss-gray-600); margin-top:10px; font-weight:600;">유품정리부터 쓰레기집청소, 원룸 폐기물 처리까지 상황별로 안내해 드려요.</p>
+        </div>
+
+        <div class="guide-group">
+            <h3 class="guide-group-title">🪽 유품정리 · 고인 유품 처리</h3>
+            <div class="guide-item-grid">
+                <div class="guide-item">
+                    <strong>고인유품정리 · 부모님유품정리</strong>
+                    <p>갑작스럽게 부모님이나 가족을 떠나보낸 후 <b>고인유품정리</b>, <b>부모님유품정리</b>가 막막하실 때, 유족을 배려하며 조용히 진행해 드립니다.</p>
+                </div>
+                <div class="guide-item">
+                    <strong>돌아가신분짐정리 · 돌아가신분집정리</strong>
+                    <p><b>돌아가신분짐정리</b>와 <b>돌아가신분집정리</b>는 감정적으로 힘든 과정이기에, 필요한 물품은 따로 보관해 드리며 나머지는 깔끔하게 정리해 드립니다.</p>
+                </div>
+                <div class="guide-item">
+                    <strong>요양원입소집정리</strong>
+                    <p>요양원이나 시설 입소를 앞두고 <b>요양원입소집정리</b>가 필요하신 경우에도 빠르게 방문 견적을 도와드립니다.</p>
+                </div>
+                <div class="guide-item">
+                    <strong>유품정리업체 · 유품정리대행</strong>
+                    <p>믿을 수 있는 <b>유품정리업체</b>를 찾고 계신다면, <b>유품정리대행</b>부터 <b>유품정리견적</b>, <b>유품정리비용</b> 산정까지 투명하게 안내해 드립니다.</p>
+                </div>
+                <div class="guide-item">
+                    <strong>유품처리 · 유품치우기</strong>
+                    <p>어디서부터 시작해야 할지 모르는 <b>유품처리</b>와 <b>유품치우기</b>, 대표가 직접 방문해 물품 분류부터 처리까지 원스톱으로 진행합니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="guide-group">
+            <h3 class="guide-group-title">🏠 쓰레기집청소 · 생활폐기물 정리</h3>
+            <div class="guide-item-grid">
+                <div class="guide-item">
+                    <strong>쓰레기집청소 · 쓰레기집정리</strong>
+                    <p>혼자서는 엄두가 안 나는 <b>쓰레기집청소</b>와 <b>쓰레기집정리</b>, 전문 인력과 장비로 하루 만에 새 공간처럼 만들어 드립니다.</p>
+                </div>
+                <div class="guide-item">
+                    <strong>쓰레기집치우기 · 짐치우기 · 집치워주는곳</strong>
+                    <p><b>쓰레기집치우기</b>, <b>짐치우기</b>가 필요하신 분들을 위해 수도권 전역에서 믿을 수 있는 <b>집치워주는곳</b>이 되어드리겠습니다.</p>
+                </div>
+                <div class="guide-item">
+                    <strong>쓰레기집청소비용 · 쓰레기집처리비용</strong>
+                    <p><b>쓰레기집청소비용</b>과 <b>쓰레기집처리비용</b>이 궁금하시다면, 현장 사진만으로도 대략적인 예상 견적을 바로 안내해 드립니다.</p>
+                </div>
+                <div class="guide-item">
+                    <strong>가정폐기물처리업체</strong>
+                    <p>일반 생활쓰레기부터 대형 폐기물까지, 믿을 수 있는 <b>가정폐기물처리업체</b>가 필요하신 분들께 신속하게 출동해 드립니다.</p>
+                </div>
+                <div class="guide-item">
+                    <strong>빈집정리 · 빈집만들기</strong>
+                    <p>이사나 매매를 앞두고 짐을 모두 비워야 하는 <b>빈집정리</b>, <b>빈집만들기</b> 작업도 원룸부터 대형 평수까지 진행합니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="guide-group">
+            <h3 class="guide-group-title">🏢 원룸 · 오피스텔 폐기물 처리</h3>
+            <div class="guide-item-grid">
+                <div class="guide-item">
+                    <strong>원룸쓰레기처리 · 원룸폐기물</strong>
+                    <p>자취방을 정리하며 쌓인 <b>원룸쓰레기처리</b>, <b>원룸폐기물</b> 문제도 소형 원룸에 맞춘 합리적인 방식으로 처리해 드립니다.</p>
+                </div>
+                <div class="guide-item">
+                    <strong>원룸오피스텔짐정리</strong>
+                    <p>퇴거나 이사 시 급하게 필요한 <b>원룸오피스텔짐정리</b>도 당일 방문이 가능한 경우가 많으니 편하게 문의해 주세요.</p>
+                </div>
+                <div class="guide-item">
+                    <strong>원룸쓰레기청소비용</strong>
+                    <p>정확한 <b>원룸쓰레기청소비용</b>은 평수와 물건량에 따라 달라지므로, 무료 견적 상담을 통해 미리 확인하실 수 있습니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="guide-group">
+            <h3 class="guide-group-title">☣️ 고독사청소 · 특수청소</h3>
+            <div class="guide-item-grid">
+                <div class="guide-item">
+                    <strong>고독사청소 · 고독사유품정리</strong>
+                    <p>냄새와 오염이 남은 현장의 <b>고독사청소</b>는 특수 장비와 전문 소독으로 안전하게 원상 복구하며, <b>고독사유품정리</b>까지 함께 진행해 드립니다.</p>
+                </div>
+                <div class="guide-item">
+                    <strong>고독사청소비용 · 고독사청소견적</strong>
+                    <p><b>고독사청소비용</b>과 <b>고독사청소견적</b>은 오염 범위와 면적에 따라 달라지며, 방문 없이도 사진만으로 사전 안내가 가능합니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="common-section" id="service-areas">
+        <div class="common-header">
+            <span class="common-sub">SERVICE AREA</span>
+            <h2 class="common-title">서비스 가능 지역</h2>
+            <p style="color:var(--toss-gray-600); margin-top:10px; font-weight:600;">서울·인천·경기 전 지역 출동 가능합니다. 지역이 확인되지 않아도 편하게 문의해 주세요.</p>
+        </div>
+        <p class="area-lead">
+            서울 <b>강서구</b>·<b>관악구</b>·<b>구로구</b>·<b>양천구</b> 유품정리 및 쓰레기집청소부터,
+            <b>인천</b> 고독사청소, 경기 <b>고양</b>·<b>과천</b>·<b>광명</b>·<b>군포</b>·<b>김포</b>·<b>부천</b>·<b>성남</b>·<b>수원</b>·<b>시흥</b>·<b>안산</b>·<b>안양</b>·<b>일산</b>·<b>파주</b> 특수청소까지,
+            정리맨이 직접 방문하여 빠르고 정직하게 처리해 드립니다.
+        </p>
+        <div class="area-badge-grid">
+            <span class="area-badge">강서구</span><span class="area-badge">관악구</span><span class="area-badge">구로구</span><span class="area-badge">양천구</span>
+            <span class="area-badge">인천</span><span class="area-badge">고양</span><span class="area-badge">과천</span><span class="area-badge">광명</span>
+            <span class="area-badge">군포</span><span class="area-badge">김포</span><span class="area-badge">부천</span><span class="area-badge">성남</span>
+            <span class="area-badge">수원</span><span class="area-badge">시흥</span><span class="area-badge">안산</span><span class="area-badge">안양</span>
+            <span class="area-badge">일산</span><span class="area-badge">파주</span>
+        </div>
+    </section>
+
+    <section class="common-section" id="longtail-info">
+        <div class="common-header">
+            <span class="common-sub">MORE INFO</span>
+            <h2 class="common-title">이 외에도 이런 것도 도와드려요</h2>
+            <p style="color:var(--toss-gray-600); margin-top:10px; font-weight:600;">항목을 눌러보시면 지역별 세부 서비스를 확인하실 수 있어요.</p>
+        </div>
+        <div class="longtail-wrap">
+            <details class="longtail-item">
+                <summary>유품 폐기 지역별 안내</summary>
+                <p>부천유품폐기, 인천유품폐기, 시흥유품폐기, 광명유품폐기, 수원유품폐기, 성남유품폐기, 파주유품폐기, 일산유품폐기, 고양유품폐기, 강서구유품폐기, 양천구유품폐기, 관악구유품폐기, 안산유품폐기, 안양유품폐기, 군포유품폐기, 김포유품폐기, 과천유품폐기, 구로구유품폐기</p>
+            </details>
+            <details class="longtail-item">
+                <summary>유품 수거 지역별 안내</summary>
+                <p>부천유품수거, 인천유품수거, 시흥유품수거, 광명유품수거, 수원유품수거, 성남유품수거, 파주유품수거, 일산유품수거, 고양유품수거, 강서구유품수거, 양천구유품수거, 관악구유품수거, 안산유품수거, 안양유품수거, 군포유품수거, 김포유품수거, 과천유품수거, 구로구유품수거</p>
+            </details>
+            <details class="longtail-item">
+                <summary>가정폐기물 일괄수거 지역별 안내</summary>
+                <p>부천가정폐기물일괄수거, 인천가정폐기물일괄수거, 시흥가정폐기물일괄수거, 광명가정폐기물일괄수거, 수원가정폐기물일괄수거, 성남가정폐기물일괄수거, 파주가정폐기물일괄수거, 일산가정폐기물일괄수거, 고양가정폐기물일괄수거, 강서구가정폐기물일괄수거, 양천구가정폐기물일괄수거, 관악구가정폐기물일괄수거, 안산가정폐기물일괄수거, 안양가정폐기물일괄수거, 군포가정폐기물일괄수거, 김포가정폐기물일괄수거, 과천가정폐기물일괄수거, 구로구가정폐기물일괄수거</p>
+            </details>
+            <details class="longtail-item">
+                <summary>가정 살림처분 지역별 안내</summary>
+                <p>부천가정살림처분, 인천가정살림처분, 시흥가정살림처분, 광명가정살림처분, 수원가정살림처분, 성남가정살림처분, 파주가정살림처분, 일산가정살림처분, 고양가정살림처분, 강서구가정살림처분, 양천구가정살림처분, 관악구가정살림처분, 안산가정살림처분, 안양가정살림처분, 군포가정살림처분, 김포가정살림처분, 과천가정살림처분, 구로구가정살림처분</p>
+            </details>
+            <details class="longtail-item">
+                <summary>원룸 빈집정리 지역별 안내</summary>
+                <p>부천원룸빈집정리, 인천원룸빈집정리, 시흥원룸빈집정리, 광명원룸빈집정리, 수원원룸빈집정리, 성남원룸빈집정리, 파주원룸빈집정리, 일산원룸빈집정리, 고양원룸빈집정리, 강서구원룸빈집정리, 양천구원룸빈집정리, 관악구원룸빈집정리, 안산원룸빈집정리, 안양원룸빈집정리, 군포원룸빈집정리, 김포원룸빈집정리, 과천원룸빈집정리, 구로구원룸빈집정리</p>
+            </details>
+            <details class="longtail-item">
+                <summary>원룸 쓰레기집 지역별 안내</summary>
+                <p>부천원룸쓰레기집, 인천원룸쓰레기집, 시흥원룸쓰레기집, 광명원룸쓰레기집, 수원원룸쓰레기집, 성남원룸쓰레기집, 파주원룸쓰레기집, 일산원룸쓰레기집, 고양원룸쓰레기집, 강서구원룸쓰레기집, 양천구원룸쓰레기집, 관악구원룸쓰레기집, 안산원룸쓰레기집, 안양원룸쓰레기집, 군포원룸쓰레기집, 김포원룸쓰레기집, 과천원룸쓰레기집, 구로구원룸쓰레기집</p>
+            </details>
+            <details class="longtail-item">
+                <summary>저장강박증 집청소 지역별 안내</summary>
+                <p>부천저장강박증집청소, 인천저장강박증집청소, 시흥저장강박증집청소, 광명저장강박증집청소, 수원저장강박증집청소, 성남저장강박증집청소, 파주저장강박증집청소, 일산저장강박증집청소, 고양저장강박증집청소, 강서구저장강박증집청소, 양천구저장강박증집청소, 관악구저장강박증집청소, 안산저장강박증집청소, 안양저장강박증집청소, 군포저장강박증집청소, 김포저장강박증집청소, 과천저장강박증집청소, 구로구저장강박증집청소</p>
+            </details>
+            <details class="longtail-item">
+                <summary>요양원 들어가실 때 집정리 지역별 안내</summary>
+                <p>부천요양원들어가실때집정리, 인천요양원들어가실때집정리, 시흥요양원들어가실때집정리, 광명요양원들어가실때집정리, 수원요양원들어가실때집정리, 성남요양원들어가실때집정리, 파주요양원들어가실때집정리, 일산요양원들어가실때집정리, 고양요양원들어가실때집정리, 강서구요양원들어가실때집정리, 양천구요양원들어가실때집정리, 관악구요양원들어가실때집정리, 안산요양원들어가실때집정리, 안양요양원들어가실때집정리, 군포요양원들어가실때집정리, 김포요양원들어가실때집정리, 과천요양원들어가실때집정리, 구로구요양원들어가실때집정리</p>
+            </details>
+            <details class="longtail-item">
+                <summary>집 전체 비우기 지역별 안내</summary>
+                <p>부천집전체비우기, 인천집전체비우기, 시흥집전체비우기, 광명집전체비우기, 수원집전체비우기, 성남집전체비우기, 파주집전체비우기, 일산집전체비우기, 고양집전체비우기, 강서구집전체비우기, 양천구집전체비우기, 관악구집전체비우기, 안산집전체비우기, 안양집전체비우기, 군포집전체비우기, 김포집전체비우기, 과천집전체비우기, 구로구집전체비우기</p>
+            </details>
+            <details class="longtail-item">
+                <summary>아파트 빈집정리 지역별 안내</summary>
+                <p>부천아파트빈집정리, 인천아파트빈집정리, 시흥아파트빈집정리, 광명아파트빈집정리, 수원아파트빈집정리, 성남아파트빈집정리, 파주아파트빈집정리, 일산아파트빈집정리, 고양아파트빈집정리, 강서구아파트빈집정리, 양천구아파트빈집정리, 관악구아파트빈집정리, 안산아파트빈집정리, 안양아파트빈집정리, 군포아파트빈집정리, 김포아파트빈집정리, 과천아파트빈집정리, 구로구아파트빈집정리</p>
+            </details>
         </div>
     </section>
 </div>
