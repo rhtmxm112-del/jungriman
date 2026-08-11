@@ -414,13 +414,26 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
   .sec-hd h2{font-size:23px}
   .sec-hd p{font-size:13.5px;margin-top:8px}
 
+  /* 첫 섹션은 히어로 직후라 라벨을 빼고 여백을 줄여
+     '실제 작업 사례'가 첫 화면에서 바로 읽히게 한다 */
+  #work{padding-top:26px}
+  #work .sec-num{display:none}
+  #work .sec-hd{margin-bottom:18px}
+
+  /* 가로 스크롤 갤러리
+     scroll-snap 이 padding-left 를 무시하고 카드를 컨테이너 끝(0px)에 붙여버리기 때문에
+     드래그를 놓으면 왼쪽 여백이 사라진다. scroll-padding-left 로 스냅 기준선을
+     본문 여백만큼 안쪽으로 옮겨 해결한다. 오른쪽 여백은 마지막 카드의 margin 으로 확보. */
   .grid-3,.grid-film{
     display:flex;overflow-x:auto;gap:12px;
     scroll-snap-type:x mandatory;scrollbar-width:none;
-    margin:0 calc(var(--gutter) * -1);padding:0 var(--gutter) 4px;
+    margin:0 calc(var(--gutter) * -1);
+    padding:0 0 4px var(--gutter);
+    scroll-padding-left:var(--gutter);
   }
   .grid-3::-webkit-scrollbar,.grid-film::-webkit-scrollbar{display:none}
-  .grid-3>*,.grid-film>*{flex:0 0 80%;scroll-snap-align:start}
+  .grid-3>*,.grid-film>*{flex:0 0 78%;scroll-snap-align:start}
+  .grid-3>*:last-child,.grid-film>*:last-child{margin-right:var(--gutter)}
   .tile-ttl{font-size:16px}
   .vid-ttl{font-size:14px}
 
