@@ -133,6 +133,8 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 .svc3-ico{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center}
 .svc3-ico svg{width:38px;height:38px}
 .svc3-item span{font-size:15.5px;font-weight:800;letter-spacing:-.04em;color:#fff}
+.svc3-note{margin-top:13px;font-size:14px;font-weight:600;color:#c8d2cd;letter-spacing:-.035em;text-shadow:0 1px 9px rgba(0,0,0,.65)}
+.svc3-note b{font-weight:800;color:var(--green-on-dark)}
 
 /* HERO CTA */
 .hero-cta{max-width:520px;margin:10px auto 0;display:flex;flex-direction:column;gap:10px}
@@ -346,9 +348,16 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
   .mark i{display:none}
   .hdr-tel{height:38px;padding:0 13px;font-size:14.5px}
 
-  /* 모바일은 텍스트가 화면을 더 많이 덮으므로 블러를 살짝만 올림 */
-  .hero-bg,.hero-video{filter:blur(8px) saturate(.92) brightness(.68)}
-  .hero h1{text-shadow:0 2px 14px rgba(0,0,0,.68),0 1px 3px rgba(0,0,0,.5)}
+  /* 모바일: 화면이 좁아 배경이 크게 잘리므로 블러를 더 낮춰 형태를 살림.
+     가독성은 스크림 강화 + 텍스트 그림자로 보완 */
+  .hero-bg,.hero-video{filter:blur(4px) saturate(.95) brightness(.66)}
+  .hb-layer{background-position:center 42%}
+  .hero.has-photo::before{
+    background:
+      radial-gradient(120% 62% at 50% 44%,rgba(4,8,6,0) 24%,rgba(4,8,6,.5) 76%,rgba(4,8,6,.68) 100%),
+      linear-gradient(180deg,rgba(5,9,7,.72) 0%,rgba(5,9,7,.6) 36%,rgba(5,9,7,.9) 100%)}
+  .hero h1{text-shadow:0 2px 14px rgba(0,0,0,.75),0 1px 3px rgba(0,0,0,.6)}
+  .svc3-note{text-shadow:0 1px 9px rgba(0,0,0,.8)}
 
   /* 서두 요소들에 좌우 여유 추가 (18px 거터 + 10px 인셋 = 28px) */
   .hero-in{padding:28px 10px 32px}
@@ -356,6 +365,7 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
   .hero h1{font-size:27px;line-height:1.34;letter-spacing:-.045em;margin-bottom:0}
 
   .svc3{gap:8px;margin-top:20px;max-width:none}
+  .svc3-note{margin-top:11px;font-size:12.5px;letter-spacing:-.05em}
   .svc3-item{padding:15px 4px 13px;gap:9px;border-radius:13px}
   .svc3-ico{width:54px;height:54px}
   .svc3-ico svg{width:34px;height:34px}
@@ -524,6 +534,7 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
         <span>특수청소</span>
       </a>
     </div>
+    <p class="svc3-note">깔끔한 뒷마무리, 모두다 <b>싹</b> 치워드립니다</p>
 
     <div class="hero-promise">
       <svg viewBox="0 0 48 48"><use href="#ic-camera"/></svg>
@@ -810,7 +821,13 @@ function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'
      · 최대 8장까지 자동 인식. 번호가 끊기면 거기서 멈춘다 (hero1, hero3 → hero1만 사용)
      · 사진 1장만 쓸 거면 기존처럼 hero.jpg 하나만 올려도 된다
 
-   영상은 아래 조건을 모두 만족할 때만 재생한다.
+   ★ 모바일 전용 세로 사진 (권장)
+     · 파일명 끝에 -m 을 붙이면 모바일에서 그 파일을 우선 사용한다
+       예) hero1-m.jpg / hero2-m.jpg …  또는 단일 사용 시 hero-m.jpg
+     · 권장 비율 3:4 세로 (900×1200 안팎), 영상은 hero-m.mp4
+     · -m 파일이 없으면 자동으로 가로 사진을 쓰므로 안 올려도 무방하다 */
+
+/* 영상은 아래 조건을 모두 만족할 때만 재생한다.
      · 데이터 절약 모드 꺼짐 · 2G/3G 등 느린 회선 아님 · '동작 줄이기' 미사용 */
 (function initHeroBackground(){
   const hero=document.querySelector('.hero');
@@ -819,30 +836,40 @@ function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'
   if(!hero||!A||!B) return;
 
   const MAX_PHOTOS=8, HOLD=6000;   // 장당 노출 시간(ms), 전환 효과는 CSS 1.8초
+  const EXT=['jpg','webp','png','jpeg'];
   const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isMobile=window.matchMedia('(max-width: 640px)').matches;
+  // 모바일이면 -m(세로) 파일을 먼저 찾고, 없으면 일반 파일로 내려간다
+  const SUFFIX=isMobile?['-m','']:[''];
   let timer=null;
 
   const probe=src=>new Promise(r=>{const i=new Image();i.onload=()=>r(src);i.onerror=()=>r(null);i.src=src;});
 
-  async function collectPhotos(){
+  async function collectSet(sfx){
     // 1장째에서 확장자 자동 판별
     let ext=null;
-    for(const e of ['jpg','webp','png','jpeg']){
-      if(await probe(`./hero1.${e}`)){ext=e;break;}
-    }
+    for(const e of EXT){ if(await probe(`./hero1${sfx}.${e}`)){ext=e;break;} }
     if(ext){
-      const list=[`./hero1.${ext}`];
+      const list=[`./hero1${sfx}.${ext}`];
       for(let n=2;n<=MAX_PHOTOS;n++){
-        const hit=await probe(`./hero${n}.${ext}`);
+        const hit=await probe(`./hero${n}${sfx}.${ext}`);
         if(!hit) break;
         list.push(hit);
       }
       return list;
     }
     // 슬라이드쇼용 파일이 없으면 단일 파일로
-    for(const e of ['jpg','webp','png','jpeg']){
-      const hit=await probe(`./hero.${e}`);
+    for(const e of EXT){
+      const hit=await probe(`./hero${sfx}.${e}`);
       if(hit) return [hit];
+    }
+    return [];
+  }
+
+  async function collectPhotos(){
+    for(const sfx of SUFFIX){
+      const list=await collectSet(sfx);
+      if(list.length) return list;
     }
     return [];
   }
@@ -875,15 +902,20 @@ function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'
   const slowNet=!!(conn&&/2g|3g/.test(conn.effectiveType||''));
   if(!video||saveData||slowNet||reduceMotion) return;
 
-  video.src='./hero.mp4';
-  video.load();
+  // 모바일은 hero-m.mp4(세로)를 먼저 시도하고, 없으면 hero.mp4로 대체
+  const videoSrcs=isMobile?['./hero-m.mp4','./hero.mp4']:['./hero.mp4'];
+  let vIdx=0;
+  const loadVideo=()=>{ video.src=videoSrcs[vIdx]; video.load(); };
 
   video.addEventListener('loadeddata',()=>{
     if(timer){clearInterval(timer);timer=null;}     // 영상이 뜨면 슬라이드쇼 중단
     hero.classList.add('has-photo','has-video');
     video.play().catch(()=>{});                     // 자동재생 차단 시 사진 배경 유지
   },{once:true});
-  video.addEventListener('error',()=>{},{once:true});
+  video.addEventListener('error',()=>{
+    if(++vIdx<videoSrcs.length) loadVideo();        // 다음 후보로 재시도
+  });
+  loadVideo();
 
   // 화면 밖 / 백그라운드 탭에서는 정지 (배터리·데이터 절약)
   if('IntersectionObserver' in window){
