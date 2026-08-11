@@ -70,12 +70,18 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 /* 배경은 둘 중 하나만 사용: ./hero.jpg 가 있으면 블러 사진, 없으면 그린 그라데이션 */
 .hero{position:relative;overflow:hidden;background:var(--dark);color:#fff;isolation:isolate}
 /* 블러는 형태를 알아볼 수 있는 6px 수준으로 낮추고,
-   가독성은 스크림(그라데이션+비네트) + 텍스트 그림자로 확보 */
+   가독성은 스크림(그라데이션+비네트) + 텍스트 그림자로 확보.
+
+   ★ .hero-media 는 잘라내기(clip) 전용 컨테이너다.
+     블러는 요소 경계 바깥으로 번지면서 가장자리를 반투명하게 만드는데,
+     안쪽 레이어를 사방 24px 크게 잡고 이 컨테이너가 잘라내면
+     경계에 밝은 띠나 흐린 선이 생기지 않는다. */
+.hero-media{position:absolute;inset:0;overflow:hidden;z-index:-2}
 .hero-bg{
-  position:absolute;inset:-22px;
+  position:absolute;inset:-24px;
   filter:blur(6px) saturate(.92) brightness(.72);
-  transform:scale(1.06);
-  opacity:0;transition:opacity .45s ease;z-index:-2;
+  transform:scale(1.04);
+  opacity:0;transition:opacity .45s ease;
 }
 .hero.has-photo .hero-bg{opacity:.82}
 /* 슬라이드쇼용 2중 레이어 — 서로 교차하며 서서히 전환 */
@@ -83,12 +89,12 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 .hb-layer.on{opacity:1}
 /* 영상 배경(./hero.mp4) — 조건 충족 시에만 재생, 실패하면 사진/그라데이션 유지 */
 .hero-video{
-  position:absolute;top:-22px;left:-22px;
-  width:calc(100% + 44px);height:calc(100% + 44px);
+  position:absolute;top:-24px;left:-24px;
+  width:calc(100% + 48px);height:calc(100% + 48px);
   object-fit:cover;
   filter:blur(6px) saturate(.92) brightness(.72);
-  transform:scale(1.06);
-  opacity:0;transition:opacity .7s ease;z-index:-2;pointer-events:none;
+  transform:scale(1.02);
+  opacity:0;transition:opacity .7s ease;pointer-events:none;
 }
 .hero.has-video .hero-video{opacity:.82}
 .hero.has-video .hero-bg{opacity:0}
@@ -351,31 +357,28 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
   /* ── 모바일 배경 전략 ──────────────────────────────
      세로 화면에 가로 사진을 전체 배경으로 깔면 좌우가 잘려 무엇인지 알 수 없다.
      그래서 모바일에서는 배경을 '상단 밴드'로 분리한다.
-       · 밴드 높이 = 142px → 사진이 전체 폭 그대로 보인다 (잘림 없음)
+       · 밴드 높이 = 168px → 사진의 가로 전체가 잘리지 않고 보인다
        · 블러 2px, 밝기 0.95 → 사실상 원본 그대로 식별 가능
-       · 밴드 위에는 글자를 올리지 않으므로 가독성 손해가 없다
+       · 위쪽 62%는 사진만 보이는 구간, 아래 38%는 어둡게 깔려 헤드라인이 얹힌다
        · 밴드 하단은 본문 배경색으로 자연스럽게 페이드아웃
      사진이 없으면 밴드도 없고 기존 그린 그라데이션만 표시된다. */
-  .hero-bg,.hero-video{
-    top:0;left:0;right:0;bottom:auto;
-    width:100%;height:142px;
-    transform:scale(1.03);
-    filter:blur(2px) saturate(1.02) brightness(.95);
-  }
+  .hero-media{height:168px;bottom:auto}
+  .hero-bg,.hero-video{filter:blur(2px) saturate(1.02) brightness(.95)}
   .hero.has-photo .hero-bg{opacity:1}
   .hero.has-video .hero-video{opacity:1}
-  .hb-layer{background-position:center 45%}
+  .hb-layer{background-position:center 42%}
   .hero.has-photo::before{
-    top:0;bottom:auto;height:142px;
+    top:0;bottom:auto;height:168px;
     background:linear-gradient(180deg,
       rgba(6,10,8,.30) 0%,
-      rgba(6,10,8,.18) 44%,
-      rgba(6,10,8,.70) 84%,
+      rgba(6,10,8,.16) 38%,
+      rgba(6,10,8,.54) 62%,
+      rgba(6,10,8,.88) 84%,
       rgba(10,14,12,1) 100%);
   }
-  /* 사진이 있을 때만 밴드 높이만큼 본문을 아래로 내린다 */
-  .hero.has-photo .hero-eyebrow{margin-bottom:98px}
-  .hero h1{text-shadow:0 2px 14px rgba(0,0,0,.6),0 1px 3px rgba(0,0,0,.45)}
+  /* 헤드라인이 밴드 하단부에 절반쯤 겹치도록 위치 */
+  .hero.has-photo .hero-eyebrow{margin-bottom:62px}
+  .hero h1{text-shadow:0 2px 16px rgba(0,0,0,.85),0 1px 4px rgba(0,0,0,.7)}
   .svc3-note{text-shadow:0 1px 9px rgba(0,0,0,.7)}
 
   /* 서두 요소들에 좌우 여유 추가 (18px 거터 + 10px 인셋 = 28px) */
@@ -529,11 +532,13 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 
 <!-- ============ HERO ============ -->
 <section class="hero" id="top">
-  <div class="hero-bg" id="heroBg">
-    <div class="hb-layer" id="hbA"></div>
-    <div class="hb-layer" id="hbB"></div>
+  <div class="hero-media">
+    <div class="hero-bg" id="heroBg">
+      <div class="hb-layer" id="hbA"></div>
+      <div class="hb-layer" id="hbB"></div>
+    </div>
+    <video class="hero-video" id="heroVideo" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
   </div>
-  <video class="hero-video" id="heroVideo" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
   <div class="wrap hero-in">
     <span class="hero-eyebrow"><span class="dot"></span>서울 · 인천 · 경기 24시간 상담</span>
 
