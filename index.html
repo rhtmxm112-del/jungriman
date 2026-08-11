@@ -69,26 +69,28 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 /* ================= HERO ================= */
 /* 배경은 둘 중 하나만 사용: ./hero.jpg 가 있으면 블러 사진, 없으면 그린 그라데이션 */
 .hero{position:relative;overflow:hidden;background:var(--dark);color:#fff;isolation:isolate}
+/* 블러는 형태를 알아볼 수 있는 6px 수준으로 낮추고,
+   가독성은 스크림(그라데이션+비네트) + 텍스트 그림자로 확보 */
 .hero-bg{
-  position:absolute;inset:-44px;
-  filter:blur(16px) saturate(.8) brightness(.82);
-  transform:scale(1.14);
+  position:absolute;inset:-22px;
+  filter:blur(6px) saturate(.92) brightness(.72);
+  transform:scale(1.06);
   opacity:0;transition:opacity .45s ease;z-index:-2;
 }
-.hero.has-photo .hero-bg{opacity:.66}
+.hero.has-photo .hero-bg{opacity:.82}
 /* 슬라이드쇼용 2중 레이어 — 서로 교차하며 서서히 전환 */
 .hb-layer{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.8s ease-in-out}
 .hb-layer.on{opacity:1}
 /* 영상 배경(./hero.mp4) — 조건 충족 시에만 재생, 실패하면 사진/그라데이션 유지 */
 .hero-video{
-  position:absolute;top:-44px;left:-44px;
-  width:calc(100% + 88px);height:calc(100% + 88px);
+  position:absolute;top:-22px;left:-22px;
+  width:calc(100% + 44px);height:calc(100% + 44px);
   object-fit:cover;
-  filter:blur(16px) saturate(.8) brightness(.82);
-  transform:scale(1.14);
+  filter:blur(6px) saturate(.92) brightness(.72);
+  transform:scale(1.06);
   opacity:0;transition:opacity .7s ease;z-index:-2;pointer-events:none;
 }
-.hero.has-video .hero-video{opacity:.66}
+.hero.has-video .hero-video{opacity:.82}
 .hero.has-video .hero-bg{opacity:0}
 @media(prefers-reduced-motion:reduce){.hero-video{display:none}}
 /* 기본(사진 없음) — 그린 그라데이션 */
@@ -96,26 +98,29 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
   background:
     radial-gradient(120% 72% at 50% 0%,rgba(17,163,85,.24) 0%,rgba(17,163,85,0) 62%),
     linear-gradient(180deg,rgba(7,13,10,.62) 0%,rgba(7,13,10,.72) 50%,rgba(7,13,10,.95) 100%)}
-/* 사진 있음 — 그라데이션 제거, 가독성용 어두운 오버레이만 */
+/* 사진·영상 있음 — 그린 그라데이션 제거, 텍스트 보호용 스크림 + 비네트 */
 .hero.has-photo::before{
-  background:linear-gradient(180deg,rgba(6,10,8,.76) 0%,rgba(6,10,8,.68) 42%,rgba(6,10,8,.94) 100%)}
+  background:
+    radial-gradient(115% 78% at 50% 46%,rgba(4,8,6,0) 30%,rgba(4,8,6,.42) 78%,rgba(4,8,6,.6) 100%),
+    linear-gradient(180deg,rgba(5,9,7,.68) 0%,rgba(5,9,7,.55) 38%,rgba(5,9,7,.88) 100%)}
 
 .hero-in{padding:54px 0 50px;text-align:center}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;letter-spacing:-.01em;color:#e2f5ea;background:rgba(17,163,85,.16);border:1px solid rgba(61,220,132,.42);border-radius:100px;padding:7px 15px;margin-bottom:22px}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;letter-spacing:-.01em;color:#e2f5ea;background:rgba(17,163,85,.26);border:1px solid rgba(61,220,132,.45);border-radius:100px;padding:7px 15px;margin-bottom:22px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--green-on-dark);flex-shrink:0;animation:pulse 2.2s infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(61,220,132,.55)}70%{box-shadow:0 0 0 8px rgba(61,220,132,0)}100%{box-shadow:0 0 0 0 rgba(61,220,132,0)}}
-.hero h1{font-size:40px;line-height:1.28;letter-spacing:-.04em;font-weight:800;margin-bottom:14px}
+.hero h1{font-size:40px;line-height:1.28;letter-spacing:-.04em;font-weight:800;margin-bottom:14px;text-shadow:0 2px 18px rgba(0,0,0,.6),0 1px 3px rgba(0,0,0,.4)}
 .hero h1 b{font-weight:800;color:var(--green-on-dark)}
 
 /* 핵심 메시지: 사진 견적 */
 .hero-promise{
   display:flex;align-items:center;gap:13px;text-align:left;
   max-width:520px;margin:26px auto 0;
-  background:rgba(255,255,255,.1);
-  border:1px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.24);
   border-left:3px solid var(--green-on-dark);
   border-radius:12px;padding:13px 16px;
-  backdrop-filter:blur(4px);
+  backdrop-filter:blur(10px) saturate(1.2);
+  -webkit-backdrop-filter:blur(10px) saturate(1.2);
 }
 .hero-promise svg{width:32px;height:32px;flex-shrink:0}
 .hero-promise b{display:block;font-size:16px;font-weight:800;letter-spacing:-.04em;color:#fff;line-height:1.35}
@@ -123,7 +128,7 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 
 /* 서비스 3종 */
 .svc3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:660px;margin:34px auto 0}
-.svc3-item{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.17);border-radius:14px;padding:18px 8px 16px;display:flex;flex-direction:column;align-items:center;gap:11px;backdrop-filter:blur(4px);transition:background .18s,border-color .18s,transform .18s}
+.svc3-item{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.24);border-radius:14px;padding:18px 8px 16px;display:flex;flex-direction:column;align-items:center;gap:11px;backdrop-filter:blur(10px) saturate(1.2);-webkit-backdrop-filter:blur(10px) saturate(1.2);transition:background .18s,border-color .18s,transform .18s}
 .svc3-item:hover{background:rgba(17,163,85,.2);border-color:rgba(61,220,132,.55);transform:translateY(-3px)}
 .svc3-ico{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center}
 .svc3-ico svg{width:38px;height:38px}
@@ -146,8 +151,8 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 .hero-meta{display:flex;justify-content:center;margin:26px auto 0;border-top:1px solid rgba(255,255,255,.16);padding-top:22px;max-width:520px}
 .hero-meta div{flex:1;text-align:center;border-right:1px solid rgba(255,255,255,.13)}
 .hero-meta div:last-child{border-right:none}
-.hero-meta b{display:block;font-size:20px;font-weight:800;letter-spacing:-.035em;color:var(--green-on-dark);font-variant-numeric:tabular-nums}
-.hero-meta span{font-size:12px;color:#95a09a;font-weight:600}
+.hero-meta b{display:block;font-size:20px;font-weight:800;letter-spacing:-.035em;color:var(--green-on-dark);font-variant-numeric:tabular-nums;text-shadow:0 1px 10px rgba(0,0,0,.55)}
+.hero-meta span{font-size:12px;color:#c3ccc7;font-weight:600;text-shadow:0 1px 8px rgba(0,0,0,.6)}
 
 /* ================= SECTION ================= */
 .sec{padding:var(--rhythm) 0}
@@ -340,6 +345,10 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
   .mark{font-size:17px}
   .mark i{display:none}
   .hdr-tel{height:38px;padding:0 13px;font-size:14.5px}
+
+  /* 모바일은 텍스트가 화면을 더 많이 덮으므로 블러를 살짝만 올림 */
+  .hero-bg,.hero-video{filter:blur(8px) saturate(.92) brightness(.68)}
+  .hero h1{text-shadow:0 2px 14px rgba(0,0,0,.68),0 1px 3px rgba(0,0,0,.5)}
 
   /* 서두 요소들에 좌우 여유 추가 (18px 거터 + 10px 인셋 = 28px) */
   .hero-in{padding:28px 10px 32px}
