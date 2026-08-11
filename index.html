@@ -1,1401 +1,923 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>정리맨 - 유품정리/쓰레기집청소/특수청소/고독사청소 전문업체 | 서울 강서구·관악구·구로구·양천구 · 인천 · 경기 고양·부천·성남·수원 등</title>
-    <meta name="description" content="유품정리, 쓰레기집청소, 고독사청소, 특수청소 전문 정리맨입니다. 고인유품정리, 부모님유품정리, 원룸쓰레기처리, 빈집정리, 짐치우기까지 24시간 상담 가능. 서울 강서구·관악구·구로구·양천구, 인천, 경기 고양·과천·광명·군포·김포·부천·성남·수원·시흥·안산·안양·일산·파주 전 지역 출동.">
-    <meta name="robots" content="index, follow">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="정리맨 - 유품정리·쓰레기집청소·특수청소 전문업체">
-    <meta property="og:description" content="고독사청소, 유품정리, 쓰레기집청소, 원룸폐기물 처리까지. 서울·인천·경기 전 지역 출동 가능한 정리맨입니다.">
-    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-    <style>
-        /* --- 글로벌 디자인 변수 --- */
-        :root {
-            --toss-blue: #3182f6; --toss-blue-light: #e8f3ff; --toss-gray-100: #f2f4f6; --toss-gray-200: #e5e8eb;
-            --toss-gray-400: #b0b8c1; --toss-gray-600: #4e5968; --toss-gray-700: #333d4b; --toss-gray-800: #191f28; --toss-yellow-kakao: #fee500;
-            --primary-black: #111111; --active-green: #22c55e; --point-green: #22c55e; --bg-light: #f8fafc;
-            --border-light: #e2e8f0; --text-dark: #1e293b; --text-muted: #64748b; --orange-text: #ff6f00;
-            --orange-point: #ff6f00; --yellow-cta: #facc15; --section-padding: 80px 20px;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>정리맨 | 유품정리 · 쓰레기집 청소 · 특수청소 — 서울 · 인천 · 경기 24시간 상담</title>
+<meta name="description" content="유품정리, 쓰레기집청소, 고독사청소, 특수청소 전문 정리맨. 누적 2,000건. 전화 010-4535-9907 또는 카카오톡으로 24시간 상담. 서울 강서·관악·구로·양천, 인천, 경기 고양·부천·성남·수원·안산·김포 전 지역 출동.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#11a355">
+<meta property="og:type" content="website">
+<meta property="og:title" content="정리맨 | 유품정리 · 쓰레기집 청소 · 특수청소">
+<meta property="og:description" content="누적 2,000건. 24시간 상담 010-4535-9907. 서울·인천·경기 전 지역 출동.">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="preload" as="image" href="./hero.jpg">
+<link rel="preconnect" href="https://i.ytimg.com">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+:root{
+  --ink:#101413;
+  --ink-2:#343c39;
+  --muted:#78827e;
+  --line:#e2e6e3;
+  --line-soft:#eef1ef;
+  --paper:#ffffff;
+  --wash:#f3f7f4;
+  --wash-2:#e8efe9;
+  --dark:#0a0e0c;
+  --dark-2:#141a17;
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; -webkit-font-smoothing: antialiased; }
-        
-        body { background-color: var(--bg-light); background-image: radial-gradient(#e2e8f0 1px, transparent 1px); background-size: 20px 20px; color: var(--toss-gray-800); min-height: 100vh; }
-        
-        /* 전역 가독성 안전장치 */
-        h1, h2, h3, h4, h5, h6, p, span, strong, b {
-            word-break: keep-all;
-            overflow-wrap: break-word;
-        }
+  --green:#11a355;
+  --green-dark:#0c8543;
+  --green-soft:#e8f6ee;
+  --green-line:#bfe6cf;
+  --green-on-dark:#3ddc84;
+  --amber:#f5a623;
+  --kakao:#fee500;
 
-        /* 🚨 PC/모바일 분리 클래스 기본 세팅 */
-        .mo-only { display: none; }
-
-        /* --- 0. BRAND GNB --- */
-        .brand-gnb { position: sticky; top: 0; z-index: 1000; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); width: 100%; border-bottom: 1px solid var(--toss-gray-100); }
-        .gnb-inner { width: 100%; max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; height: 76px; padding: 0 20px; }
-        .brand-logo { font-size: 22px; font-weight: 900; color: var(--primary-black); text-decoration: none; letter-spacing: -0.5px; }
-        .brand-logo span { color: var(--point-green); }
-        .gnb-nav { display: flex; gap: 32px; list-style: none; }
-        .gnb-nav a { color: var(--toss-gray-800); text-decoration: none; font-size: 15px; font-weight: 800; transition: color 0.2s; cursor: pointer; }
-        .gnb-nav a:hover { color: var(--point-green); }
-        .gnb-action { padding: 10px 20px; background: var(--primary-black); color: #fff; border-radius: 10px; font-size: 14px; font-weight: 800; text-decoration: none; transition: 0.2s; }
-        .gnb-action:hover { background: #000; transform: translateY(-2px); }
-
-        /* --- 1. HERO --- */
-        .hero { width: 100%; padding: 100px 20px 80px 20px; text-align: center; background: #050505; color: #ffffff; position: relative; overflow: hidden; }
-        .hero-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-        .hero-content { position: relative; z-index: 2; }
-        
-        .hero-badges { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
-        .hero .badge { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); font-size: 14px; font-weight: 800; padding: 10px 20px; border-radius: 30px; letter-spacing: -0.5px; }
-        
-        .hero h1 { 
-            font-size: 50px; 
-            font-weight: 900; 
-            line-height: 1.3; 
-            margin-bottom: 20px; 
-            letter-spacing: -1.5px;
-            opacity: 0;
-            transform: translateY(-20px);
-            filter: blur(8px);
-            animation: titleFadeDrop 1.2s cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
-            animation-delay: 0.1s;
-        }
-        .hero h1 span.logo-main { color: #fff; }
-        .hero h1 span.logo-point { color: var(--point-green); text-shadow: 0 0 15px rgba(34, 197, 94, 0.3); }
-        .hero .hero-sub { font-size: 22px; font-weight: 500; color: #a1a1aa; display: block; margin-top: 12px; letter-spacing: -0.5px; }
-        
-        .hero p { 
-            font-size: 17px; 
-            color: #d4d4d8; 
-            line-height: 1.7; 
-            margin-bottom: 40px; 
-            max-width: 700px; 
-            margin-left: auto; 
-            margin-right: auto; 
-            opacity: 0;
-            transform: translateY(10px);
-            animation: elementFadeUp 0.8s ease-out forwards;
-            animation-delay: 0.6s;
-        }
-        
-        /* 투트랙 컨테이너 */
-        .two-track-container { 
-            display: flex; 
-            gap: 16px; 
-            justify-content: center; 
-            max-width: 800px; 
-            margin: 0 auto; 
-            opacity: 0;
-            transform: translateY(15px);
-            animation: elementFadeUp 0.8s ease-out forwards;
-            animation-delay: 0.8s;
-        }
-        
-        @keyframes titleFadeDrop { to { opacity: 1; transform: translateY(0); filter: blur(0); } }
-        @keyframes elementFadeUp { to { opacity: 1; transform: translateY(0); } }
-
-        /* 메인 타이틀 어르신 맞춤형 직통 전화 버튼 */
-        .hero-direct-call {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            background: rgba(34, 197, 94, 0.1);
-            border: 2px solid var(--point-green);
-            padding: 16px 36px;
-            border-radius: 50px;
-            text-decoration: none;
-            margin: 10px 0 40px 0;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(34, 197, 94, 0.15);
-            opacity: 0;
-            transform: translateY(-15px);
-            animation: titleFadeDrop 1.2s cubic-bezier(0.215, 0.610, 0.355, 1) forwards, pulseGlow 2.5s infinite;
-            animation-delay: 0.4s;
-        }
-
-        .hero-direct-call:hover {
-            background: var(--point-green);
-            transform: translateY(-4px);
-            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.4);
-        }
-        .hero-direct-call:hover .call-number { color: #ffffff; }
-        .hero-direct-call .call-icon { font-size: 28px; animation: phoneRing 2.5s infinite; }
-        .hero-direct-call .call-number { font-size: 32px; font-weight: 900; color: #ffffff; letter-spacing: 1.5px; transition: color 0.3s; }
-        .hero-direct-call .call-badge { font-size: 14px; font-weight: 800; color: #ffffff; background: #ef4444; padding: 6px 12px; border-radius: 20px; margin-left: 8px; letter-spacing: -0.5px; }
-
-        @keyframes phoneRing {
-            0%, 100% { transform: rotate(0); }
-            10%, 30%, 50% { transform: rotate(-15deg); }
-            20%, 40%, 60% { transform: rotate(15deg); }
-            70%, 80%, 90% { transform: rotate(0); }
-        }
-        
-        /* 투트랙 카드 기본 스타일 */
-        .track-card { 
-            flex: 1; 
-            padding: 32px 24px; 
-            border-radius: 24px; 
-            text-align: left; 
-            text-decoration: none; 
-            cursor: pointer; 
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
-            border: 2px solid transparent; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between; 
-        }
-        .track-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
-        
-        .track-badge { display: inline-block; padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 800; margin-bottom: 16px; width: fit-content; }
-        .track-title { font-size: 24px; font-weight: 900; line-height: 1.3; margin-bottom: 12px; display: block; letter-spacing: -0.5px; }
-        .track-desc { font-size: 15px; line-height: 1.5; font-weight: 500; margin-bottom: 24px; display: block; }
-        .track-action { padding: 16px; border-radius: 14px; font-size: 17px; font-weight: 800; text-align: center; transition: 0.2s; }
-
-        /* PC/모바일 통합 투트랙 개별 테마 컬러 */
-        .phone-track { background: rgba(39,39,42, 0.8); backdrop-filter: blur(10px); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
-        .phone-track:hover { border-color: #ef4444; }
-        .phone-track .track-badge { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
-        .phone-track .track-title { color: #fff; }
-        .phone-track .track-desc { color: #a1a1aa; }
-        .phone-track .track-action { background: #ef4444; color: #fff; }
-        .phone-track:hover .track-action { background: #dc2626; }
-
-        .bot-track { background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); color: var(--toss-gray-800); }
-        .bot-track:hover { border-color: var(--toss-blue); }
-        .bot-track .track-badge { background: var(--toss-blue-light); color: var(--toss-blue); }
-        .bot-track .track-title { color: var(--primary-black); }
-        .bot-track .track-desc { color: var(--toss-gray-600); }
-        .bot-track .track-action { background: var(--toss-blue); color: #fff; border: none; width: 100%; cursor: pointer; }
-        .bot-track:hover .track-action { background: #1b64da; }
-
-        /* --- 중간 컨테이너 (상단부) --- */
-        .middle-container { width: calc(100% - 40px); max-width: 1100px; margin: 40px auto; background: #ffffff; border-radius: 32px; box-shadow: 0 10px 50px rgba(0,0,0,0.04); display: flex; flex-direction: column; overflow: hidden; position: relative; z-index: 10; }
-        .brand-stats { width: 100%; display: flex; justify-content: space-around; align-items: center; padding: 40px 20px; border-bottom: 1px solid var(--toss-gray-100); }
-        .stat-item { text-align: center; }
-        .stat-num { font-size: 34px; font-weight: 900; color: var(--primary-black); margin-bottom: 6px; letter-spacing: -1px; }
-        .stat-num span { font-size: 18px; color: var(--point-green); }
-        .stat-desc { font-size: 15px; font-weight: 800; color: var(--toss-gray-600); }
-
-        .divider-wrapper { width: 100%; max-width: 600px; margin: 0 auto; text-align: center; padding: 60px 20px 40px 20px; position: relative; z-index: 10; }
-        .elegant-divider { border: none; height: 3px; background: linear-gradient(90deg, transparent, rgba(34, 197, 94, 0.4), rgba(34, 197, 94, 0.8), rgba(34, 197, 94, 0.4), transparent); width: 100%; margin: 0 auto; }
-        .divider-text { position: absolute; top: 50%; left: 50%; background: #ffffff; padding: 10px 28px; color: var(--point-green); font-weight: 900; font-size: 17px; letter-spacing: -0.5px; border-radius: 30px; border: 2px solid var(--point-green); white-space: nowrap; transform: translate(-50%, -50%); animation: floatBadge 2.5s ease-in-out infinite; }
-
-        @keyframes floatBadge { 0%, 100% { transform: translate(-50%, -50%) translateY(0); } 50% { transform: translate(-50%, -50%) translateY(-6px); } }
-
-        /* 🤍 FULL-WIDTH WHITE 계산기 섹션 */
-        .calc-section-full { 
-            width: 100%; 
-            padding: 100px 20px; 
-            background: var(--bg-light); 
-            position: relative; 
-            overflow: hidden; 
-            border-top: 1px solid var(--border-light); 
-            border-bottom: 1px solid var(--border-light); 
-        }
-        
-        .calc-wrapper { 
-            width: 100%; 
-            max-width: 900px; 
-            margin: 0 auto; 
-            position: relative; 
-            z-index: 2; 
-            border: 1px solid #ffffff; 
-            border-radius: 36px; 
-            padding: 60px 40px; 
-            background: #ffffff; 
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08); 
-        } 
-        
-        .calc-header { margin-bottom: 40px; text-align: center; }
-        .calc-header .sub-title { font-size: 15px; color: var(--toss-blue); font-weight: 900; margin-bottom: 12px; display: inline-block; letter-spacing: 0.5px; padding: 6px 16px; border: none; background: var(--toss-blue-light); border-radius: 20px;}
-        .calc-header .main-title { font-size: 34px; font-weight: 900; letter-spacing: -1px; margin-bottom: 16px; color: var(--primary-black); }
-        .calc-header .desc { font-size: 16px; color: var(--toss-gray-600); line-height: 1.6; }
-        
-        .tabs-container { display: flex; gap: 10px; margin-bottom: 30px; justify-content: center; }
-        .tab-btn { flex: 1; max-width: 250px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 16px 10px; border: none; border-radius: 16px; background: var(--toss-gray-100); font-size: 16px; font-weight: 800; color: var(--toss-gray-600); cursor: pointer; transition: all 0.2s ease; }
-        .tab-btn.active { background: var(--primary-black); color: #ffffff; font-weight: 900; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
-        
-        .calc-card { border: 1px solid var(--toss-gray-200); border-radius: 24px; padding: 40px; background: #ffffff; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
-        .step-section { margin-bottom: 40px; }
-        .step-section:last-child { margin-bottom: 0; }
-        .step-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .step-title { font-size: 18px; font-weight: 900; color: var(--primary-black); }
-        .current-badge { background: var(--toss-blue-light); border: none; color: var(--toss-blue); font-size: 15px; font-weight: 900; padding: 6px 14px; border-radius: 8px; }
-        
-        .slider-wrapper { position: relative; padding: 12px 13px 30px 13px; margin-bottom: 10px; }
-        .range-slider { -webkit-appearance: none; width: 100%; height: 8px; background: var(--toss-gray-200); border-radius: 5px; outline: none; margin: 0; }
-        .range-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 28px; height: 28px; border-radius: 50%; background: #ffffff; border: 5px solid var(--toss-blue); cursor: pointer; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); transition: transform 0.1s; }
-        .range-slider::-webkit-slider-thumb:hover { transform: scale(1.15); }
-        .slider-ticks { display: flex; justify-content: space-between; position: absolute; width: calc(100% - 28px); left: 14px; margin-top: 14px; }
-        .tick-label { font-size: 13px; color: var(--toss-gray-600); font-weight: 700; cursor: pointer; width: 0; display: flex; justify-content: center; white-space: nowrap; }
-        .tick-label.active { color: var(--toss-blue); font-weight: 900; font-size: 14px; }
-        
-        .chip-grid { display: flex; flex-wrap: wrap; gap: 12px; }
-        .chip-btn { flex: 1; min-width: 140px; text-align: center; padding: 16px 12px; border: 1px solid transparent; border-radius: 14px; background: var(--toss-gray-100); font-size: 15px; font-weight: 800; color: var(--toss-gray-700); cursor: pointer; transition: all 0.2s ease; }
-        .chip-btn:hover { background: var(--toss-gray-200); }
-        .chip-btn.active { background: var(--toss-blue); color: #ffffff; }
-        .chip-btn.multi-active { border-color: var(--toss-blue); background: var(--toss-blue-light); color: var(--toss-blue); font-weight: 900; }
-        
-        .bottom-result-panel { position: relative; width: 100%; background: var(--toss-gray-100); padding: 40px; border-radius: 24px; margin-top: 30px; text-align: center; border: none; }
-        .result-inner .price-title { font-size: 16px; color: var(--toss-gray-600); letter-spacing: 0.5px; margin-bottom: 8px; display: block; font-weight: 800;}
-        .result-inner .price-range-output { font-size: 44px; font-weight: 900; color: #0F52BA; margin: 10px 0 16px 0; letter-spacing: -1px; }
-        .result-inner .criteria-text { font-size: 15px; color: var(--toss-gray-600); margin-bottom: 30px; line-height: 1.6; font-weight: 700;}
-        
-        .bottom-actions { display: flex; gap: 16px; }
-        .action-btn { flex: 1; padding: 20px; border-radius: 16px; font-size: 18px; font-weight: 900; text-align: center; border: none; cursor: pointer; text-decoration: none; transition: all 0.2s; }
-        .btn-yellow { background: var(--toss-yellow-kakao); color: #000; }
-        .btn-yellow:hover { background: #eab308; transform: translateY(-2px); }
-        .btn-dark-gray { background: var(--primary-black); color: #ffffff; }
-        .btn-dark-gray:hover { background: #000000; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-
-        .common-section { width: 100%; padding: var(--section-padding); border-top: 1px solid var(--toss-gray-100); overflow: hidden; }
-        .common-header { margin-bottom: 40px; text-align: center; max-width: 800px; margin-left: auto; margin-right: auto;}
-        .common-sub { font-size: 14px; color: var(--toss-blue); font-weight: 900; margin-bottom: 10px; display: block; letter-spacing: 1px; text-transform: uppercase;}
-        .common-title { font-size: 32px; font-weight: 900; color: var(--primary-black); letter-spacing: -1px; line-height: 1.3;}
-
-        /* --- SEO 서비스 안내 섹션 --- */
-        .guide-group { max-width: 900px; margin: 0 auto 40px auto; }
-        .guide-group:last-child { margin-bottom: 0; }
-        .guide-group-title { font-size: 19px; font-weight: 900; color: var(--primary-black); margin-bottom: 16px; letter-spacing: -0.5px; }
-        .guide-item-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-        .guide-item { background: var(--toss-gray-100); border-radius: 16px; padding: 20px 22px; }
-        .guide-item strong { display: block; font-size: 15px; font-weight: 900; color: var(--toss-blue); margin-bottom: 8px; letter-spacing: -0.3px; }
-        .guide-item p { font-size: 14px; line-height: 1.6; color: var(--toss-gray-600); font-weight: 500; }
-        .guide-item p b { color: var(--toss-gray-800); font-weight: 800; }
-
-        /* --- 서비스 지역 섹션 --- */
-        .area-lead { max-width: 780px; margin: 0 auto 28px auto; text-align: center; font-size: 15px; line-height: 1.8; color: var(--toss-gray-600); font-weight: 500; }
-        .area-lead b { color: var(--primary-black); font-weight: 900; }
-        .area-badge-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 800px; margin: 0 auto; }
-        .area-badge { padding: 10px 18px; border-radius: 30px; background: var(--toss-blue-light); color: var(--toss-blue); font-size: 14px; font-weight: 800; }
-
-        @media (max-width: 600px) {
-            .guide-item-grid { grid-template-columns: 1fr; }
-            .guide-group-title { font-size: 17px; }
-        }
-
-        /* --- 롱테일 파생 키워드 아코디언 (기본 접힘, 화면 압박 없이 필요시에만 펼쳐서 확인) --- */
-        .longtail-wrap { max-width: 820px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
-        .longtail-item { border: 1px solid var(--toss-gray-100); border-radius: 12px; padding: 14px 18px; background: #fff; }
-        .longtail-item summary { cursor: pointer; font-size: 14px; font-weight: 700; color: var(--toss-gray-600); list-style: none; }
-        .longtail-item summary::-webkit-details-marker { display: none; }
-        .longtail-item summary::after { content: '＋'; float: right; color: var(--toss-gray-400); font-weight: 400; }
-        .longtail-item[open] summary::after { content: '－'; }
-        .longtail-item p { margin-top: 10px; font-size: 12px; line-height: 1.9; color: var(--toss-gray-400); font-weight: 400; border-top: 1px solid var(--toss-gray-100); padding-top: 10px; }
-        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1000px; margin: 0 auto; padding: 0 20px; }
-        .service-card { background: #ffffff; border-radius: 24px; padding: 30px; border: 1px solid var(--border-light); transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
-        .service-card:hover { transform: translateY(-8px); box-shadow: 0 16px 30px rgba(0,0,0,0.06); border-color: var(--toss-blue); }
-        .service-icon { font-size: 38px; margin-bottom: 20px; display: block; }
-        .service-title-text { font-size: 22px; font-weight: 900; margin-bottom: 12px; color: var(--primary-black); letter-spacing: -0.5px; }
-        .service-desc-text { font-size: 15px; color: var(--toss-gray-600); line-height: 1.6; font-weight: 500; }
-
-        .slide-wrapper { width: 100%; margin: 0 auto; position: relative; }
-        .slide-container { display: flex; gap: 20px; overflow-x: auto; padding: 10px 20px 30px 20px; scroll-snap-type: x mandatory; scrollbar-width: none; cursor: grab; }
-        .slide-container:active { cursor: grabbing; }
-        .slide-container::-webkit-scrollbar { display: none; }
-        .slide-item { width: calc(33.333% - 14px); scroll-snap-align: start; flex-shrink: 0; user-select: none; }
-        .card-box { background: #fff; border: 1px solid var(--border-light); border-radius: 24px; overflow: hidden; transition: all 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.02); height: 100%; display: flex; flex-direction: column;}
-        .card-box:hover { transform: translateY(-8px); box-shadow: 0 16px 30px rgba(0,0,0,0.08); border-color: var(--toss-blue); }
-        .case-img { width: 100%; aspect-ratio: 16 / 11; background-color: var(--toss-gray-200); flex-shrink: 0; border-bottom: 1px solid var(--toss-gray-100); pointer-events: none;}
-        .case-info { padding: 24px; flex-grow: 1;}
-        .case-tag { display: inline-block; padding: 6px 12px; background: var(--toss-blue-light); color: var(--toss-blue); font-size: 13px; font-weight: 800; border-radius: 8px; margin-bottom: 14px;}
-        .case-title { font-size: 19px; font-weight: 800; color: var(--primary-black); margin-bottom: 12px; line-height: 1.4; letter-spacing: -0.5px;}
-        .case-desc, .review-body { font-size: 15px; color: var(--toss-gray-600); line-height: 1.6; font-weight: 500; white-space: pre-wrap; }
-        .review-box { padding: 30px; justify-content: flex-start; }
-        .review-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--toss-gray-100); }
-        .reviewer-info { display: flex; flex-direction: column; }
-        .reviewer-name { font-size: 17px; font-weight: 900; color: var(--primary-black); }
-        .review-date { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
-        .review-stars { color: var(--yellow-cta); font-size: 20px; letter-spacing: 1px; }
-
-        .brand-footer { width: 100%; background: #111111; color: #a1a1aa; padding: 60px 20px; }
-        .footer-inner { width: 100%; max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
-        .footer-logo { font-size: 24px; font-weight: 900; color: #ffffff; letter-spacing: -0.5px; }
-        .footer-logo span { color: var(--point-green); }
-        .footer-info { font-size: 14px; line-height: 1.8; color: #71717a; }
-        .footer-info span { display: inline-block; margin-right: 16px; }
-        .footer-cs { font-size: 20px; font-weight: 900; color: #ffffff; margin: 8px 0; }
-        .footer-copyright { font-size: 13px; color: #52525b; margin-top: 16px; border-top: 1px solid #27272a; padding-top: 16px; }
-
-        .floating-kakao-btn { position: fixed; bottom: 30px; right: 30px; width: 64px; height: 64px; background-color: var(--toss-yellow-kakao); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); text-decoration: none; z-index: 1900; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); animation: floatUpDown 3s ease-in-out infinite; }
-        .floating-kakao-btn:hover { transform: scale(1.1) translateY(-5px); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3); }
-        .floating-kakao-btn svg { width: 32px; height: 32px; fill: #3c1e1e; }
-        @keyframes floatUpDown { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; justify-content: center; align-items: center; z-index: 2000; padding: 20px; opacity: 0; visibility: hidden; transition: all 0.4s ease; }
-        .modal-overlay.active { opacity: 1; visibility: visible; }
-        .bot-container { width: 100%; max-width: 480px; background: #ffffff; border-radius: 32px; padding: 40px 30px; position: relative; min-height: 620px; display: flex; flex-direction: column; transform: translateY(40px) scale(0.95); opacity: 0; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-        .modal-overlay.active .bot-container { transform: translateY(0) scale(1); opacity: 1; }
-        .close-modal-btn { position: absolute; top: 24px; right: 24px; background: var(--toss-gray-100); border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 20px; cursor: pointer; color: var(--toss-gray-600); transition: all 0.2s ease; z-index: 10; }
-        .close-modal-btn:hover { background: var(--toss-gray-200); transform: rotate(90deg); }
-        .progress-bar-container { width: 100%; height: 6px; background: var(--toss-gray-100); border-radius: 3px; margin-bottom: 30px; }
-        .progress-bar { height: 100%; width: 9%; background: var(--toss-blue); border-radius: 3px; transition: width 0.3s ease; }
-        .question-box { flex-grow: 1; display: flex; flex-direction: column; }
-        .animate-fade-slide { animation: smoothSlideUp 0.4s ease forwards; }
-        @keyframes smoothSlideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        .question-title { font-size: 22px; font-weight: 900; line-height: 1.4; margin-bottom: 10px; color: var(--toss-gray-800); letter-spacing: -0.5px;}
-        .question-desc { font-size: 15px; color: var(--toss-gray-600); margin-bottom: 28px; line-height: 1.5; font-weight: 500;}
-        .input-group { width: 100%; display: flex; flex-direction: column; gap: 10px; max-height: 380px; overflow-y: auto; padding-right: 6px;}
-        .input-group::-webkit-scrollbar { width: 6px; }
-        .input-group::-webkit-scrollbar-thumb { background: var(--toss-gray-200); border-radius: 3px; }
-        .text-input { width: 100%; padding: 16px 0; border: none; border-bottom: 2px solid var(--toss-gray-200); font-size: 20px; font-weight: 700; outline: none; color: var(--toss-gray-800); transition: 0.2s; }
-        .text-input:focus { border-bottom-color: var(--toss-blue); }
-        .bot-chip-grid { display: flex; flex-direction: column; gap: 10px; width: 100%; }
-        .bot-chip-option { width: 100%; padding: 18px 20px; text-align: left; background: var(--toss-gray-100); border: none; border-radius: 16px; font-size: 16px; font-weight: 700; color: var(--toss-gray-700); cursor: pointer; transition: all 0.2s; }
-        .bot-chip-option:active { transform: scale(0.98); }
-        .bot-chip-option.active { background: var(--toss-blue-light); color: var(--toss-blue); font-weight: 900; }
-        .date-input { width: 100%; padding: 18px; border: none; background: var(--toss-gray-100); border-radius: 16px; font-size: 16px; font-weight: 700; outline: none; cursor: pointer; }
-        .file-label { display: block; width: 100%; padding: 24px; text-align: center; border: none; border-radius: 16px; cursor: pointer; background: rgba(49,130,246,0.1); font-weight: 800; font-size: 15px; color: var(--toss-blue); transition: 0.2s; }
-        .file-label:hover { background: rgba(49,130,246,0.15); }
-        .thumbnail-container { margin-top: 14px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-        .thumbnail-wrapper { width: 100%; aspect-ratio: 1/1; border-radius: 12px; overflow: hidden; background: var(--toss-gray-100); }
-        .thumbnail-img { width: 100%; height: 100%; object-fit: cover; }
-        .nav-actions { display: flex; gap: 12px; margin-top: 30px; }
-        .btn { padding: 18px; border-radius: 16px; font-size: 18px; font-weight: 900; border: none; cursor: pointer; transition: 0.2s; }
-        .btn-prev { background: var(--toss-gray-100); color: var(--toss-gray-600); width: 90px; }
-        .btn-prev:hover:not(:disabled) { background: var(--toss-gray-200); }
-        .btn-next { background: var(--toss-blue); color: #ffffff; flex-grow: 1; }
-        .btn-next:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(49,130,246,0.2); }
-        .btn-next:disabled { background: var(--toss-gray-200); color: #b0b8c1; cursor: not-allowed; }
-
-        /* --- 📱 극강의 어플(App) 감성 모바일 레이아웃 --- */
-        @media (max-width: 900px) {
-            .services-grid { grid-template-columns: 1fr; padding: 0 20px; gap: 20px; }
-            .gnb-nav { display: none; }
-            .middle-container { width: 100%; max-width: 100%; margin: 0; border-radius: 0; box-shadow: none; }
-            .slide-item { width: calc(50% - 10px); } 
-            .two-track-container { flex-direction: column; gap: 16px; }
-        }
-
-        @media (max-width: 600px) {
-            :root { --section-padding: 45px 16px; }
-            
-            /* 🚨 여기서 PC요소 숨기고 모바일요소 켬 */
-            .pc-only { display: none !important; }
-            div.mo-only { display: flex !important; } 
-            strong.mo-only { display: block !important; }
-            
-            /* 비밀보장 배지 모바일에서만 쏙 숨기기 */
-            .mo-hide { display: none !important; }
-
-            .middle-container:has(.brand-stats) { display: none !important; } 
-
-            .hero { padding: 50px 16px 35px 16px; }
-            .hero h1 { font-size: 25px; margin-bottom: 12px; letter-spacing: -0.5px; line-height: 1.35; }
-            .hero .hero-sub { font-size: 15px; margin-top: 6px; }
-            .hero p { font-size: 14px; margin-bottom: 24px; line-height: 1.5; color: #cbd5e1; }
-            
-            .two-track-container { 
-                display: flex !important; 
-                flex-direction: column !important; 
-                gap: 12px !important; 
-                width: 100%;
-                max-width: 360px;
-                margin: 0 auto;
-                transform: none !important;
-                opacity: 1 !important;
-                animation: none !important;
-            }
-
-/* 📱 모바일용 커다란 전화 버튼 스타일 */
-.hero-direct-call {
-    display: inline-flex !important;
-    width: 100%;
-    max-width: 340px;
-    padding: 14px 20px;
-    margin: 15px auto 25px auto;
+  --max:1180px;
+  --gutter:28px;
+  --rhythm:92px;
 }
-.hero-direct-call .call-number { font-size: 28px !important; letter-spacing: 0.5px; }
-.hero-direct-call .call-icon { font-size: 24px; }
-.hero-direct-call .call-badge { font-size: 12px; padding: 4px 8px; margin-left: 4px; }
 
-            /* 📱 네이티브 어플리케이션(App) UI 감성의 미니멀 카드 컴포넌트 */
-            .track-card {
-                flex: unset;
-                width: 100%;
-                padding: 16px 20px;
-                border-radius: 18px;
-                flex-direction: row; 
-                align-items: center;
-                justify-content: space-between;
-                border: none !important;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important;
-                transition: transform 0.2s, box-shadow 0.2s;
-            }
-            .track-card:active { transform: scale(0.97); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important; }
-            
-            .phone-track { background: #ef4444 !important; color: #ffffff !important; }
-            .bot-track { background: var(--toss-blue) !important; color: #ffffff !important; }
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Segoe UI","Malgun Gothic",Roboto,sans-serif;
+  color:var(--ink);background:var(--paper);
+  -webkit-font-smoothing:antialiased;font-feature-settings:"tnum";line-height:1.6;
+}
+h1,h2,h3,h4,p,li,span,strong{word-break:keep-all;overflow-wrap:break-word}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.wrap{width:100%;max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
 
-            .track-title {
-                font-size: 16px !important;
-                font-weight: 800 !important;
-                margin-bottom: 0 !important;
-                line-height: 1.4 !important;
-                text-align: left;
-            }
-            .track-title::after {
-                display: block;
-                font-size: 12px;
-                font-weight: 500;
-                opacity: 0.85;
-                margin-top: 2px;
-            }
-            .phone-track .track-title { color: #ffffff !important; }
-            .phone-track .track-title::after { content: "대표 직접 연결 · 즉시 상황 조율"; color: #ffffff !important; opacity: 0.85; }
-            
-            .bot-track .track-title { color: #ffffff !important; }
-            .bot-track .track-title::after { content: "통화 없이 사진으로 예상 비용 조회"; color: #ffffff !important; opacity: 0.85; }
+/* ================= HEADER ================= */
+.hdr{position:sticky;top:0;z-index:900;background:rgba(255,255,255,.95);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--line)}
+.hdr-in{display:flex;align-items:center;justify-content:space-between;height:62px;gap:20px}
+.mark{font-size:18px;font-weight:800;letter-spacing:-.03em}
+.mark em{font-style:normal;color:var(--green)}
+.mark i{font-style:normal;color:var(--muted);font-weight:500;margin-left:9px;font-size:12.5px;letter-spacing:-.01em}
+.nav{display:flex;gap:24px}
+.nav a{font-size:13.5px;font-weight:600;color:var(--ink-2);transition:color .15s}
+.nav a:hover{color:var(--green)}
+.hdr-tel{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;background:var(--green);color:#fff;border-radius:6px;font-size:15px;font-weight:800;letter-spacing:-.01em;font-variant-numeric:tabular-nums;box-shadow:0 2px 10px rgba(17,163,85,.28);transition:background .15s}
+.hdr-tel:hover{background:var(--green-dark)}
+.hdr-tel svg{width:15px;height:15px}
 
-            /* 우측 원형 버튼 형태 고정 및 stretch 버그 차단 */
-            .mo-action-circle {
-                padding: 0 !important;
-                width: 36px !important;
-                height: 36px !important;
-                flex-shrink: 0 !important;
-                border-radius: 50% !important;
-                background: rgba(255, 255, 255, 0.2) !important;
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-                border: none !important;
-                position: relative;
-            }
-            
-            .phone-track .mo-action-circle::before { content: "📞"; font-size: 14px; }
-            
-            /* 간편견적카드 우측: PC 스타일 별빛 SVG 삽입 */
-            .bot-track .mo-action-circle::before {
-                content: "";
-                display: block;
-                width: 18px;
-                height: 18px;
-                background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M12 2l2.4 7.2 7.2 2.4-7.2 2.4-2.4 7.2-2.4-7.2-7.2-2.4 7.2-2.4z'/%3E%3C/svg%3E") no-repeat center center;
-                background-size: contain;
-            }
+/* ================= HERO ================= */
+/* 배경은 둘 중 하나만 사용: ./hero.jpg 가 있으면 블러 사진, 없으면 그린 그라데이션 */
+.hero{position:relative;overflow:hidden;background:var(--dark);color:#fff;isolation:isolate}
+.hero-bg{
+  position:absolute;inset:-44px;
+  background-image:url('./hero.jpg');
+  background-size:cover;background-position:center;
+  filter:blur(16px) saturate(.8) brightness(.82);
+  transform:scale(1.14);
+  opacity:0;transition:opacity .45s ease;z-index:-2;
+}
+.hero.has-photo .hero-bg{opacity:.66}
+/* 기본(사진 없음) — 그린 그라데이션 */
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;
+  background:
+    radial-gradient(120% 72% at 50% 0%,rgba(17,163,85,.24) 0%,rgba(17,163,85,0) 62%),
+    linear-gradient(180deg,rgba(7,13,10,.62) 0%,rgba(7,13,10,.72) 50%,rgba(7,13,10,.95) 100%)}
+/* 사진 있음 — 그라데이션 제거, 가독성용 어두운 오버레이만 */
+.hero.has-photo::before{
+  background:linear-gradient(180deg,rgba(6,10,8,.76) 0%,rgba(6,10,8,.68) 42%,rgba(6,10,8,.94) 100%)}
 
-            .calc-section-full { padding: 30px 12px; }
-            .calc-wrapper { padding: 20px 12px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); }
-            .calc-header { margin-bottom: 24px; }
-            .calc-header .sub-title { font-size: 13px; padding: 4px 12px; margin-bottom: 8px; }
-            .calc-header .main-title { font-size: 20px; margin-bottom: 8px; }
-            .calc-header .desc { font-size: 13.5px; line-height: 1.4; }
-            .calc-card { padding: 16px 10px; border-radius: 12px; }
-            
-            .step-section { margin-bottom: 24px; }
-            .step-header { margin-bottom: 12px; }
-            .step-title { font-size: 15px; }
-            .current-badge { font-size: 13px; padding: 4px 10px; }
-            .slider-wrapper { padding: 10px 10px 24px 10px; }
-            .tick-label { font-size: 11px; }
-            .tick-label.active { font-size: 12px; }
-            
-            .tab-btn { font-size: 13px; padding: 10px 2px; border-radius: 10px; }
-            .chip-grid { gap: 6px; }
-            .chip-btn { width: calc(50% - 3px); padding: 10px 4px; font-size: 12.5px; border-radius: 8px; }
-            
-            .bottom-result-panel { padding: 16px 12px; border-radius: 12px; margin-top: 20px; }
-            .result-inner .price-title { font-size: 14px; margin-bottom: 4px; }
-            .result-inner .price-range-output { font-size: 28px; margin: 4px 0 8px 0; }
-            .result-inner .criteria-text { font-size: 12.5px; margin-bottom: 16px; }
-            .bottom-actions { gap: 6px; }
-            .bottom-actions .action-btn { padding: 14px; font-size: 15px; border-radius: 10px; }
+.hero-in{padding:54px 0 50px;text-align:center}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;letter-spacing:-.01em;color:#e2f5ea;background:rgba(17,163,85,.16);border:1px solid rgba(61,220,132,.42);border-radius:100px;padding:7px 15px;margin-bottom:22px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green-on-dark);flex-shrink:0;animation:pulse 2.2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(61,220,132,.55)}70%{box-shadow:0 0 0 8px rgba(61,220,132,0)}100%{box-shadow:0 0 0 0 rgba(61,220,132,0)}}
+.hero h1{font-size:40px;line-height:1.28;letter-spacing:-.04em;font-weight:800;margin-bottom:14px}
+.hero h1 b{font-weight:800;color:var(--green-on-dark)}
+.hero-sub{font-size:16.5px;color:#c2ccc7;letter-spacing:-.02em;max-width:44ch;margin:0 auto}
 
-            .divider-wrapper { padding: 30px 16px 15px 16px; }
-            .divider-text { font-size: 13px; padding: 6px 14px; }
-            
-            .common-title { font-size: 24px; }
-            .common-header { margin-bottom: 24px; }
-            
-            .slide-container { padding: 10px 12px; gap: 12px; }
-            .slide-item { width: 90%; } 
-            .case-info, .review-box { padding: 16px; }
-            .case-title { font-size: 16px; margin-bottom: 8px; }
-            .case-desc, .review-body { font-size: 13px; line-height: 1.45; }
-            .service-card { padding: 16px; border-radius: 14px; }
-            .service-title-text { font-size: 18px; }
-            .service-desc-text { font-size: 13px; }
+/* 서비스 3종 */
+.svc3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:660px;margin:34px auto 0}
+.svc3-item{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.17);border-radius:14px;padding:18px 8px 16px;display:flex;flex-direction:column;align-items:center;gap:11px;backdrop-filter:blur(4px);transition:background .18s,border-color .18s,transform .18s}
+.svc3-item:hover{background:rgba(17,163,85,.2);border-color:rgba(61,220,132,.55);transform:translateY(-3px)}
+.svc3-ico{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center}
+.svc3-ico svg{width:38px;height:38px}
+.svc3-item span{font-size:15.5px;font-weight:800;letter-spacing:-.04em;color:#fff}
 
-            .bot-container { padding: 20px 14px; }
-            .question-title { font-size: 19px; }
-            .question-desc { font-size: 13.5px; margin-bottom: 16px; }
-            .bot-chip-option { padding: 14px; font-size: 14.5px; border-radius: 10px; }
-        }
-    </style>
+/* HERO CTA */
+.hero-cta{max-width:520px;margin:28px auto 0;display:flex;flex-direction:column;gap:10px}
+.cta-call{display:flex;align-items:center;justify-content:center;gap:14px;background:var(--green);color:#fff;border-radius:12px;padding:15px 20px;box-shadow:0 12px 32px rgba(17,163,85,.42);transition:transform .16s,background .16s}
+.cta-call:hover{background:var(--green-dark)}
+.cta-call:active{transform:scale(.985)}
+.cta-call svg{width:26px;height:26px;stroke:#fff;fill:none;stroke-width:1.7;flex-shrink:0}
+.cta-call .cc-t{text-align:left}
+.cta-call .cc-k{display:block;font-size:12.5px;font-weight:700;color:rgba(255,255,255,.86);letter-spacing:-.01em;margin-bottom:2px}
+.cta-call .cc-v{display:block;font-size:29px;font-weight:800;letter-spacing:-.035em;font-variant-numeric:tabular-nums;line-height:1.05}
+.cta-kko{display:flex;align-items:center;justify-content:center;gap:9px;background:var(--kakao);color:#191600;border-radius:12px;height:56px;font-size:17px;font-weight:800;letter-spacing:-.03em;transition:transform .16s,filter .16s}
+.cta-kko:hover{filter:brightness(.96)}
+.cta-kko:active{transform:scale(.985)}
+.cta-kko svg{width:20px;height:20px;fill:#191600}
+.hero-note{margin-top:14px;font-size:13px;color:#a4b0aa;letter-spacing:-.02em}
+
+.hero-meta{display:flex;justify-content:center;margin:32px auto 0;border-top:1px solid rgba(255,255,255,.16);padding-top:22px;max-width:520px}
+.hero-meta div{flex:1;text-align:center;border-right:1px solid rgba(255,255,255,.13)}
+.hero-meta div:last-child{border-right:none}
+.hero-meta b{display:block;font-size:20px;font-weight:800;letter-spacing:-.035em;color:var(--green-on-dark);font-variant-numeric:tabular-nums}
+.hero-meta span{font-size:12px;color:#95a09a;font-weight:600}
+
+/* ================= SECTION ================= */
+.sec{padding:var(--rhythm) 0}
+.sec--wash{background:var(--wash);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.sec--dark{background:var(--dark);color:#fff}
+.sec-hd{margin-bottom:34px}
+.sec-num{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:800;letter-spacing:.12em;color:var(--green);margin-bottom:12px}
+.sec-num::before{content:"";width:18px;height:2px;background:var(--green);border-radius:2px}
+.sec-hd h2{font-size:30px;font-weight:800;letter-spacing:-.04em;line-height:1.25}
+.sec-hd p{font-size:14.5px;color:var(--muted);margin-top:10px;max-width:52ch}
+.sec--dark .sec-hd h2{color:#fff}
+.sec--dark .sec-hd p{color:#8d9993}
+.sec--dark .sec-num{color:var(--green-on-dark)}
+.sec--dark .sec-num::before{background:var(--green-on-dark)}
+
+/* ================= WORK ================= */
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:30px 24px}
+.tile{display:block}
+.tile-fig{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--wash);border:1px solid var(--line-soft);border-radius:10px}
+.tile-fig img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.2,.7,.3,1)}
+.tile:hover .tile-fig img{transform:scale(1.05)}
+.ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#a9b5ae;font-size:12.5px;font-weight:600}
+.tile-cat{display:inline-block;margin-top:14px;font-size:11.5px;font-weight:800;letter-spacing:-.01em;color:var(--green-dark);background:var(--green-soft);border:1px solid var(--green-line);padding:4px 10px;border-radius:100px}
+.tile-ttl{margin-top:10px;font-size:17px;font-weight:700;letter-spacing:-.03em;line-height:1.45}
+.tile-txt{margin-top:7px;font-size:13.5px;color:var(--muted);line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* ================= FILM ================= */
+.grid-film{display:grid;grid-template-columns:repeat(3,1fr);gap:28px 22px}
+.vid{position:relative;aspect-ratio:16/9;background:#000;overflow:hidden;cursor:pointer;border:1px solid #1c231e;border-radius:10px}
+.vid img{width:100%;height:100%;object-fit:cover;opacity:.76;transition:opacity .3s,transform .5s}
+.vid:hover img{opacity:1;transform:scale(1.04)}
+.vid-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:56px;height:56px;border-radius:50%;background:rgba(17,163,85,.9);display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.vid:hover .vid-play{background:var(--green);transform:translate(-50%,-50%) scale(1.08)}
+.vid-play::after{content:"";border-style:solid;border-width:7px 0 7px 12px;border-color:transparent transparent transparent #fff;margin-left:3px}
+.vid iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+.vid-ttl{margin-top:13px;font-size:15px;font-weight:600;letter-spacing:-.025em;color:#e2e9e5;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* ================= CTA BAND ================= */
+.band{background:var(--dark-2);color:#fff;padding:50px 0;border-top:3px solid var(--green)}
+.band-in{display:flex;align-items:center;justify-content:space-between;gap:40px}
+.band h3{font-size:23px;font-weight:800;letter-spacing:-.04em;line-height:1.35}
+.band h3 em{font-style:normal;color:var(--green-on-dark)}
+.band p{font-size:14px;color:#98a49e;margin-top:8px}
+.band-act{display:flex;gap:10px;flex-shrink:0}
+.b-call{display:flex;flex-direction:column;justify-content:center;background:var(--green);color:#fff;border-radius:10px;padding:12px 26px;transition:background .15s}
+.b-call:hover{background:var(--green-dark)}
+.b-call small{font-size:11.5px;font-weight:700;color:rgba(255,255,255,.85)}
+.b-call b{font-size:23px;font-weight:800;letter-spacing:-.035em;font-variant-numeric:tabular-nums}
+.b-kko{display:flex;align-items:center;gap:8px;background:var(--kakao);color:#191600;border-radius:10px;padding:0 26px;font-size:15.5px;font-weight:800;letter-spacing:-.03em}
+.b-kko svg{width:18px;height:18px;fill:#191600}
+
+/* ================= SERVICE ================= */
+.svc{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.svc-item{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:30px 26px;transition:border-color .2s,box-shadow .2s,transform .2s}
+.svc-item:hover{border-color:var(--green-line);box-shadow:0 12px 30px rgba(17,163,85,.10);transform:translateY(-3px)}
+.svc-ico{width:60px;height:60px;border-radius:16px;background:var(--green-soft);border:1px solid var(--green-line);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.svc-ico svg{width:38px;height:38px}
+.svc-item h3{font-size:20px;font-weight:800;letter-spacing:-.035em;margin-bottom:11px}
+.svc-item p{font-size:14px;color:var(--ink-2);line-height:1.75}
+.svc-kw{margin-top:16px;padding-top:14px;border-top:1px solid var(--line-soft);font-size:12.5px;color:var(--muted);line-height:1.85}
+
+/* ================= PROCESS ================= */
+.proc{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.proc-item{border-top:3px solid var(--green);padding-top:18px}
+.proc-n{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--green-soft);color:var(--green-dark);font-size:12px;font-weight:800}
+.proc-item h3{font-size:17px;font-weight:800;letter-spacing:-.03em;margin:11px 0 8px}
+.proc-item p{font-size:13.5px;color:var(--muted);line-height:1.7}
+
+/* ================= REVIEW ================= */
+.rev{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.rev-item{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:26px 24px}
+.rev-stars{font-size:14px;letter-spacing:.1em;color:var(--amber)}
+.rev-body{margin:13px 0 16px;font-size:14.5px;line-height:1.75;color:var(--ink-2)}
+.rev-by{font-size:12.5px;color:var(--muted);font-weight:600;padding-top:13px;border-top:1px solid var(--line-soft)}
+.rev-by b{color:var(--ink);font-weight:700;margin-right:8px}
+
+/* ================= ESTIMATE ================= */
+.est-grid{display:grid;grid-template-columns:1fr 370px;gap:48px;align-items:start}
+.est-panel{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:32px}
+.tabs{display:flex;border-bottom:1px solid var(--line);margin-bottom:28px}
+.tab{display:inline-flex;align-items:center;gap:8px;padding:11px 18px 13px;font-size:14px;font-weight:600;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;letter-spacing:-.02em}
+.tab svg{width:22px;height:22px;opacity:.5;transition:opacity .15s}
+.tab.on{color:var(--ink);font-weight:800;border-bottom-color:var(--green)}
+.tab.on svg{opacity:1}
+.fld{margin-bottom:28px}
+.fld:last-child{margin-bottom:0}
+.fld-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.fld-hd h4{font-size:13px;font-weight:700;color:var(--ink-2)}
+.fld-hd b{font-size:14.5px;font-weight:800;letter-spacing:-.02em;color:var(--green-dark)}
+.rng{-webkit-appearance:none;appearance:none;width:100%;height:3px;background:var(--line);border-radius:3px;outline:none;margin:14px 0 8px}
+.rng::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--green);border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.2);cursor:pointer}
+.rng::-moz-range-thumb{width:20px;height:20px;border:3px solid #fff;border-radius:50%;background:var(--green);cursor:pointer}
+.ticks{display:flex;justify-content:space-between}
+.tick{font-size:11.5px;color:var(--muted);cursor:pointer;font-weight:600}
+.tick.on{color:var(--green-dark);font-weight:800}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:9px 14px;border:1px solid var(--line);background:#fff;font-size:13px;font-weight:600;color:var(--ink-2);border-radius:8px;transition:all .15s}
+.chip:hover{border-color:var(--green-line);color:var(--green-dark)}
+.chip.on{background:var(--green);border-color:var(--green);color:#fff;font-weight:700}
+.chip.on-m{border-color:var(--green);background:var(--green-soft);color:var(--green-dark);font-weight:700}
+.est-out{background:var(--dark-2);color:#fff;border-radius:14px;padding:30px;position:sticky;top:82px;border-top:3px solid var(--green)}
+.est-out .k{font-size:11.5px;font-weight:700;letter-spacing:.12em;color:#98a49e}
+.est-out .v{font-size:34px;font-weight:800;letter-spacing:-.045em;margin:12px 0 8px;font-variant-numeric:tabular-nums;color:var(--green-on-dark)}
+.est-out .c{font-size:13px;color:#98a49e;padding-bottom:20px;border-bottom:1px solid #242c27;margin-bottom:20px;line-height:1.6}
+.est-out .eb{display:flex;align-items:center;justify-content:center;height:48px;border-radius:9px;font-size:15px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+.est-out .eb-g{background:var(--green);color:#fff}
+.est-out .eb-k{background:var(--kakao);color:#191600}
+.est-note{font-size:12px;color:#7f8b85;line-height:1.7;margin-top:12px}
+
+/* ================= AREA ================= */
+.area-grid{display:grid;grid-template-columns:180px 1fr;gap:44px;align-items:start}
+.area-k{display:inline-flex;align-items:center;gap:9px;font-size:13.5px;font-weight:800;color:var(--green-dark);letter-spacing:-.02em}
+.area-k svg{width:24px;height:24px}
+.area-list{display:flex;flex-wrap:wrap;gap:8px}
+.area-list span{font-size:14px;font-weight:700;letter-spacing:-.02em;color:var(--ink-2);background:var(--paper);border:1px solid var(--line);border-radius:100px;padding:7px 15px;transition:all .15s}
+.area-list span:hover{border-color:var(--green);color:var(--green-dark);background:var(--green-soft)}
+.area-note{margin-top:20px;font-size:13.5px;color:var(--muted);line-height:1.7}
+
+/* ================= FAQ ================= */
+.faq{border-top:3px solid var(--green)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;padding:21px 0;display:flex;justify-content:space-between;align-items:center;gap:24px;font-size:16px;font-weight:700;letter-spacing:-.03em;transition:color .15s}
+.faq summary:hover{color:var(--green-dark)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";width:10px;height:10px;flex-shrink:0;border-right:1.8px solid var(--green);border-bottom:1.8px solid var(--green);transform:rotate(45deg) translateY(-3px);transition:transform .2s}
+.faq details[open] summary{color:var(--green-dark)}
+.faq details[open] summary::after{transform:rotate(225deg) translateY(-3px)}
+.faq p{font-size:14.5px;color:var(--ink-2);line-height:1.8;padding:0 0 23px;max-width:70ch}
+
+/* ================= APPENDIX ================= */
+.apx{background:var(--wash-2);border-top:1px solid var(--line);padding:56px 0}
+.apx h2{font-size:15px;font-weight:800;letter-spacing:-.02em;margin-bottom:22px}
+.apx-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px 44px}
+.apx-b h3{font-size:12.5px;font-weight:800;margin-bottom:7px;color:var(--green-dark)}
+.apx-b p{font-size:12.5px;color:var(--muted);line-height:1.85}
+.apx-b p b{color:var(--ink-2);font-weight:600}
+.apx-tags{margin-top:28px;border-top:1px solid var(--line);padding-top:18px}
+.apx-tags summary{list-style:none;cursor:pointer;font-size:12px;font-weight:700;color:var(--muted);padding:6px 0}
+.apx-tags summary::-webkit-details-marker{display:none}
+.apx-tags p{font-size:11.5px;color:#9aa49f;line-height:2;margin-top:10px}
+
+/* ================= FOOTER ================= */
+.ftr{background:var(--dark);color:#8b968f;padding:58px 0 calc(44px + env(safe-area-inset-bottom))}
+.ftr-top{display:flex;justify-content:space-between;align-items:flex-start;gap:40px;padding-bottom:32px;border-bottom:1px solid #1c231e}
+.ftr-mark{font-size:19px;font-weight:800;color:#fff;letter-spacing:-.03em}
+.ftr-mark em{font-style:normal;color:var(--green-on-dark)}
+.ftr-tel{font-size:27px;font-weight:800;color:#fff;letter-spacing:-.04em;margin-top:10px;display:inline-block;font-variant-numeric:tabular-nums}
+.ftr-hours{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:#8b968f;margin-top:6px}
+.ftr-nav{display:flex;gap:26px}
+.ftr-nav a{font-size:13px;font-weight:600;color:#a3aca7;transition:color .15s}
+.ftr-nav a:hover{color:var(--green-on-dark)}
+.ftr-biz{padding-top:24px;font-size:12.5px;line-height:2;color:#6e7873}
+.ftr-biz span{margin-right:18px;display:inline-block}
+.ftr-btm{margin-top:20px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12px;color:#5a635e}
+
+/* ================= MOBILE CTA ================= */
+.mcta{display:none;position:fixed;left:0;right:0;bottom:0;z-index:950;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:9px 14px calc(9px + env(safe-area-inset-bottom));gap:8px;box-shadow:0 -4px 20px rgba(0,0,0,.09)}
+.mcta a{flex:1;height:52px;display:flex;align-items:center;justify-content:center;gap:7px;font-size:16px;font-weight:800;letter-spacing:-.03em;border-radius:10px}
+.mcta .m-call{background:var(--green);color:#fff;flex:1.35;box-shadow:0 3px 12px rgba(17,163,85,.3)}
+.mcta .m-kko{background:var(--kakao);color:#191600}
+.mcta svg{width:17px;height:17px}
+.mcta .m-call svg{stroke:#fff;fill:none;stroke-width:1.8}
+.mcta .m-kko svg{fill:#191600}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:1024px){
+  :root{--rhythm:72px}
+  .hero h1{font-size:34px}
+  .est-grid{grid-template-columns:1fr;gap:32px}
+  .est-out{position:static}
+}
+@media(max-width:900px){
+  .nav{display:none}
+  .grid-3,.grid-film,.svc,.rev{grid-template-columns:repeat(2,1fr)}
+  .proc{grid-template-columns:repeat(2,1fr)}
+  .band-in{flex-direction:column;align-items:flex-start;gap:22px}
+  .band-act{width:100%}
+  .b-call{flex:1;align-items:center}
+  .b-kko{flex:1;justify-content:center;height:64px}
+  .area-grid{grid-template-columns:1fr;gap:18px}
+  .apx-grid{grid-template-columns:1fr}
+}
+
+/* ---------- MOBILE ---------- */
+@media(max-width:640px){
+  :root{--gutter:18px;--rhythm:52px}
+  body{padding-bottom:80px}
+  .mcta{display:flex}
+  .hdr-in{height:56px}
+  .mark{font-size:17px}
+  .mark i{display:none}
+  .hdr-tel{height:38px;padding:0 13px;font-size:14.5px}
+
+  /* 서두 요소들에 좌우 여유 추가 (18px 거터 + 10px 인셋 = 28px) */
+  .hero-in{padding:28px 10px 32px}
+  .hero-eyebrow{font-size:11.5px;padding:6px 13px;margin-bottom:15px}
+  .hero h1{font-size:27px;line-height:1.34;letter-spacing:-.045em;margin-bottom:10px}
+  .hero-sub{font-size:14px;line-height:1.6}
+
+  .svc3{gap:8px;margin-top:22px;max-width:none}
+  .svc3-item{padding:15px 4px 13px;gap:9px;border-radius:13px}
+  .svc3-ico{width:54px;height:54px}
+  .svc3-ico svg{width:34px;height:34px}
+  .svc3-item span{font-size:13.5px;letter-spacing:-.055em}
+
+  .hero-cta{margin-top:20px;gap:9px;max-width:none}
+  .cta-call{padding:13px 18px;gap:12px;border-radius:12px}
+  .cta-call svg{width:24px;height:24px}
+  .cta-call .cc-k{font-size:11.5px}
+  .cta-call .cc-v{font-size:27px}
+  .cta-kko{height:52px;font-size:16px;border-radius:12px}
+  .hero-note{margin-top:12px;font-size:12px}
+
+  .hero-meta{margin-top:24px;padding-top:18px;max-width:none}
+  .hero-meta b{font-size:17px}
+  .hero-meta span{font-size:11px}
+
+  .sec-hd{margin-bottom:22px}
+  .sec-num{font-size:11px;margin-bottom:9px}
+  .sec-hd h2{font-size:23px}
+  .sec-hd p{font-size:13.5px;margin-top:8px}
+
+  .grid-3,.grid-film{
+    display:flex;overflow-x:auto;gap:12px;
+    scroll-snap-type:x mandatory;scrollbar-width:none;
+    margin:0 calc(var(--gutter) * -1);padding:0 var(--gutter) 4px;
+  }
+  .grid-3::-webkit-scrollbar,.grid-film::-webkit-scrollbar{display:none}
+  .grid-3>*,.grid-film>*{flex:0 0 80%;scroll-snap-align:start}
+  .tile-ttl{font-size:16px}
+  .vid-ttl{font-size:14px}
+
+  .band{padding:36px 0}
+  .band h3{font-size:20px}
+  .band p{font-size:13px}
+  .band-act{flex-direction:column;gap:9px}
+  .b-call{padding:12px 18px;border-radius:11px}
+  .b-call small{font-size:11.5px}
+  .b-call b{font-size:26px}
+  .b-kko{height:54px;border-radius:11px;font-size:16px}
+
+  .svc,.rev,.proc{grid-template-columns:1fr;gap:12px}
+  .svc-item{padding:22px 20px;border-radius:12px}
+  .svc-ico{width:54px;height:54px;margin-bottom:14px;border-radius:14px}
+  .svc-ico svg{width:34px;height:34px}
+  .svc-item h3{font-size:18px}
+  .rev-item{padding:20px 18px;border-radius:12px}
+  .proc-item{padding-top:14px}
+
+  .est{display:none}
+  .area-list span{font-size:13px;padding:6px 13px}
+  .faq summary{font-size:15px;padding:18px 0}
+  .faq p{font-size:13.5px;padding-bottom:19px}
+  .apx{padding:44px 0}
+  .ftr-top{flex-direction:column;gap:22px}
+  .ftr-tel{font-size:24px}
+}
+</style>
 </head>
 <body>
 
-<nav class="brand-gnb">
-    <div class="gnb-inner">
-        <a href="#" class="brand-logo">정리맨<span>.</span></a>
-        <ul class="gnb-nav">
-            <li><a href="#services">서비스 소개</a></li>
-            <li><a href="#calculator">비용 계산기</a></li>
-            <li><a href="#cases">작업 사례</a></li>
-            <li><a href="#reviews">고객 후기</a></li>
-        </ul>
-        <a href="tel:010-4535-9907" class="gnb-action">📞 빠른 전화상담</a>
+<!-- 서비스 아이콘 (컬러 SVG · 1회 정의 후 재사용) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- 유품정리: 상자 -->
+    <symbol id="ic-box" viewBox="0 0 48 48">
+      <path d="M7 19h34v20a3 3 0 0 1-3 3H10a3 3 0 0 1-3-3z" fill="#E0A96D"/>
+      <path d="M24 19h17v20a3 3 0 0 1-3 3H24z" fill="#CE9455"/>
+      <rect x="4" y="10" width="40" height="10" rx="2.5" fill="#F0BC7E"/>
+      <path d="M24 10h17.5A2.5 2.5 0 0 1 44 12.5V20H24z" fill="#E0A96D"/>
+      <rect x="19.5" y="10" width="9" height="32" fill="#FAEBD2"/>
+      <path d="M28.5 10H24v32h4.5z" fill="#EEDCBC"/>
+      <rect x="17" y="24" width="14" height="5" rx="2.5" fill="#B9793C"/>
+    </symbol>
+
+    <!-- 쓰레기집 청소: 빗자루 -->
+    <symbol id="ic-broom" viewBox="0 0 48 48">
+      <rect x="21.6" y="4" width="4.8" height="21" rx="2.4" fill="#B5814C"/>
+      <rect x="24" y="4" width="2.4" height="21" fill="#9C6B3C"/>
+      <rect x="14" y="23" width="20" height="5.5" rx="2.75" fill="#5F7D8C"/>
+      <path d="M14.6 28.5h18.8l4.1 13.2a1.5 1.5 0 0 1-1.43 1.95H11.93a1.5 1.5 0 0 1-1.43-1.95z" fill="#F7C948"/>
+      <path d="M24 28.5h9.4l4.1 13.2a1.5 1.5 0 0 1-1.43 1.95H24z" fill="#E9B424"/>
+      <path d="M18.6 29.5 16.4 43M24 29.5V43M29.4 29.5 31.6 43" stroke="#C99A1C" stroke-width="1.5" stroke-linecap="round"/>
+    </symbol>
+
+    <!-- 특수청소: 분무기 -->
+    <symbol id="ic-spray" viewBox="0 0 48 48">
+      <circle cx="38.5" cy="9" r="2.6" fill="#7FD1E8"/>
+      <circle cx="43" cy="15.5" r="1.9" fill="#A8E1F2"/>
+      <circle cx="36.5" cy="17.5" r="1.5" fill="#A8E1F2"/>
+      <path d="M19 6h9v5h-9z" fill="#8E9AA6"/>
+      <path d="M28 6.6h7.5l-2.6 4.4H28z" fill="#8E9AA6"/>
+      <path d="M20 11h7v5h-7z" fill="#6C7885"/>
+      <path d="M16.5 16h14a3.5 3.5 0 0 1 3.5 3.5V39a4 4 0 0 1-4 4H17a4 4 0 0 1-4-4V19.5A3.5 3.5 0 0 1 16.5 16z" fill="#3FA9C9"/>
+      <path d="M23.5 16h7a3.5 3.5 0 0 1 3.5 3.5V39a4 4 0 0 1-4 4h-6.5z" fill="#2E90AE"/>
+      <rect x="16.5" y="23" width="14" height="9" rx="2" fill="#EAF7FB"/>
+      <path d="M20 27h7M20 29.6h4.5" stroke="#8FB6C4" stroke-width="1.6" stroke-linecap="round"/>
+    </symbol>
+
+    <!-- 출동: 트럭 -->
+    <symbol id="ic-truck" viewBox="0 0 48 48">
+      <path d="M3 13h22v20H3z" fill="#3FA9C9"/>
+      <path d="M25 19h9l6 7v7H25z" fill="#8E9AA6"/>
+      <path d="M27 21h6l3.6 4.4H27z" fill="#DCEAF0"/>
+      <circle cx="12" cy="35" r="4.2" fill="#3A4149"/><circle cx="12" cy="35" r="1.7" fill="#B9C4CC"/>
+      <circle cx="33" cy="35" r="4.2" fill="#3A4149"/><circle cx="33" cy="35" r="1.7" fill="#B9C4CC"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="hdr">
+  <div class="wrap hdr-in">
+    <a href="#top" class="mark">정리맨<em>.</em><i>유품정리 · 특수청소</i></a>
+    <nav class="nav">
+      <a href="#work">작업 사례</a>
+      <a href="#film">현장 영상</a>
+      <a href="#service">서비스</a>
+      <a href="#voice">고객 후기</a>
+      <a href="#estimate">비용</a>
+      <a href="#area">지역</a>
+    </nav>
+    <a href="tel:010-4535-9907" class="hdr-tel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.6 2.8a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.8.6a2 2 0 0 1 1.7 2z"/></svg>
+      010-4535-9907
+    </a>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="wrap hero-in">
+    <span class="hero-eyebrow"><span class="dot"></span>서울 · 인천 · 경기 24시간 상담</span>
+
+    <h1>정리하기 어려운 공간<br><b>정리맨</b>이 대신합니다</h1>
+    <p class="hero-sub">대표가 직접 현장을 확인하고 마무리까지 책임집니다</p>
+
+    <div class="svc3">
+      <a href="#service" class="svc3-item">
+        <span class="svc3-ico"><svg viewBox="0 0 48 48"><use href="#ic-box"/></svg></span>
+        <span>유품정리</span>
+      </a>
+      <a href="#service" class="svc3-item">
+        <span class="svc3-ico"><svg viewBox="0 0 48 48"><use href="#ic-broom"/></svg></span>
+        <span>쓰레기집 청소</span>
+      </a>
+      <a href="#service" class="svc3-item">
+        <span class="svc3-ico"><svg viewBox="0 0 48 48"><use href="#ic-spray"/></svg></span>
+        <span>특수청소</span>
+      </a>
     </div>
-</nav>
 
-<section class="hero">
-    <canvas id="starfieldHero" class="hero-canvas"></canvas>
-
-    <div class="hero-content">
-        <div class="hero-badges">
-            <span class="badge mo-hide">🔒 철저한 비밀 보장</span>
-            <span class="badge">📱 비대면 서비스</span>
-            <span class="badge">⏰ 24시간 언제든 상담</span>
-        </div>
-        
-        <h1>
-            <span class="logo-main">정리맨 - 모두 다 </span>
-            <span class="logo-point">싹!</span>
-            <span class="logo-main"> 🚚</span><br>
-            <span class="hero-sub">유품정리 · 쓰레기집 · 특수청소 전문</span>
-        </h1>
-
-        <a href="tel:010-4535-9907" class="hero-direct-call">
-            <span class="call-icon">📞</span>
-            <span class="call-number">010-4535-9907</span>
-            <span class="call-badge pc-only">24시간 바로 연결</span>
-        </a>
-
-        <p>
-            혼자 속앓이하며 막막하셨을 그 마음, 누구보다 잘 알고 있습니다.<br class="pc-only">
-            <b>10년 경력</b>의 대표가 직접 방문하여 <b>거품 없는 정직한 견적</b>으로 신속하게 처리해드립니다.
-        </p>
-        
-        <div class="two-track-container">
-            <a href="tel:010-4535-9907" class="track-card phone-track">
-                <div class="pc-only">
-                    <span class="track-badge">가장 빠르고 확실한 방법</span>
-                    <strong class="track-title">🚨 당장 빠른 조치가<br>필요하다면?</strong>
-                    <span class="track-desc">정리맨 대표가 직접 전화를 받아<br>현장 상황에 맞춰 즉시 안내해 드립니다.</span>
-                </div>
-                <div class="mo-only">
-                    <strong class="track-title">대표 직접 전화 상담하기</strong>
-                </div>
-
-                <div class="track-action pc-only">📞 010-4535-9907 연결하기</div>
-                <div class="mo-action-circle mo-only"></div>
-            </a>
-
-            <button onclick="openBotModal()" class="track-card bot-track" style="border: none; font-family: inherit;">
-                <div class="pc-only">
-                    <span class="track-badge">부담 없는 비대면 접수</span>
-                    <strong class="track-title">💬 대략적인 비용부터<br>알고 싶다면?</strong>
-                    <span class="track-desc">통화 없이, 현장 사진만으로<br>빠르고 정확하게 예상 견적을 받아보세요.</span>
-                </div>
-                <div class="mo-only">
-                    <strong class="track-title">비대면 1분 간편 견적 시작하기</strong>
-                </div>
-
-                <div class="track-action pc-only">✨ 1분 간편 견적 시작하기</div>
-                <div class="mo-action-circle mo-only"></div>
-            </button>
-        </div>
+    <div class="hero-cta">
+      <a href="tel:010-4535-9907" class="cta-call">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.6 2.8a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.8.6a2 2 0 0 1 1.7 2z"/></svg>
+        <span class="cc-t">
+          <span class="cc-k">전화 · 문자 상담</span>
+          <span class="cc-v">010-4535-9907</span>
+        </span>
+      </a>
+      <a href="https://open.kakao.com/o/seIDHWzi" target="_blank" rel="noopener" class="cta-kko">
+        <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 3.185-9 7.115 0 2.557 1.707 4.8 4.34 6.033-.188.643-.68 2.327-.778 2.673-.117.411.144.405.3.332.122-.057 1.954-1.317 2.734-1.854.453.111.924.17 1.404.17 4.97 0 9-3.186 9-7.116C21 6.185 16.97 3 12 3z"/></svg>
+        카카오톡으로 사진 보내기
+      </a>
+      <p class="hero-note">통화가 어려우시면 문자를 남겨주세요. 확인 후 바로 연락드립니다.</p>
     </div>
+
+    <div class="hero-meta">
+      <div><b>2,000+</b><span>누적 작업</span></div>
+      <div><b>10년</b><span>현장 경력</span></div>
+      <div><b>24시간</b><span>상담 접수</span></div>
+    </div>
+  </div>
 </section>
 
-<div class="middle-container">
-    <div class="brand-stats">
-        <div class="stat-item"><div class="stat-num">2,000<span>+</span></div><div class="stat-desc">누적 작업 완료 건수</div></div>
-        <div class="stat-item"><div class="stat-num">97.5<span>%</span></div><div class="stat-desc">고객 만족도</div></div>
-        <div class="stat-item"><div class="stat-num">100<span>%</span></div><div class="stat-desc">사후 A/S 보장</div></div>
+<!-- ============ WORK ============ -->
+<section class="sec" id="work">
+  <div class="wrap">
+    <div class="sec-hd">
+      <span class="sec-num">01 WORK</span>
+      <h2>실제 작업 사례</h2>
+      <p>정리맨이 직접 마무리한 현장입니다.</p>
     </div>
-
-    <div class="divider-wrapper">
-        <hr class="elegant-divider">
-        <span class="divider-text">또는 직접 예상 비용 알아보기 👇</span>
-    </div>
-</div>
-
-<section class="calc-section-full" id="calculator">
-    <div class="calc-wrapper">
-        <div class="calc-header">
-            <span class="sub-title">예상 비용 계산기</span>
-            <h2 class="main-title">내 상황에 맞는 비용, 바로 확인하세요</h2>
-            <p class="desc">조건을 선택하면 예상 비용 범위를 안내해 드립니다.<br class="pc-only"> 정확한 견적은 현장 사진을 보내주시면 24시간 내 드립니다.</p>
-        </div>
-
-        <div class="tabs-container" id="categoryTabs">
-            <button class="tab-btn active" id="tab-trash" onclick="switchCategory('trash')">🏠 쓰레기집 청소</button>
-            <button class="tab-btn" id="tab-special" onclick="switchCategory('special')">☣️ 특수청소</button>
-            <button class="tab-btn" id="tab-funeral" onclick="switchCategory('funeral')">🪽 유품정리</button>
-        </div>
-
-        <div class="calc-card" id="dynamicCard"></div>
-
-        <div class="bottom-result-panel">
-            <div class="result-inner">
-                <span class="price-title">예상 비용 범위</span>
-                <div class="price-range-output" id="totalPriceDisplay">0~0만원</div>
-                <div class="criteria-text" id="criteriaSummary">조건을 선택해주세요</div>
-                
-                <div class="bottom-actions">
-                    <button class="action-btn btn-yellow" onclick="openBotModal()">🗂️ 간편 견적 신청</button>
-                    <a href="tel:010-4535-9907" class="action-btn btn-dark-gray">📞 무료 전화 상담</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="grid-3" id="caseGrid"></div>
+  </div>
 </section>
 
-<div class="middle-container" style="margin-top: 0;">
-    <section class="common-section" id="services">
-        <div class="common-header">
-            <span class="common-sub">OUR SERVICES</span>
-            <h2 class="common-title">어떤 현장이든 책임집니다</h2>
-        </div>
-        <div class="services-grid">
-            <div class="service-card">
-                <span class="service-icon">🪽</span>
-                <h3 class="service-title-text">유품 정리</h3>
-                <p class="service-desc-text">유족을 배려하는 과정으로 조용히 마무리하실 수 있도록 공간을 완전히 비워드립니다.</p>
-            </div>
-            <div class="service-card">
-                <span class="service-icon">🏠</span>
-                <h3 class="service-title-text">쓰레기집 청소</h3>
-                <p class="service-desc-text">즉시 출동하여 신속한 과정으로 모든 폐기물을 처리하여 새 공간처럼 비워드립니다.</p>
-            </div>
-            <div class="service-card">
-                <span class="service-icon">☣️</span>
-                <h3 class="service-title-text">특수청소</h3>
-                <p class="service-desc-text">고독사, 혈흔, 화재 등 손댈 수 없는 수준의 환경을 특수 장비를 동원해 완전히 복구합니다.</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="common-section" id="cases">
-        <div class="common-header" style="margin-bottom: 30px;">
-            <span class="common-sub">CASE STUDY</span>
-            <h2 class="common-title">실제 작업 사례</h2>
-            <p style="color:var(--toss-gray-600); margin-top:10px; font-weight:600;">좌우로 스와이프하여 더 많은 사례를 확인하세요.</p>
-        </div>
-        <div class="slide-wrapper">
-            <div class="slide-container" id="mainCaseGrid"></div>
-        </div>
-    </section>
-    
-    <section class="common-section" id="youtube-videos">
-        <div class="common-header" style="margin-bottom: 30px;">
-            <span class="common-sub">VIDEO</span>
-            <h2 class="common-title">생생한 작업 현장 🎥</h2>
-            <p style="color:var(--toss-gray-600); margin-top:10px; font-weight:600;">말로만 하지 않습니다. 좌우로 스와이프하여 영상으로 확인하세요.</p>
-        </div>
-        <div class="slide-wrapper">
-            <div class="slide-container" id="mainYoutubeGrid"></div>
-        </div>
-    </section>
-
-    </section>
-    
-    <script>
-        function getYoutubeVideoId(url) {
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-            const match = url.match(regExp);
-            return (match && match[2].length === 11) ? match[2] : null;
-        }
-    
-        async function loadMainYoutubeVideos() {
-        const { data: videos, error } = await supabase
-            .from('youtube_videos')
-            .select('*')
-            .order('created_at', { ascending: false })
-            .limit(5); // 더 부드러운 스와이프 경험을 위해 3개에서 5개로 늘리는 걸 추천해
-
-        const grid = document.getElementById('mainYoutubeGrid');
-
-        if (error || !videos || videos.length === 0) {
-            grid.innerHTML = `<p style="text-align:center; width:100%; color:#94a3b8; padding:20px;">등록된 현장 영상이 없습니다.</p>`;
-            return;
-        }
-
-        grid.innerHTML = '';
-
-        videos.forEach(video => {
-            const videoId = getYoutubeVideoId(video.youtube_url);
-            if (!videoId) return;
-
-            grid.innerHTML += `
-                <div class="slide-item">
-                    <div class="card-box" style="padding: 0; display: block;">
-                        <div style="position: relative; padding-bottom: 56.25%; height: 0; background:#000; border-bottom: 1px solid var(--toss-gray-100);">
-                            <iframe src="https://www.youtube.com/embed/${videoId}" 
-                                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" 
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                    allowfullscreen>
-                            </iframe>
-                        </div>
-                        <div class="case-info" style="padding: 20px;">
-                            <h3 class="case-title" style="margin-bottom: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; line-height: 1.4; height: 2.8em; text-align: left;">
-                                ${video.title}
-                            </h3>
-                        </div>
-                    </div>
-                </div>
-            `;
-        });
-    }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            loadMainYoutubeVideos();
-        });
-    </script>
-    <section class="common-section" id="reviews">
-        <div class="common-header" style="margin-bottom: 30px;">
-            <span class="common-sub">REVIEW</span>
-            <h2 class="common-title">생생한 고객 후기</h2>
-            <p style="color:var(--toss-gray-600); margin-top:10px; font-weight:600;">좌우로 스와이프하여 더 많은 후기를 확인하세요.</p>
-        </div>
-        <div class="slide-wrapper">
-            <div class="slide-container" id="mainReviewGrid"></div>
-        </div>
-    </section>
-
-    <section class="common-section" id="service-guide">
-        <div class="common-header">
-            <span class="common-sub">SERVICE GUIDE</span>
-            <h2 class="common-title">이런 상황이라면, 정리맨이 도와드립니다</h2>
-            <p style="color:var(--toss-gray-600); margin-top:10px; font-weight:600;">유품정리부터 쓰레기집청소, 원룸 폐기물 처리까지 상황별로 안내해 드려요.</p>
-        </div>
-
-        <div class="guide-group">
-            <h3 class="guide-group-title">🪽 유품정리 · 고인 유품 처리</h3>
-            <div class="guide-item-grid">
-                <div class="guide-item">
-                    <strong>고인유품정리 · 부모님유품정리</strong>
-                    <p>갑작스럽게 부모님이나 가족을 떠나보낸 후 <b>고인유품정리</b>, <b>부모님유품정리</b>가 막막하실 때, 유족을 배려하며 조용히 진행해 드립니다.</p>
-                </div>
-                <div class="guide-item">
-                    <strong>돌아가신분짐정리 · 돌아가신분집정리</strong>
-                    <p><b>돌아가신분짐정리</b>와 <b>돌아가신분집정리</b>는 감정적으로 힘든 과정이기에, 필요한 물품은 따로 보관해 드리며 나머지는 깔끔하게 정리해 드립니다.</p>
-                </div>
-                <div class="guide-item">
-                    <strong>요양원입소집정리</strong>
-                    <p>요양원이나 시설 입소를 앞두고 <b>요양원입소집정리</b>가 필요하신 경우에도 빠르게 방문 견적을 도와드립니다.</p>
-                </div>
-                <div class="guide-item">
-                    <strong>유품정리업체 · 유품정리대행</strong>
-                    <p>믿을 수 있는 <b>유품정리업체</b>를 찾고 계신다면, <b>유품정리대행</b>부터 <b>유품정리견적</b>, <b>유품정리비용</b> 산정까지 투명하게 안내해 드립니다.</p>
-                </div>
-                <div class="guide-item">
-                    <strong>유품처리 · 유품치우기</strong>
-                    <p>어디서부터 시작해야 할지 모르는 <b>유품처리</b>와 <b>유품치우기</b>, 대표가 직접 방문해 물품 분류부터 처리까지 원스톱으로 진행합니다.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="guide-group">
-            <h3 class="guide-group-title">🏠 쓰레기집청소 · 생활폐기물 정리</h3>
-            <div class="guide-item-grid">
-                <div class="guide-item">
-                    <strong>쓰레기집청소 · 쓰레기집정리</strong>
-                    <p>혼자서는 엄두가 안 나는 <b>쓰레기집청소</b>와 <b>쓰레기집정리</b>, 전문 인력과 장비로 하루 만에 새 공간처럼 만들어 드립니다.</p>
-                </div>
-                <div class="guide-item">
-                    <strong>쓰레기집치우기 · 짐치우기 · 집치워주는곳</strong>
-                    <p><b>쓰레기집치우기</b>, <b>짐치우기</b>가 필요하신 분들을 위해 수도권 전역에서 믿을 수 있는 <b>집치워주는곳</b>이 되어드리겠습니다.</p>
-                </div>
-                <div class="guide-item">
-                    <strong>쓰레기집청소비용 · 쓰레기집처리비용</strong>
-                    <p><b>쓰레기집청소비용</b>과 <b>쓰레기집처리비용</b>이 궁금하시다면, 현장 사진만으로도 대략적인 예상 견적을 바로 안내해 드립니다.</p>
-                </div>
-                <div class="guide-item">
-                    <strong>가정폐기물처리업체</strong>
-                    <p>일반 생활쓰레기부터 대형 폐기물까지, 믿을 수 있는 <b>가정폐기물처리업체</b>가 필요하신 분들께 신속하게 출동해 드립니다.</p>
-                </div>
-                <div class="guide-item">
-                    <strong>빈집정리 · 빈집만들기</strong>
-                    <p>이사나 매매를 앞두고 짐을 모두 비워야 하는 <b>빈집정리</b>, <b>빈집만들기</b> 작업도 원룸부터 대형 평수까지 진행합니다.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="guide-group">
-            <h3 class="guide-group-title">🏢 원룸 · 오피스텔 폐기물 처리</h3>
-            <div class="guide-item-grid">
-                <div class="guide-item">
-                    <strong>원룸쓰레기처리 · 원룸폐기물</strong>
-                    <p>자취방을 정리하며 쌓인 <b>원룸쓰레기처리</b>, <b>원룸폐기물</b> 문제도 소형 원룸에 맞춘 합리적인 방식으로 처리해 드립니다.</p>
-                </div>
-                <div class="guide-item">
-                    <strong>원룸오피스텔짐정리</strong>
-                    <p>퇴거나 이사 시 급하게 필요한 <b>원룸오피스텔짐정리</b>도 당일 방문이 가능한 경우가 많으니 편하게 문의해 주세요.</p>
-                </div>
-                <div class="guide-item">
-                    <strong>원룸쓰레기청소비용</strong>
-                    <p>정확한 <b>원룸쓰레기청소비용</b>은 평수와 물건량에 따라 달라지므로, 무료 견적 상담을 통해 미리 확인하실 수 있습니다.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="guide-group">
-            <h3 class="guide-group-title">☣️ 고독사청소 · 특수청소</h3>
-            <div class="guide-item-grid">
-                <div class="guide-item">
-                    <strong>고독사청소 · 고독사유품정리</strong>
-                    <p>냄새와 오염이 남은 현장의 <b>고독사청소</b>는 특수 장비와 전문 소독으로 안전하게 원상 복구하며, <b>고독사유품정리</b>까지 함께 진행해 드립니다.</p>
-                </div>
-                <div class="guide-item">
-                    <strong>고독사청소비용 · 고독사청소견적</strong>
-                    <p><b>고독사청소비용</b>과 <b>고독사청소견적</b>은 오염 범위와 면적에 따라 달라지며, 방문 없이도 사진만으로 사전 안내가 가능합니다.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="common-section" id="service-areas">
-        <div class="common-header">
-            <span class="common-sub">SERVICE AREA</span>
-            <h2 class="common-title">서비스 가능 지역</h2>
-            <p style="color:var(--toss-gray-600); margin-top:10px; font-weight:600;">서울·인천·경기 전 지역 출동 가능합니다. 지역이 확인되지 않아도 편하게 문의해 주세요.</p>
-        </div>
-        <p class="area-lead">
-            서울 <b>강서구</b>·<b>관악구</b>·<b>구로구</b>·<b>양천구</b> 유품정리 및 쓰레기집청소부터,
-            <b>인천</b> 고독사청소, 경기 <b>고양</b>·<b>과천</b>·<b>광명</b>·<b>군포</b>·<b>김포</b>·<b>부천</b>·<b>성남</b>·<b>수원</b>·<b>시흥</b>·<b>안산</b>·<b>안양</b>·<b>일산</b>·<b>파주</b> 특수청소까지,
-            정리맨이 직접 방문하여 빠르고 정직하게 처리해 드립니다.
-        </p>
-        <div class="area-badge-grid">
-            <span class="area-badge">강서구</span><span class="area-badge">관악구</span><span class="area-badge">구로구</span><span class="area-badge">양천구</span>
-            <span class="area-badge">인천</span><span class="area-badge">고양</span><span class="area-badge">과천</span><span class="area-badge">광명</span>
-            <span class="area-badge">군포</span><span class="area-badge">김포</span><span class="area-badge">부천</span><span class="area-badge">성남</span>
-            <span class="area-badge">수원</span><span class="area-badge">시흥</span><span class="area-badge">안산</span><span class="area-badge">안양</span>
-            <span class="area-badge">일산</span><span class="area-badge">파주</span>
-        </div>
-    </section>
-
-    <section class="common-section" id="longtail-info">
-        <div class="common-header">
-            <span class="common-sub">MORE INFO</span>
-            <h2 class="common-title">이 외에도 이런 것도 도와드려요</h2>
-            <p style="color:var(--toss-gray-600); margin-top:10px; font-weight:600;">항목을 눌러보시면 지역별 세부 서비스를 확인하실 수 있어요.</p>
-        </div>
-        <div class="longtail-wrap">
-            <details class="longtail-item">
-                <summary>유품 폐기 지역별 안내</summary>
-                <p>부천유품폐기, 인천유품폐기, 시흥유품폐기, 광명유품폐기, 수원유품폐기, 성남유품폐기, 파주유품폐기, 일산유품폐기, 고양유품폐기, 강서구유품폐기, 양천구유품폐기, 관악구유품폐기, 안산유품폐기, 안양유품폐기, 군포유품폐기, 김포유품폐기, 과천유품폐기, 구로구유품폐기</p>
-            </details>
-            <details class="longtail-item">
-                <summary>유품 수거 지역별 안내</summary>
-                <p>부천유품수거, 인천유품수거, 시흥유품수거, 광명유품수거, 수원유품수거, 성남유품수거, 파주유품수거, 일산유품수거, 고양유품수거, 강서구유품수거, 양천구유품수거, 관악구유품수거, 안산유품수거, 안양유품수거, 군포유품수거, 김포유품수거, 과천유품수거, 구로구유품수거</p>
-            </details>
-            <details class="longtail-item">
-                <summary>가정폐기물 일괄수거 지역별 안내</summary>
-                <p>부천가정폐기물일괄수거, 인천가정폐기물일괄수거, 시흥가정폐기물일괄수거, 광명가정폐기물일괄수거, 수원가정폐기물일괄수거, 성남가정폐기물일괄수거, 파주가정폐기물일괄수거, 일산가정폐기물일괄수거, 고양가정폐기물일괄수거, 강서구가정폐기물일괄수거, 양천구가정폐기물일괄수거, 관악구가정폐기물일괄수거, 안산가정폐기물일괄수거, 안양가정폐기물일괄수거, 군포가정폐기물일괄수거, 김포가정폐기물일괄수거, 과천가정폐기물일괄수거, 구로구가정폐기물일괄수거</p>
-            </details>
-            <details class="longtail-item">
-                <summary>가정 살림처분 지역별 안내</summary>
-                <p>부천가정살림처분, 인천가정살림처분, 시흥가정살림처분, 광명가정살림처분, 수원가정살림처분, 성남가정살림처분, 파주가정살림처분, 일산가정살림처분, 고양가정살림처분, 강서구가정살림처분, 양천구가정살림처분, 관악구가정살림처분, 안산가정살림처분, 안양가정살림처분, 군포가정살림처분, 김포가정살림처분, 과천가정살림처분, 구로구가정살림처분</p>
-            </details>
-            <details class="longtail-item">
-                <summary>원룸 빈집정리 지역별 안내</summary>
-                <p>부천원룸빈집정리, 인천원룸빈집정리, 시흥원룸빈집정리, 광명원룸빈집정리, 수원원룸빈집정리, 성남원룸빈집정리, 파주원룸빈집정리, 일산원룸빈집정리, 고양원룸빈집정리, 강서구원룸빈집정리, 양천구원룸빈집정리, 관악구원룸빈집정리, 안산원룸빈집정리, 안양원룸빈집정리, 군포원룸빈집정리, 김포원룸빈집정리, 과천원룸빈집정리, 구로구원룸빈집정리</p>
-            </details>
-            <details class="longtail-item">
-                <summary>원룸 쓰레기집 지역별 안내</summary>
-                <p>부천원룸쓰레기집, 인천원룸쓰레기집, 시흥원룸쓰레기집, 광명원룸쓰레기집, 수원원룸쓰레기집, 성남원룸쓰레기집, 파주원룸쓰레기집, 일산원룸쓰레기집, 고양원룸쓰레기집, 강서구원룸쓰레기집, 양천구원룸쓰레기집, 관악구원룸쓰레기집, 안산원룸쓰레기집, 안양원룸쓰레기집, 군포원룸쓰레기집, 김포원룸쓰레기집, 과천원룸쓰레기집, 구로구원룸쓰레기집</p>
-            </details>
-            <details class="longtail-item">
-                <summary>저장강박증 집청소 지역별 안내</summary>
-                <p>부천저장강박증집청소, 인천저장강박증집청소, 시흥저장강박증집청소, 광명저장강박증집청소, 수원저장강박증집청소, 성남저장강박증집청소, 파주저장강박증집청소, 일산저장강박증집청소, 고양저장강박증집청소, 강서구저장강박증집청소, 양천구저장강박증집청소, 관악구저장강박증집청소, 안산저장강박증집청소, 안양저장강박증집청소, 군포저장강박증집청소, 김포저장강박증집청소, 과천저장강박증집청소, 구로구저장강박증집청소</p>
-            </details>
-            <details class="longtail-item">
-                <summary>요양원 들어가실 때 집정리 지역별 안내</summary>
-                <p>부천요양원들어가실때집정리, 인천요양원들어가실때집정리, 시흥요양원들어가실때집정리, 광명요양원들어가실때집정리, 수원요양원들어가실때집정리, 성남요양원들어가실때집정리, 파주요양원들어가실때집정리, 일산요양원들어가실때집정리, 고양요양원들어가실때집정리, 강서구요양원들어가실때집정리, 양천구요양원들어가실때집정리, 관악구요양원들어가실때집정리, 안산요양원들어가실때집정리, 안양요양원들어가실때집정리, 군포요양원들어가실때집정리, 김포요양원들어가실때집정리, 과천요양원들어가실때집정리, 구로구요양원들어가실때집정리</p>
-            </details>
-            <details class="longtail-item">
-                <summary>집 전체 비우기 지역별 안내</summary>
-                <p>부천집전체비우기, 인천집전체비우기, 시흥집전체비우기, 광명집전체비우기, 수원집전체비우기, 성남집전체비우기, 파주집전체비우기, 일산집전체비우기, 고양집전체비우기, 강서구집전체비우기, 양천구집전체비우기, 관악구집전체비우기, 안산집전체비우기, 안양집전체비우기, 군포집전체비우기, 김포집전체비우기, 과천집전체비우기, 구로구집전체비우기</p>
-            </details>
-            <details class="longtail-item">
-                <summary>아파트 빈집정리 지역별 안내</summary>
-                <p>부천아파트빈집정리, 인천아파트빈집정리, 시흥아파트빈집정리, 광명아파트빈집정리, 수원아파트빈집정리, 성남아파트빈집정리, 파주아파트빈집정리, 일산아파트빈집정리, 고양아파트빈집정리, 강서구아파트빈집정리, 양천구아파트빈집정리, 관악구아파트빈집정리, 안산아파트빈집정리, 안양아파트빈집정리, 군포아파트빈집정리, 김포아파트빈집정리, 과천아파트빈집정리, 구로구아파트빈집정리</p>
-            </details>
-        </div>
-    </section>
-</div>
-
-<footer class="brand-footer">
-    <div class="footer-inner">
-        <div class="footer-logo">정리맨<span>.</span></div>
-        <div class="footer-cs">고객센터 010-4535-9907</div>
-        <div class="footer-info">
-            <span>상호: 튜니티</span>
-            <span>대표: 김경희</span>
-            <span>사업자등록번호: 557-18-01325</span><br>
-            <span>통신판매번호: 신고면제</span>
-            <span>주소: 경기도 부천시 장말로 209번길 7</span>
-            <span>이메일: vlrtlvfhr11@naver.com</span>
-        </div>
-        <div class="footer-copyright" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-            <span>© 2026 TUNITY. All rights reserved.</span>
-            <div style="gap: 16px; display: flex;">
-                <a href="#" style="color: #a1a1aa; text-decoration: none;">이용약관</a>
-                <a href="네_노션_또는_약관_페이지_주소" target="_blank" style="color: #a1a1aa; text-decoration: none; font-weight: 800;">개인정보처리방침</a>
-            </div>
-        </div>
+<!-- ============ FILM ============ -->
+<section class="sec sec--dark" id="film">
+  <div class="wrap">
+    <div class="sec-hd">
+      <span class="sec-num">02 FILM</span>
+      <h2>현장 영상</h2>
+      <p>편집하지 않은 실제 작업 기록입니다.</p>
     </div>
+    <div class="grid-film" id="videoGrid"></div>
+  </div>
+</section>
+
+<!-- ============ CTA BAND ============ -->
+<section class="band">
+  <div class="wrap band-in">
+    <div>
+      <h3>사진 몇 장이면 <em>예상 비용</em>을 알려드립니다</h3>
+      <p>어떤 상태여도 괜찮습니다. 방문 전 비대면 확인이 가능합니다.</p>
+    </div>
+    <div class="band-act">
+      <a href="tel:010-4535-9907" class="b-call">
+        <small>전화 · 문자 상담</small>
+        <b>010-4535-9907</b>
+      </a>
+      <a href="https://open.kakao.com/o/seIDHWzi" target="_blank" rel="noopener" class="b-kko">
+        <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 3.185-9 7.115 0 2.557 1.707 4.8 4.34 6.033-.188.643-.68 2.327-.778 2.673-.117.411.144.405.3.332.122-.057 1.954-1.317 2.734-1.854.453.111.924.17 1.404.17 4.97 0 9-3.186 9-7.116C21 6.185 16.97 3 12 3z"/></svg>
+        카카오톡 상담
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICE ============ -->
+<section class="sec sec--wash" id="service">
+  <div class="wrap">
+    <div class="sec-hd">
+      <span class="sec-num">03 SERVICE</span>
+      <h2>서비스</h2>
+    </div>
+    <div class="svc">
+      <div class="svc-item">
+        <div class="svc-ico"><svg viewBox="0 0 48 48"><use href="#ic-box"/></svg></div>
+        <h3>유품 정리</h3>
+        <p>고인의 물품을 분류하고 공간을 비워드립니다. 보관을 원하시는 품목은 따로 정리해 전달하며, 유족이 현장에 계시지 않아도 진행할 수 있습니다.</p>
+        <div class="svc-kw">고인유품정리 · 부모님유품정리 · 요양원 입소 집정리 · 유품 폐기 및 수거</div>
+      </div>
+      <div class="svc-item">
+        <div class="svc-ico"><svg viewBox="0 0 48 48"><use href="#ic-broom"/></svg></div>
+        <h3>쓰레기집 청소</h3>
+        <p>장기간 방치된 생활 폐기물을 반출하고 소독까지 마칩니다. 무표시 차량과 야간 작업으로 주변에 알려지지 않게 진행합니다.</p>
+        <div class="svc-kw">쓰레기집청소 · 원룸 폐기물 · 빈집정리 · 저장강박 집청소</div>
+      </div>
+      <div class="svc-item">
+        <div class="svc-ico"><svg viewBox="0 0 48 48"><use href="#ic-spray"/></svg></div>
+        <h3>특수 청소</h3>
+        <p>고독사, 혈흔, 화재 현장을 전용 약품과 장비로 복구합니다. 오염 자재 철거와 탈취까지 원상 복구를 기준으로 작업합니다.</p>
+        <div class="svc-kw">고독사청소 · 혈흔 및 체액 · 화재 그을음 · 침수 곰팡이</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-hd">
+      <span class="sec-num">04 PROCESS</span>
+      <h2>진행 절차</h2>
+    </div>
+    <div class="proc">
+      <div class="proc-item"><span class="proc-n">1</span><h3>문의</h3><p>전화 · 문자 · 카카오톡 중 편하신 방법으로 연락 주세요.</p></div>
+      <div class="proc-item"><span class="proc-n">2</span><h3>견적</h3><p>사진으로 예상 범위를 안내하고, 필요 시 방문해 확정합니다.</p></div>
+      <div class="proc-item"><span class="proc-n">3</span><h3>작업</h3><p>분류 · 반출 · 폐기 · 소독까지 하루 안에 마무리합니다.</p></div>
+      <div class="proc-item"><span class="proc-n">4</span><h3>확인</h3><p>함께 점검하고, 미흡한 부분은 추가 비용 없이 재작업합니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VOICE ============ -->
+<section class="sec sec--wash" id="voice">
+  <div class="wrap">
+    <div class="sec-hd">
+      <span class="sec-num">05 VOICE</span>
+      <h2>고객 후기</h2>
+    </div>
+    <div class="rev" id="reviewGrid"></div>
+  </div>
+</section>
+
+<!-- ============ ESTIMATE (PC only) ============ -->
+<section class="sec est" id="estimate">
+  <div class="wrap">
+    <div class="sec-hd">
+      <span class="sec-num">06 ESTIMATE</span>
+      <h2>예상 비용</h2>
+      <p>참고용 범위입니다. 실제 비용은 현장 확인 후 확정됩니다.</p>
+    </div>
+    <div class="est-grid">
+      <div class="est-panel">
+        <div class="tabs">
+          <button class="tab on" id="tab-trash" onclick="switchCategory('trash')"><svg viewBox="0 0 48 48"><use href="#ic-broom"/></svg>쓰레기집 청소</button>
+          <button class="tab" id="tab-special" onclick="switchCategory('special')"><svg viewBox="0 0 48 48"><use href="#ic-spray"/></svg>특수청소</button>
+          <button class="tab" id="tab-funeral" onclick="switchCategory('funeral')"><svg viewBox="0 0 48 48"><use href="#ic-box"/></svg>유품정리</button>
+        </div>
+        <div id="estFields"></div>
+      </div>
+      <aside class="est-out">
+        <span class="k">예상 비용</span>
+        <div class="v" id="estValue">—</div>
+        <div class="c" id="estCriteria">조건을 선택하세요</div>
+        <a href="tel:010-4535-9907" class="eb eb-g">전화 · 문자 상담</a>
+        <a href="https://open.kakao.com/o/seIDHWzi" target="_blank" rel="noopener" class="eb eb-k">카카오톡으로 사진 보내기</a>
+        <p class="est-note">평수, 물건 양, 오염 정도, 엘리베이터 유무에 따라 달라집니다. 견적 확정 후 사전 안내 없는 추가금은 청구하지 않습니다.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AREA ============ -->
+<section class="sec sec--wash" id="area">
+  <div class="wrap">
+    <div class="sec-hd">
+      <span class="sec-num">07 AREA</span>
+      <h2>출동 지역</h2>
+    </div>
+    <div class="area-grid">
+      <div class="area-k"><svg viewBox="0 0 48 48"><use href="#ic-truck"/></svg>서울 · 인천 · 경기</div>
+      <div>
+        <div class="area-list">
+          <span>강서구</span><span>관악구</span><span>구로구</span><span>양천구</span><span>인천</span>
+          <span>고양</span><span>일산</span><span>과천</span><span>광명</span><span>군포</span>
+          <span>김포</span><span>부천</span><span>성남</span><span>수원</span><span>시흥</span>
+          <span>안산</span><span>안양</span><span>파주</span>
+        </div>
+        <p class="area-note">위 지역 외에도 수도권 전역 출동이 가능합니다. 지역이 목록에 없어도 문의해 주세요.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-hd">
+      <span class="sec-num">08 FAQ</span>
+      <h2>자주 묻는 질문</h2>
+    </div>
+    <div class="faq">
+      <details><summary>집 상태가 심한데 보여드리기 부끄럽습니다</summary><p>2,000건이 넘는 현장을 다녀왔습니다. 어떤 상태여도 평가하거나 놀라지 않습니다. 판단하지 않고 정리하는 것이 저희 일입니다.</p></details>
+      <details><summary>방문 없이 견적을 받을 수 있나요</summary><p>가능합니다. 카카오톡이나 문자로 현장 사진을 보내주시면 평수와 물건 양을 확인해 예상 범위를 안내해 드립니다. 확정 견적은 방문 후 산정됩니다.</p></details>
+      <details><summary>이웃이나 가족이 모르게 진행할 수 있나요</summary><p>가능합니다. 무표시 차량 이용, 야간 및 새벽 작업 등 상황에 맞춰 조율합니다. 문의 시 미리 말씀해 주시면 그에 맞게 준비합니다.</p></details>
+      <details><summary>작업 시간은 얼마나 걸리나요</summary><p>원룸 기준 반나절, 20~30평대는 하루 정도가 일반적입니다. 특수청소나 대형 평수는 소독 및 복구 일정이 추가될 수 있습니다.</p></details>
+      <details><summary>귀중품이나 남겨야 할 물건은 어떻게 하나요</summary><p>작업 전 보관 품목을 알려주시면 별도로 분류합니다. 작업 중 발견되는 현금, 귀금속, 중요 서류는 즉시 연락드려 확인 후 전달합니다.</p></details>
+      <details><summary>추가 비용이 붙나요</summary><p>평수, 물건 양, 오염 정도, 엘리베이터 유무, 폐기물 종류에 따라 비용이 결정됩니다. 견적 확정 이후 사전에 안내되지 않은 금액은 청구하지 않습니다.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ APPENDIX (SEO) ============ -->
+<section class="apx">
+  <div class="wrap">
+    <h2>서비스 상세 안내</h2>
+    <div class="apx-grid">
+      <div class="apx-b">
+        <h3>유품정리 · 고인 유품 처리</h3>
+        <p><b>고인유품정리</b>, <b>부모님유품정리</b>, <b>돌아가신분짐정리</b>, <b>돌아가신분집정리</b>, <b>요양원입소집정리</b>가 필요하실 때 유족을 배려하며 조용히 진행합니다. <b>유품정리업체</b>를 찾고 계신다면 <b>유품정리대행</b>부터 <b>유품정리견적</b>, <b>유품정리비용</b> 산정, <b>유품처리</b>와 <b>유품치우기</b>까지 원스톱으로 안내해 드립니다.</p>
+      </div>
+      <div class="apx-b">
+        <h3>쓰레기집청소 · 생활폐기물 정리</h3>
+        <p>혼자 감당하기 어려운 <b>쓰레기집청소</b>, <b>쓰레기집정리</b>, <b>쓰레기집치우기</b>, <b>짐치우기</b>를 전문 인력과 장비로 처리합니다. <b>집치워주는곳</b>을 찾고 계시다면 <b>쓰레기집청소비용</b>과 <b>쓰레기집처리비용</b>을 사진만으로 안내해 드리며, <b>가정폐기물처리업체</b>로서 <b>빈집정리</b>와 <b>빈집만들기</b>도 진행합니다.</p>
+      </div>
+      <div class="apx-b">
+        <h3>원룸 · 오피스텔 폐기물</h3>
+        <p><b>원룸쓰레기처리</b>, <b>원룸폐기물</b>, <b>원룸오피스텔짐정리</b>는 소형 공간에 맞춘 방식으로 합리적으로 처리합니다. 퇴거나 이사로 급한 경우 당일 방문이 가능한 때가 많으며, <b>원룸쓰레기청소비용</b>은 평수와 물건량에 따라 무료 상담으로 확인하실 수 있습니다.</p>
+      </div>
+      <div class="apx-b">
+        <h3>고독사청소 · 특수청소</h3>
+        <p>냄새와 오염이 남은 현장의 <b>고독사청소</b>는 특수 장비와 전문 소독으로 원상 복구하며 <b>고독사유품정리</b>까지 함께 진행합니다. <b>고독사청소비용</b>과 <b>고독사청소견적</b>은 오염 범위와 면적에 따라 달라지며, 방문 없이 사진만으로 사전 안내가 가능합니다.</p>
+      </div>
+    </div>
+    <div class="apx-tags">
+      <details>
+        <summary>지역별 세부 서비스 안내</summary>
+        <p>부천 · 인천 · 시흥 · 광명 · 수원 · 성남 · 파주 · 일산 · 고양 · 강서구 · 양천구 · 관악구 · 안산 · 안양 · 군포 · 김포 · 과천 · 구로구 유품폐기, 유품수거, 가정폐기물일괄수거, 가정살림처분, 원룸빈집정리, 원룸쓰레기집, 저장강박증집청소, 요양원들어가실때집정리, 집전체비우기, 아파트빈집정리</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<footer class="ftr">
+  <div class="wrap">
+    <div class="ftr-top">
+      <div>
+        <div class="ftr-mark">정리맨<em>.</em></div>
+        <a href="tel:010-4535-9907" class="ftr-tel">010-4535-9907</a>
+        <div class="ftr-hours"><span class="dot"></span>연중무휴 24시간 상담 · 서울 · 인천 · 경기 출동</div>
+      </div>
+      <nav class="ftr-nav">
+        <a href="#work">작업 사례</a>
+        <a href="#service">서비스</a>
+        <a href="#area">지역</a>
+        <a href="https://open.kakao.com/o/seIDHWzi" target="_blank" rel="noopener">카카오톡</a>
+      </nav>
+    </div>
+    <div class="ftr-biz">
+      <span>상호 튜니티</span><span>대표 김경희</span><span>사업자등록번호 557-18-01325</span><span>통신판매번호 신고면제</span><br>
+      <span>경기도 부천시 장말로 209번길 7</span><span>vlrtlvfhr11@naver.com</span>
+    </div>
+    <div class="ftr-btm">
+      <span>© 2026 TUNITY</span>
+      <span><a href="#">이용약관</a> &nbsp; <a href="네_노션_또는_약관_페이지_주소" target="_blank" rel="noopener">개인정보처리방침</a></span>
+    </div>
+  </div>
 </footer>
 
-<a href="https://open.kakao.com/o/seIDHWzi" target="_blank" class="floating-kakao-btn" title="카카오톡 1:1 상담하기">
-    <svg viewBox="0 0 24 24">
-        <path d="M12 3c-4.97 0-9 3.185-9 7.115 0 2.557 1.707 4.8 4.34 6.033-.188.643-.68 2.327-.778 2.673-.117.411.144.405.3.332.122-.057 1.954-1.317 2.734-1.854.453.111.924.17 1.404.17 4.97 0 9-3.186 9-7.116C21 6.185 16.97 3 12 3z"/>
-    </svg>
-</a>
-
-<div id="botModal" class="modal-overlay">
-    <div class="bot-container">
-        <button class="close-modal-btn" onclick="closeBotModal()">&times;</button>
-        <div class="progress-bar-container" id="progressContainer">
-            <div class="progress-bar" id="progressBar"></div>
-        </div>
-        <div class="question-box animate-fade-slide" id="questionBox"></div>
-        <div class="nav-actions" id="navActions">
-            <button class="btn btn-prev" id="prevBtn" onclick="movePrev()" disabled>이전</button>
-            <button class="btn btn-next" id="nextBtn" onclick="moveNext()">다음</button>
-        </div>
-    </div>
+<div class="mcta">
+  <a href="tel:010-4535-9907" class="m-call">
+    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.6 2.8a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.8.6a2 2 0 0 1 1.7 2z"/></svg>
+    전화 · 문자 상담
+  </a>
+  <a href="https://open.kakao.com/o/seIDHWzi" target="_blank" rel="noopener" class="m-kko">
+    <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 3.185-9 7.115 0 2.557 1.707 4.8 4.34 6.033-.188.643-.68 2.327-.778 2.673-.117.411.144.405.3.332.122-.057 1.954-1.317 2.734-1.854.453.111.924.17 1.404.17 4.97 0 9-3.186 9-7.116C21 6.185 16.97 3 12 3z"/></svg>
+    카카오톡
+  </a>
 </div>
 
 <script>
-    var supabaseUrl = 'https://dibiiadehevnemhszgug.supabase.co';
-    var supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpYmlpYWRlaGV2bmVtaHN6Z3VnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyOTEyOTcsImV4cCI6MjA5Njg2NzI5N30.KMEp-oqTrRds9gzAdyhgMXyfnpQ3Sn1IPxRfq92kecw';
-    var supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+/* ---------- supabase ---------- */
+var supabaseUrl='https://dibiiadehevnemhszgug.supabase.co';
+var supabaseKey='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpYmlpYWRlaGV2bmVtaHN6Z3VnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyOTEyOTcsImV4cCI6MjA5Njg2NzI5N30.KMEp-oqTrRds9gzAdyhgMXyfnpQ3Sn1IPxRfq92kecw';
+var supabase=window.supabase.createClient(supabaseUrl,supabaseKey);
 
-    function createStarfield(canvasId) {
-        const canvas = document.getElementById(canvasId);
-        if(!canvas) return;
-        const ctx = canvas.getContext('2d');
-        let stars = [];
-        
-        function resize() {
-            canvas.width = canvas.parentElement.clientWidth;
-            canvas.height = canvas.parentElement.clientHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 
-        const starCount = Math.min(Math.floor(canvas.width / 15), 100);
-        for(let i=0; i<starCount; i++) {
-            stars.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                size: Math.random() * 1.5 + 0.5,
-                opacity: Math.random(),
-                speed: Math.random() * 0.15 + 0.05,
-                blinkSpeed: Math.random() * 0.02 + 0.01
-            });
-        }
+/* 히어로 배경: ./hero.jpg 가 있으면 블러 사진, 없으면 그린 그라데이션 유지 */
+(function initHeroBackground(){
+  const img=new Image();
+  img.onload=()=>document.querySelector('.hero').classList.add('has-photo');
+  img.src='./hero.jpg';
+})();
 
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            stars.forEach(star => {
-                star.opacity += star.blinkSpeed;
-                if(star.opacity > 1 || star.opacity < 0.2) star.blinkSpeed = -star.blinkSpeed;
-                
-                star.x -= star.speed;
-                star.y += star.speed * 0.5;
-                
-                if(star.x < 0) star.x = canvas.width;
-                if(star.y > canvas.height) star.y = 0;
-                
-                ctx.beginPath();
-                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
-                ctx.shadowBlur = star.size * 4;
-                ctx.shadowColor = "#ffffff";
-                ctx.fill();
-            });
-            requestAnimationFrame(animate);
-        }
-        animate();
-    }
+const fallbackCases=[
+  {category:'유품정리',title:'송파구 30평대 아파트 유품정리',description:'유품을 분류해 가족분들께 전달하고 잔여 폐기물을 전량 반출했습니다.',image_url:''},
+  {category:'쓰레기집청소',title:'관악구 원룸 방치 폐기물 수거',description:'누적 생활 폐기물 약 2톤을 반출하고 방역과 탈취를 진행했습니다.',image_url:''},
+  {category:'특수청소',title:'마포구 오피스텔 특수 방역',description:'오염 바닥재를 철거하고 전용 약품으로 악취와 세균을 제거했습니다.',image_url:''}
+];
+const fallbackReviews=[
+  {customer_name:'김*영',review_date:'2026.06.10',stars:'★★★★★',description:'연락을 오래 망설였는데 조용히 처리해 주셔서 감사했습니다. 집이 완전히 달라졌습니다.'},
+  {customer_name:'이*준',review_date:'2026.06.05',stars:'★★★★★',description:'경황이 없는 상황에서 유품 분류부터 청소까지 차분하게 도와주셨습니다.'},
+  {customer_name:'박*수',review_date:'2026.05.28',stars:'★★★★★',description:'견적 범위 안에서 추가금 없이 소독까지 마무리해 주셨습니다.'}
+];
 
-    createStarfield('starfieldHero');
+/* ---------- cases ---------- */
+async function loadCases(){
+  const g=document.getElementById('caseGrid'); if(!g) return;
+  let rows=null;
+  try{const r=await supabase.from('cases').select('*').order('created_at',{ascending:false});rows=r.data;}catch(e){console.error(e);}
+  const data=(!rows||!rows.length)?fallbackCases:rows;
 
-    const defaultCases = [
-        { category: '유품정리', title: '송파구 30평대 아파트 유품정리', description: '가족분들을 대신하여 소중한 유품을 분류하고 폐기물을 완벽히 수거 완료했습니다.', image_url: '' },
-        { category: '쓰레기집청소', title: '관악구 원룸 방치 폐기물 수거', description: '오랜 기간 누적된 생활 쓰레기 2톤을 신속하게 반출하고 특수 방역을 진행했습니다.', image_url: '' },
-        { category: '특수청소', title: '마포구 오피스텔 특수 방역', description: '오염된 바닥재를 철거하고 전용 약품을 사용해 악취와 세균을 100% 제거했습니다.', image_url: '' }
-    ];
+  g.innerHTML=data.map(it=>{
+    const fig=it.image_url
+      ? `<img src="${esc(it.image_url)}" alt="${esc(it.title)}" loading="lazy">`
+      : `<div class="ph">현장 사진 준비중</div>`;
+    const body=`
+      <div class="tile-fig">${fig}</div>
+      <div class="tile-cat">${esc(it.category)}</div>
+      <div class="tile-ttl">${esc(it.title)}</div>
+      <p class="tile-txt">${esc(it.description||'')}</p>`;
+    return it.link_url&&String(it.link_url).trim()
+      ? `<a class="tile" href="${esc(it.link_url)}" target="_blank" rel="noopener">${body}</a>`
+      : `<div class="tile">${body}</div>`;
+  }).join('');
+}
 
-    const defaultReviews = [
-        { customer_name: '김*영 고객님', review_date: '2026.06.10', stars: '★★★★★', description: '부끄러워서 연락을 망설였는데 비대면으로 비밀 보장 확실하게 처리해주셔서 너무 감사했습니다. 새 집이 된 것 같아요!' },
-        { customer_name: '이*준 고객님', review_date: '2026.06.05', stars: '★★★★★', description: '갑작스러운 일이라 경황이 없었는데 유품 분류부터 청소까지 너무 정성스럽게 도와주셔서 큰 위로가 되었습니다.' },
-        { customer_name: '박*수 고객님', review_date: '2026.05.28', stars: '★★★★★', description: '비용이 투명해서 좋았어요. 예상했던 견적 범위 내에서 추가금 없이 완벽하게 소독까지 마무리해주셨습니다.' }
-    ];
+/* ---------- reviews ---------- */
+async function loadReviews(){
+  const g=document.getElementById('reviewGrid'); if(!g) return;
+  let rows=null;
+  try{const r=await supabase.from('reviews').select('*').order('created_at',{ascending:false});rows=r.data;}catch(e){console.error(e);}
+  const data=(!rows||!rows.length)?fallbackReviews:rows;
 
-document.addEventListener('DOMContentLoaded', () => {
-        loadCasesForMain();
-        loadReviewsForMain();
-        loadMainYoutubeVideos(); // 기존 호출
-        
-        enableDragScroll(document.getElementById('mainCaseGrid'));
-        enableDragScroll(document.getElementById('mainReviewGrid'));
-        // 👇 이 줄을 꼭 추가해!
-        enableDragScroll(document.getElementById('mainYoutubeGrid'));
-        
-        renderUI();
-    });
+  g.innerHTML=data.map(it=>`
+    <div class="rev-item">
+      <div class="rev-stars">${esc(it.stars||'★★★★★')}</div>
+      <p class="rev-body">${esc(it.description||'')}</p>
+      <div class="rev-by"><b>${esc(it.customer_name)}</b>${esc(it.review_date||'')}</div>
+    </div>`).join('');
+}
 
-    async function loadCasesForMain() {
-        const grid = document.getElementById('mainCaseGrid');
-        const { data: cases, error } = await supabase.from('cases').select('*').order('created_at', { ascending: false });
-        const displayData = (!cases || cases.length === 0) ? defaultCases : cases;
-        
-        grid.innerHTML = '';
-        displayData.forEach(item => {
-            let displayDesc = item.description;
-            if (displayDesc.length > 500) displayDesc = displayDesc.substring(0, 500) + '...';
-            
-            const imgHtml = item.image_url 
-                ? `<div style="width:100%; height:100%; background: url('${item.image_url}') no-repeat center center; background-size: cover;"></div>` 
-                : `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#94a3b8;">현장 사진 준비중</div>`;
-            
-            // 🚨 링크가 있으면 A 태그 껍데기, 없으면 일반 DIV 껍데기 생성
-            if (item.link_url && item.link_url.trim() !== '') {
-                grid.innerHTML += `
-                    <div class="slide-item">
-                        <a href="${item.link_url}" target="_blank" class="card-box" style="text-decoration: none; display: block; position: relative;">
-                            <div class="case-img">${imgHtml}</div>
-                            <div class="case-info">
-                                <span class="case-tag">${item.category}</span>
-                                <h3 class="case-title">${item.title}</h3>
-                                <p class="case-desc" style="color:var(--toss-gray-600);">${displayDesc}</p>
-                            </div>
-                            <div style="position: absolute; bottom: 20px; right: 20px; background: var(--toss-blue); color: white; border-radius: 50%; width: 32px; height: 32px; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
-                                ➔
-                            </div>
-                        </a>
-                    </div>
-                `;
-            } else {
-                grid.innerHTML += `
-                    <div class="slide-item">
-                        <div class="card-box">
-                            <div class="case-img">${imgHtml}</div>
-                            <div class="case-info">
-                                <span class="case-tag">${item.category}</span>
-                                <h3 class="case-title">${item.title}</h3>
-                                <p class="case-desc">${displayDesc}</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-        });
-    }
+/* ---------- videos ---------- */
+function ytId(url){
+  const m=String(url||'').match(/^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/);
+  return (m&&m[2].length===11)?m[2]:null;
+}
+window.playVideo=function(el){
+  const id=el.getAttribute('data-id'); if(!id) return;
+  el.innerHTML=`<iframe src="https://www.youtube.com/embed/${id}?autoplay=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen title="정리맨 현장 영상"></iframe>`;
+};
+async function loadVideos(){
+  const g=document.getElementById('videoGrid'); if(!g) return;
+  let rows=null;
+  try{const r=await supabase.from('youtube_videos').select('*').order('created_at',{ascending:false}).limit(9);rows=r.data;}catch(e){console.error(e);}
+  if(!rows||!rows.length){g.innerHTML='<p style="color:#8d9993;font-size:14px;">등록된 영상이 없습니다.</p>';return;}
 
-    async function loadReviewsForMain() {
-        const grid = document.getElementById('mainReviewGrid');
-        const { data: reviews, error } = await supabase.from('reviews').select('*').order('created_at', { ascending: false });
-        const displayData = (!reviews || reviews.length === 0) ? defaultReviews : reviews;
-        
-        grid.innerHTML = '';
-        displayData.forEach(item => {
-            let displayDesc = item.description;
-            if (displayDesc.length > 500) displayDesc = displayDesc.substring(0, 500) + '...';
+  const html=rows.map(v=>{
+    const id=ytId(v.youtube_url); if(!id) return '';
+    return `<div>
+      <div class="vid" data-id="${id}" role="button" tabindex="0" onclick="playVideo(this)" onkeydown="if(event.key==='Enter')playVideo(this)">
+        <img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="${esc(v.title)}" loading="lazy">
+        <span class="vid-play"></span>
+      </div>
+      <div class="vid-ttl">${esc(v.title)}</div>
+    </div>`;
+  }).join('');
+  g.innerHTML=html||'<p style="color:#8d9993;font-size:14px;">등록된 영상이 없습니다.</p>';
+}
 
-            grid.innerHTML += `
-                <div class="slide-item">
-                    <div class="card-box review-box">
-                        <div class="review-header">
-                            <div class="reviewer-info">
-                                <span class="reviewer-name">${item.customer_name}</span>
-                                <span class="review-date">${item.review_date}</span>
-                            </div>
-                            <div class="review-stars">${item.stars}</div>
-                        </div>
-                        <p class="review-body">${displayDesc}</p>
-                    </div>
-                </div>
-            `;
-        });
-    }
+/* ---------- estimate ---------- */
+const CONFIG={
+  trash:{
+    steps:[{label:'5평↓',min:25,max:35},{label:'10평',min:35,max:50},{label:'20평',min:60,max:90},{label:'30평',min:90,max:130},{label:'40평',min:120,max:170},{label:'50평',min:150,max:210},{label:'60평',min:180,max:250}],
+    singles:{title:'오염 정도',key:'level',options:[{name:'경미',weight:1.0},{name:'보통',weight:1.4},{name:'심함',weight:1.8},{name:'매우 심함',weight:2.3}]},
+    multis:{title:'추가 옵션',key:'opts',options:[{id:'t_night',name:'야간·새벽 작업',minAdd:10,maxAdd:15},{id:'t_dis',name:'강력 소독·탈취',minAdd:5,maxAdd:10},{id:'t_waste',name:'폐기물 처리 병행',minAdd:20,maxAdd:35}]}
+  },
+  special:{
+    steps:[{label:'5평↓',min:90,max:185},{label:'10평',min:120,max:165},{label:'20평',min:150,max:250},{label:'30평',min:200,max:350},{label:'40평',min:300,max:440},{label:'50평',min:440,max:660}],
+    singles:{title:'현장 종류',key:'type',options:[{name:'고독사·사망',weight:1.0},{name:'혈흔·체액',weight:.85},{name:'화재·그을음',weight:1.2},{name:'동물 오염',weight:.7},{name:'침수·곰팡이',weight:.5}]},
+    extraSingles:{title:'오염 범위',key:'range',options:[{name:'일부',weight:1.0},{name:'절반',weight:1.7},{name:'전체',weight:2.4}]}
+  },
+  funeral:{
+    steps:[{label:'5평↓',min:25,max:35},{label:'10평',min:35,max:50},{label:'20평',min:65,max:85},{label:'30평',min:95,max:130},{label:'40평',min:130,max:175},{label:'50평',min:170,max:230},{label:'60평',min:210,max:290}],
+    singles:{title:'물건 양',key:'volume',options:[{name:'적음',weight:1.0},{name:'보통',weight:1.3},{name:'많음',weight:1.6},{name:'매우 많음',weight:2.2}]},
+    multis:{title:'추가 옵션',key:'opts',options:[{id:'f_clean',name:'청소 병행',minAdd:10,maxAdd:15},{id:'f_sp',name:'특수청소 병행',minAdd:30,maxAdd:50},{id:'f_sec',name:'야간 비공개 작업',minAdd:15,maxAdd:20}]}
+  }
+};
 
-    function enableDragScroll(slider) {
-        let isDown = false; let startX; let scrollLeft;
-        slider.addEventListener('mousedown', (e) => { isDown = true; startX = e.pageX - slider.offsetLeft; scrollLeft = slider.scrollLeft; });
-        slider.addEventListener('mouseleave', () => { isDown = false; });
-        slider.addEventListener('mouseup', () => { isDown = false; });
-        slider.addEventListener('mousemove', (e) => {
-            if (!isDown) return; e.preventDefault(); const x = e.pageX - slider.offsetLeft;
-            const walk = (x - startX) * 1.5; slider.scrollLeft = scrollLeft - walk;
-        });
-    }
+let state={cat:'trash',
+  trash:{i:1,level:'경미',opts:[]},
+  special:{i:1,type:'고독사·사망',range:'일부'},
+  funeral:{i:1,volume:'적음',opts:[]}
+};
 
-   /* --- 계산기 로직 --- */
-   const CONFIG = {
-        trash: {
-            steps: [ { label: '5평↓', min: 25, max: 35 }, { label: '10평', min: 35, max: 50 }, { label: '20평', min: 60, max: 90 }, { label: '30평', min: 90, max: 130 }, { label: '40평', min: 120, max: 170 }, { label: '50평', min: 150, max: 210 }, { label: '60평', min: 180, max: 250 } ],
-            singles: { title: '오염 정도', key: 'level', options: [ { name: '경미 (쓰레기 조금)', weight: 1.0 }, { name: '보통 (방 한두개)', weight: 1.4 }, { name: '심함 (전 공간)', weight: 1.8 }, { name: '매우 심함 (악취·해충)', weight: 2.3 } ] },
-            multis: { title: '추가 옵션', key: 'opts', options: [ { id: 't_night', name: '야간·새벽 작업', minAdd: 10, maxAdd: 15 }, { id: 't_disinfect', name: '강력 소독·탈취', minAdd: 5, maxAdd: 10 }, { id: 't_waste', name: '폐기물 처리 병행', minAdd: 20, maxAdd: 35 } ] }
-        },
-        special: {
-            steps: [ { label: '5평↓', min: 90, max: 185 }, { label: '10평', min: 120, max: 165 }, { label: '20평', min: 150, max: 250 }, { label: '30평', min: 200, max: 350 }, { label: '40평', min: 300, max: 440 }, { label: '50평', min: 440, max: 660 }, ],
-            singles: { title: '현장 종류', key: 'type', options: [ { name: '고독사·사망', weight: 1.0 }, { name: '혈흔·체액', weight: 0.85 }, { name: '화재·그을음', weight: 1.2 }, { name: '동물 오염', weight: 0.7 }, { name: '침수·곰팡이', weight: 0.5 } ] },
-            extraSingles: { title: '오염 범위', key: 'range', options: [ { name: '일부 (방 1개)', weight: 1.0 }, { name: '절반', weight: 1.7 }, { name: '전체', weight: 2.4 } ] }
-        },
-        funeral: {
-            steps: [ { label: '5평↓', min: 25, max: 35 }, { label: '10평', min: 35, max: 50 }, { label: '20평', min: 65, max: 85 }, { label: '30평', min: 95, max: 130 }, { label: '40평', min: 130, max: 175 }, { label: '50평', min: 170, max: 230 }, { label: '60평', min: 210, max: 290 } ],
-            singles: { title: '물건 양', key: 'volume', options: [ { name: '적음', weight: 1.0 }, { name: '보통', weight: 1.3 }, { name: '많음', weight: 1.6 }, { name: '매우 많음', weight: 2.2 } ] },
-            multis: { title: '추가 옵션', key: 'opts', options: [ { id: 'f_clean', name: '청소 병행', minAdd: 10, maxAdd: 15 }, { id: 'f_special', name: '특수청소 병행', minAdd: 30, maxAdd: 50 }, { id: 'f_secret', name: '야간 비밀 작업', minAdd: 15, maxAdd: 20 } ] }
-        }
-    };
+window.switchCategory=function(c){
+  state.cat=c;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  const t=document.getElementById('tab-'+c); if(t)t.classList.add('on');
+  renderEstimate();
+};
 
+function field(cfg,d){
+  return `<div class="fld"><div class="fld-hd"><h4>${cfg.title}</h4></div><div class="chips">${cfg.options.map(o=>`<button class="chip ${d[cfg.key]===o.name?'on':''}" onclick="setSingle('${cfg.key}','${o.name}')">${o.name}</button>`).join('')}</div></div>`;
+}
 
-    let state = { currentCategory: 'trash', trash: { stepIndex: 1, level: '경미 (쓰레기 조금)', opts: [] }, special: { stepIndex: 1, type: '고독사·사망', range: '일부 (방 1개)' }, funeral: { stepIndex: 1, volume: '적음', opts: [] } };
+function renderEstimate(){
+  const box=document.getElementById('estFields'); if(!box) return;
+  const c=state.cat,cfg=CONFIG[c],d=state[c],step=cfg.steps[d.i];
+  let h='';
+  h+=`<div class="fld">
+    <div class="fld-hd"><h4>면적</h4><b>${step.label}</b></div>
+    <input type="range" class="rng" min="0" max="${cfg.steps.length-1}" value="${d.i}" oninput="setStep(this.value)">
+    <div class="ticks">${cfg.steps.map((s,i)=>`<span class="tick ${i===d.i?'on':''}" onclick="setStep(${i})">${s.label}</span>`).join('')}</div>
+  </div>`;
+  if(cfg.singles) h+=field(cfg.singles,d);
+  if(cfg.extraSingles) h+=field(cfg.extraSingles,d);
+  if(cfg.multis) h+=`<div class="fld"><div class="fld-hd"><h4>${cfg.multis.title}</h4></div><div class="chips">${cfg.multis.options.map(o=>`<button class="chip ${d.opts.includes(o.id)?'on-m':''}" onclick="toggleOpt('${o.id}')">${o.name}</button>`).join('')}</div></div>`;
+  box.innerHTML=h;
+  calcPrice();
+}
 
-    window.switchCategory = function(catId) { state.currentCategory = catId; document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active')); document.getElementById(`tab-${catId}`).classList.add('active'); renderUI(); };
+window.setStep=function(v){state[state.cat].i=parseInt(v,10);renderEstimate();};
+window.setSingle=function(k,v){state[state.cat][k]=v;renderEstimate();};
+window.toggleOpt=function(id){
+  const a=state[state.cat].opts,i=a.indexOf(id);
+  if(i>-1)a.splice(i,1);else a.push(id);
+  renderEstimate();
+};
 
-    function renderUI() {
-        const card = document.getElementById('dynamicCard');
-        if (!card) return;
-        const cat = state.currentCategory; const config = CONFIG[cat]; const currentData = state[cat]; const currentStep = config.steps[currentData.stepIndex];
-        let html = ''; const areaTitle = cat === 'special' ? '면적' : '공간 면적';
-        
-        html += `<div class="step-section"><div class="step-header"><span class="step-title">${areaTitle}</span><span class="current-badge" id="areaBadge">${currentStep.label}</span></div><div class="slider-wrapper" style="width:100%; max-width:100%; margin:0; padding: 12px 13px 30px 13px;"><input type="range" class="range-slider" id="areaSlider" min="0" max="${config.steps.length - 1}" value="${currentData.stepIndex}" onchange="handleSlider(this.value)"><div class="slider-ticks">${config.steps.map((s, idx) => `<span class="tick-label ${idx === currentData.stepIndex ? 'active' : ''}" onclick="handleSlider(${idx})">${s.label}</span>`).join('')}</div></div></div>`;
+function calcPrice(){
+  const c=state.cat,cfg=CONFIG[c],d=state[c],step=cfg.steps[d.i];
+  let w=1,aMin=0,aMax=0;
+  if(cfg.singles){const o=cfg.singles.options.find(x=>x.name===d[cfg.singles.key]);if(o)w*=o.weight;}
+  if(cfg.extraSingles){const o=cfg.extraSingles.options.find(x=>x.name===d[cfg.extraSingles.key]);if(o)w*=o.weight;}
+  if(cfg.multis)d.opts.forEach(id=>{const o=cfg.multis.options.find(x=>x.id===id);if(o){aMin+=o.minAdd;aMax+=o.maxAdd;}});
 
-        if (config.singles) html += `<div class="step-section"><div class="step-header"><span class="step-title">${config.singles.title}</span></div><div class="chip-grid">${config.singles.options.map(opt => `<button class="chip-btn ${currentData[config.singles.key] === opt.name ? 'active' : ''}" onclick="handleSingleSelect('${config.singles.key}', '${opt.name}')">${opt.name}</button>`).join('')}</div></div>`;
-        if (config.extraSingles) html += `<div class="step-section"><div class="step-header"><span class="step-title">${config.extraSingles.title}</span></div><div class="chip-grid">${config.extraSingles.options.map(opt => `<button class="chip-btn ${currentData[config.extraSingles.key] === opt.name ? 'active' : ''}" onclick="handleSingleSelect('${config.extraSingles.key}', '${opt.name}')">${opt.name}</button>`).join('')}</div></div>`;
-        if (config.multis) html += `<div class="step-section"><div class="step-header"><span class="step-title">${config.multis.title}</span></div><div class="chip-grid">${config.multis.options.map(opt => `<button class="chip-btn ${currentData.opts.includes(opt.id) ? 'multi-active' : ''}" onclick="handleMultiSelect('${opt.id}')">${opt.name}</button>`).join('')}</div></div>`;
-        card.innerHTML = html; calculatePrice();
-    }
+  const lo=Math.round(step.min*w+aMin),hi=Math.round(step.max*w+aMax);
+  const vEl=document.getElementById('estValue');
+  if(vEl)vEl.textContent=`${lo.toLocaleString()}–${hi.toLocaleString()}만원`;
 
-    window.handleSlider = function(val) { state[state.currentCategory].stepIndex = parseInt(val); renderUI(); };
-    window.handleSingleSelect = function(key, value) { state[state.currentCategory][key] = value; renderUI(); };
-    window.handleMultiSelect = function(optId) { const arr = state[state.currentCategory].opts; const idx = arr.indexOf(optId); if(idx > -1) arr.splice(idx, 1); else arr.push(optId); renderUI(); };
+  let s=step.label;
+  if(c==='trash')s+=` · 오염 ${d.level}`;
+  if(c==='special')s+=` · ${d.type} · ${d.range} 오염`;
+  if(c==='funeral')s+=` · 물건 ${d.volume}`;
+  const cEl=document.getElementById('estCriteria');
+  if(cEl)cEl.textContent=`${s} 기준`;
+}
 
-    function calculatePrice() {
-        const cat = state.currentCategory; const config = CONFIG[cat]; const currentData = state[cat]; const step = config.steps[currentData.stepIndex];
-        let finalWeight = 1.0, addMin = 0, addMax = 0;
-        if (config.singles) { const opt = config.singles.options.find(o => o.name === currentData[config.singles.key]); if (opt) finalWeight *= opt.weight; }
-        if (config.extraSingles) { const opt = config.extraSingles.options.find(o => o.name === currentData[config.extraSingles.key]); if (opt) finalWeight *= opt.weight; }
-        
-        let calcMin = step.min * finalWeight, calcMax = step.max * finalWeight;
-        if (config.multis) { currentData.opts.forEach(id => { const optObj = config.multis.options.find(o => o.id === id); if (optObj) { addMin += optObj.minAdd; addMax += optObj.maxAdd; } }); }
+/* ---------- init ---------- */
+document.addEventListener('DOMContentLoaded',()=>{
+  loadCases();
+  loadReviews();
+  loadVideos();
 
-        document.getElementById('totalPriceDisplay').innerText = `${Math.round(calcMin + addMin)} ~ ${Math.round(calcMax + addMax)}만원`;
-        let summary = `${step.label}`;
-        if (cat === 'trash') summary += ` · 오염 ${currentData.level.split(' ')[0]}`;
-        if (cat === 'special') summary += ` · ${currentData.type} · ${currentData.range.split(' ')[0]} 오염`;
-        if (cat === 'funeral') summary += ` · 물건 ${currentData.volume}`;
-        document.getElementById('criteriaSummary').innerText = `${summary} 기준`;
-    }
-
-    /* --- 봇 로직 --- */
-    const BOT_STEPS = [
-        { id: 'name', type: 'text', title: '성함이 어떻게 되시나요?', desc: '상담 예약을 위해서만 활용되는 정보입니다.', placeholder: '이름을 입력해주세요' },
-        { id: 'sido', type: 'sido', title: '서비스가 필요한 지역이 어디인가요?', desc: '정리맨 지점 배정을 위한 시/도 선택 단계입니다.' },
-        { id: 'gugun', type: 'gugun', title: '세부 행정구역을 골라주세요.', desc: '선택하신 지역의 세부 구/군 목록입니다.' },
-        { id: 'date_exact', type: 'date', title: '방문 희망 날짜를 선택해주세요.', desc: '가족 상담팀이 일정을 조율해 드립니다.' },
-        { id: 'structure', type: 'select', title: '해당 공간의 건물 형태는 무엇인가요?', desc: '차량 및 장비 포지셔닝에 사용됩니다.', options: ['아파트', '빌라 / 다세대', '오피스텔', '단독주택', '상가 상업공간'] },
-        { id: 'size', type: 'select', title: '전용 실평수는 어느 정도인가요?', desc: '대략적인 기본 투입 인력 확인용입니다.', options: ['5평 이하 (원룸 구조)', '10평대 구조', '20평대 구조', '30평대 구조', '40평 이상 대형공간'] },
-        { id: 'elevator', type: 'select', title: '건물에 엘리베이터가 있나요?', desc: '작업 동선 및 장비(사다리차 등) 필요 여부를 파악합니다.', options: ['엘리베이터 사용 가능', '엘리베이터 없음 (계단)'] },
-        { id: 'photo', type: 'file', title: '현장을 직접 찍은 내부 사진을 첨부해주세요.', desc: '⚠️ 상세하게 사진을 공유해 주시면 방문 없는 정밀 견적 확정이 가능합니다. (최대 30장)' },
-        { id: 'phone', type: 'tel', title: '연락처를 남겨주세요.', desc: '대략적인 견적 추산 후 적어주신 번호로 연락해 드릴게요.', placeholder: '010-1234-5678' }
-    ];
-
-    const REGION_MAP = { "서울특별시": ["강남구", "강동구", "강북구", "강서구", "관악구", "광진구", "구로구", "노원구", "마포구", "서초구", "송파구", "영등포구", "용산구", "종로구"], "경기도": ["수원시", "성남시", "고양시", "용인시", "부천시", "안산시", "안양시", "화성시", "평택시", "김포시", "하남시"], "인천광역시": ["미추홀구", "남동구", "부평구", "서구", "연수구", "중구"] };
-    let botStepIdx = 0; 
-    let botAnswers = { name: '', sidos: '', guguns: '', date_exact: '', structure: '', size: '', elevator: '', phone: '', photoFiles: [] };
-
-    window.openBotModal = function() { 
-        document.getElementById('botModal').classList.add('active'); 
-        document.getElementById('progressContainer').style.display = 'block'; 
-        document.getElementById('navActions').style.display = 'flex'; 
-        botStepIdx = 0; 
-        botAnswers = { name: '', sidos: '', guguns: '', date_exact: '', structure: '', size: '', elevator: '', phone: '', photoFiles: [] }; 
-        renderBotStep(); 
-    };
-    window.closeBotModal = function() { document.getElementById('botModal').classList.remove('active'); };
-    function renderBotStep() {
-        const step = BOT_STEPS[botStepIdx]; const box = document.getElementById('questionBox');
-        document.getElementById('progressBar').style.width = `${((botStepIdx + 1) / BOT_STEPS.length) * 100}%`;
-        document.getElementById('prevBtn').disabled = botStepIdx === 0;
-        document.getElementById('nextBtn').innerText = botStepIdx === BOT_STEPS.length - 1 ? '완료 및 접수' : '다음';
-        box.classList.remove('animate-fade-slide'); void box.offsetWidth; box.classList.add('animate-fade-slide');
-
-        let inputHtml = '';
-        if (step.type === 'text' || step.type === 'tel') inputHtml = `<div class="input-group"><input type="${step.type}" class="text-input" id="bot-input-${step.id}" placeholder="${step.placeholder}" value="${botAnswers[step.id] || ''}" oninput="validateBotInput()"></div>`;
-        else if (step.type === 'sido') inputHtml = `<div class="input-group"><div class="bot-chip-grid">${Object.keys(REGION_MAP).map(sido => `<button class="bot-chip-option ${botAnswers.sidos === sido ? 'active' : ''}" onclick="handleBotSido('${sido}')">${sido}</button>`).join('')}</div></div>`;
-        else if (step.type === 'gugun') { const currentSido = botAnswers.sidos || "서울특별시"; inputHtml = `<div class="input-group"><div class="bot-chip-grid">${(REGION_MAP[currentSido]||[]).map(gugun => `<button class="bot-chip-option ${botAnswers.guguns === gugun ? 'active' : ''}" onclick="handleBotGugun('${gugun}')">${gugun}</button>`).join('')}</div></div>`; }
-        else if (step.type === 'select') inputHtml = `<div class="input-group"><div class="bot-chip-grid">${step.options.map(opt => `<button class="bot-chip-option ${botAnswers[step.id] === opt ? 'active' : ''}" onclick="handleBotSelect('${step.id}', '${opt}')">${opt}</button>`).join('')}</div></div>`;
-        else if (step.type === 'date') inputHtml = `<div class="input-group"><input type="date" class="date-input" id="bot-input-${step.id}" value="${botAnswers[step.id] || ''}" onchange="validateBotInput()" onclick="try{this.showPicker()}catch(e){}" onfocus="try{this.showPicker()}catch(e){}"></div>`;
-        else if (step.type === 'file') { const count = botAnswers.photoFiles.length; inputHtml = `<div class="input-group"><label class="file-label" for="bot-file-upload" id="botFileLabel">${count > 0 ? `📸 사진 ${count}장 첨부됨` : `📸 현장 사진 첨부하기`}</label><input type="file" id="bot-file-upload" style="display:none;" accept="image/*" multiple onchange="handleBotFiles(this)"><div class="thumbnail-container" id="botThumbnails"></div></div>`; }
-
-        // 마지막 단계일 때만 체크박스 UI 그려줌
-        if (botStepIdx === BOT_STEPS.length - 1) {
-            inputHtml += `
-            <label style="display:flex; align-items:center; gap:8px; margin-top:24px; font-size:14px; font-weight:700; color:var(--toss-gray-700); cursor:pointer;">
-                <input type="checkbox" id="bot-consent-checkbox" onchange="validateBotInput()" style="width:20px; height:20px; cursor:pointer; accent-color:var(--toss-blue);">
-                [필수] <a href="네_노션_또는_약관_페이지_주소" target="_blank" style="color:var(--toss-blue); text-decoration:underline; font-weight:800; margin:0 2px;">개인정보 수집 및 이용</a>에 동의합니다.
-            </label>
-            `;
-        }
-
-        // 🔥 [수정 포인트 1] HTML 구조를 화면(box.innerHTML)에 완벽하게 먼저 주입해서 체크박스 요소를 생성함
-        box.innerHTML = `<h2 class="question-title">${step.title}</h2><p class="question-desc">${step.desc || ''}</p>${inputHtml}`;
-        
-        if (step.type === 'file' && botAnswers.photoFiles.length > 0) renderBotThumbnails();
-        
-        // 🔥 [수정 포인트 2] 화면에 체크박스가 렌더링된 이후에 검증 함수를 실행해야 ROCKS가 정상 작동함
-        validateBotInput();
-
-        if (step.type === 'date') {
-            setTimeout(() => {
-                const dateInput = document.getElementById(`bot-input-${step.id}`);
-                if (dateInput) {
-                    try {
-                        dateInput.showPicker();
-                    } catch(e) {}
-                }
-            }, 100); 
-        }
-    }
-// 다음/완료 버튼 활성화 여부 검증하는 단일 통합 로직
-    window.validateBotInput = function() {
-        const step = BOT_STEPS[botStepIdx]; 
-        const nextBtn = document.getElementById('nextBtn'); 
-        if (!step) return; 
-        let valid = false;
-        
-        if (step.type === 'text' || step.type === 'tel') { 
-            const el = document.getElementById(`bot-input-${step.id}`); 
-            valid = el && el.value.trim().length > 0; 
-            if(valid) botAnswers[step.id] = el.value.trim(); 
-        }
-        else if (step.type === 'sido') valid = !!botAnswers.sidos; 
-        else if (step.type === 'gugun') valid = !!botAnswers.guguns; 
-        else if (step.type === 'select') valid = !!botAnswers[step.id];
-        else if (step.type === 'date') { 
-            const el = document.getElementById(`bot-input-${step.id}`); 
-            valid = el && el.value; 
-            if(valid) botAnswers[step.id] = el.value; 
-        } 
-        else if (step.type === 'file') valid = true;
-        
-        // 🔥 핵심 락: 마지막 연락처 단계에서 체크박스가 체크 안 되어 있으면 무조건 '다음/완료' 버튼 비활성화
-        if (botStepIdx === BOT_STEPS.length - 1) {
-            const consentBox = document.getElementById('bot-consent-checkbox');
-            if (!consentBox || !consentBox.checked) {
-                valid = false;
-            }
-        }
-
-        nextBtn.disabled = !valid;
-    };
-
-    window.handleBotSido = (val) => { botAnswers.sidos = val; botAnswers.guguns = ''; setTimeout(() => { botStepIdx++; renderBotStep(); }, 150); };
-    window.handleBotGugun = (val) => { botAnswers.guguns = val; setTimeout(() => { botStepIdx++; renderBotStep(); }, 150); };
-    window.handleBotSelect = (id, val) => { botAnswers[id] = val; setTimeout(() => { botStepIdx++; renderBotStep(); }, 150); };
-    
-    window.handleBotFiles = (input) => { if(input.files) { botAnswers.photoFiles = [...botAnswers.photoFiles, ...Array.from(input.files)].slice(0, 30); renderBotThumbnails(); } validateBotInput(); };
-
-    function renderBotThumbnails() {
-        const container = document.getElementById('botThumbnails'); const label = document.getElementById('botFileLabel'); if (!container) return;
-        container.innerHTML = ''; label.innerText = `📸 사진 ${botAnswers.photoFiles.length}장 첨부됨 (최대 30장)`;
-        botAnswers.photoFiles.forEach(file => { const r = new FileReader(); r.onload = (e) => { container.innerHTML += `<div class="thumbnail-wrapper"><img src="${e.target.result}" class="thumbnail-img"></div>`; }; r.readAsDataURL(file); });
-    }
-
-    
-    window.moveNext = function() { if (botStepIdx < BOT_STEPS.length - 1) { botStepIdx++; renderBotStep(); } else { buildBotReport(); } };
-    window.movePrev = function() { if (botStepIdx > 0) { botStepIdx--; renderBotStep(); } };
-
-    function compressImageFile(file) {
-        return new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = function(event) {
-                const img = new Image();
-                img.src = event.target.result;
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    let width = img.width; let height = img.height;
-                    const MAX_SIZE = 800;
-                    if (width > height && width > MAX_SIZE) { height *= MAX_SIZE / width; width = MAX_SIZE; } 
-                    else if (height > MAX_SIZE) { width *= MAX_SIZE / height; height = MAX_SIZE; }
-                    canvas.width = width; canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-                    const compressedImgData = canvas.toDataURL('image/jpeg', 0.75);
-                    const blob = dataURItoBlob(compressedImgData);
-                    resolve(blob);
-                };
-            };
-        });
-    }
-
-    function dataURItoBlob(dataURI) {
-        var byteString = atob(dataURI.split(',')[1]);
-        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-        var ab = new ArrayBuffer(byteString.length);
-        var ia = new Uint8Array(ab);
-        for (var i = 0; i < byteString.length; i++) { ia[i] = byteString.charCodeAt(i); }
-        return new Blob([ab], {type: mimeString});
-    }
-
-    window.buildBotReport = async function() {
-        document.getElementById('progressContainer').style.display = 'none'; 
-        document.getElementById('navActions').style.display = 'none';
-        const box = document.getElementById('questionBox');
-        box.innerHTML = `<div style="text-align:center; padding: 50px 0;"><h2 class="question-title">사진 압축 및 서버 접수 중이에요... 🚀</h2><p style="color:var(--toss-gray-600); margin-top:10px;">자동 압축 기술이 적용되어 금방 끝나요!</p></div>`;
-
-        let uploadedUrls = [];
-        try {
-            if (botAnswers.photoFiles && botAnswers.photoFiles.length > 0) {
-                for (let i = 0; i < botAnswers.photoFiles.length; i++) {
-                    const file = botAnswers.photoFiles[i];
-                    const fileName = `consult_${Date.now()}_${i}.jpg`;
-                    const compressedBlob = await compressImageFile(file);
-                    const { data, error } = await supabase.storage.from('consult-images').upload(fileName, compressedBlob, { contentType: 'image/jpeg' });
-                    if (error) { alert(`❌ 사진 업로드 실패!! 원인: ${error.message}`); throw error; }
-                    if (!error) {
-                        const { data: urlData } = supabase.storage.from('consult-images').getPublicUrl(fileName);
-                        uploadedUrls.push(urlData.publicUrl);
-                    }
-                }
-            }
-
-            const { error: dbError } = await supabase.from('consultations').insert([{
-                name: botAnswers.name, phone: botAnswers.phone, region: botAnswers.sidos + ' ' + botAnswers.guguns,
-                date_exact: botAnswers.date_exact, structure: botAnswers.structure + ' / ' + botAnswers.elevator,
-                size: botAnswers.size, photo_count: botAnswers.photoFiles.length, photo_urls: uploadedUrls.join(',')
-            }]);
-            if (dbError) throw dbError;
-
-            // 🔥 [수정 포인트] 가짜 텔레그램 토큰/주소 다 치워버리고, 보안 배포한 Edge Function 호출
-            const tgMessage = `🚨 [새로운 견적 문의 도착!] 🚨\n\n👤 이름: ${botAnswers.name}\n📞 연락처: ${botAnswers.phone}\n📍 지역: ${botAnswers.sidos} ${botAnswers.guguns}\n📅 희망일: ${botAnswers.date_exact}\n🏠 형태: ${botAnswers.structure} (${botAnswers.elevator})\n📏 평수: ${botAnswers.size}\n🖼️ 사진: ${botAnswers.photoFiles.length}장 첨부됨\n\n👉 어드민 페이지에서 당장 확인하세요!`;
-            
-            supabase.functions.invoke('telegram-notify', {
-                body: { message: tgMessage }
-            }).catch(err => console.error('텔레그램 알림 실패:', err));
-
-        } catch(err) { console.error(err); }
-
-        let urlsText = uploadedUrls.length > 0 ? uploadedUrls.map((url, idx) => `사진${idx+1}: ${url}`).join('\n') : '첨부된 사진 없음';
-        const report = `[정리맨 간편견적 요청]\n성함: ${botAnswers.name}\n지역: ${botAnswers.sidos} ${botAnswers.guguns}\n희망일: ${botAnswers.date_exact}\n형태: ${botAnswers.structure} (${botAnswers.elevator})\n평수: ${botAnswers.size}\n연락처: ${botAnswers.phone}\n\n[현장 사진 링크]\n${urlsText}`;
-        
-        box.innerHTML = `
-            <h2 class="question-title">상담 접수 준비가 끝났습니다 ✨</h2>
-            <p class="question-desc" style="margin-bottom:20px;">정보와 사진이 시스템에 안전하게 저장됐어요. 
-                아래 버튼을 눌러 카톡으로 견적을 보내보세요!</p>
-            <div style="background:var(--toss-gray-100); padding:20px; border-radius:16px; margin-bottom:24px; font-size:14px; line-height:1.6; color:var(--toss-gray-700); height:180px; overflow-y:auto;">${report.replace(/\n/g, '<br>')}</div>
-            
-            <button class="btn btn-next" style="width:100%; margin-bottom:10px; background:var(--toss-yellow-kakao); color:#3c1e1e;" onclick="sendToKakao(\`${report}\`)">💬 카톡으로 견적서 보내기 (추천)</button>
-            <button class="btn btn-next" style="width:100%; background:var(--toss-gray-800);" onclick="closeBotModal();">📞 알겠어요 (창 닫기)</button>
-        `;
-    };
-    
-    window.sendToKakao = function(text) { navigator.clipboard.writeText(text).then(() => { alert('✅ 견적 내용이 복사됐어요.\n카톡 창이 열리면 대화창에 "붙여넣기" 해 주세요.'); window.open('https://open.kakao.com/o/seIDHWzi', '_blank'); closeBotModal(); }).catch(err => { alert('복사 실패'); }); };
+  const pc=window.matchMedia('(min-width: 641px)');
+  const init=()=>{const b=document.getElementById('estFields');if(pc.matches&&b&&!b.innerHTML)renderEstimate();};
+  init();
+  pc.addEventListener?pc.addEventListener('change',init):pc.addListener(init);
+});
 </script>
 </body>
 </html>
