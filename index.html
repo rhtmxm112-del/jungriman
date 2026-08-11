@@ -114,8 +114,11 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;letter-spacing:-.01em;color:#e2f5ea;background:rgba(17,163,85,.26);border:1px solid rgba(61,220,132,.45);border-radius:100px;padding:7px 15px;margin-bottom:22px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--green-on-dark);flex-shrink:0;animation:pulse 2.2s infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(61,220,132,.55)}70%{box-shadow:0 0 0 8px rgba(61,220,132,0)}100%{box-shadow:0 0 0 0 rgba(61,220,132,0)}}
-.hero h1{font-size:40px;line-height:1.28;letter-spacing:-.04em;font-weight:800;margin-bottom:14px;text-shadow:0 2px 18px rgba(0,0,0,.6),0 1px 3px rgba(0,0,0,.4)}
+.hero h1{font-size:40px;line-height:1.28;letter-spacing:-.04em;font-weight:800;margin-bottom:0;text-shadow:0 2px 18px rgba(0,0,0,.6),0 1px 3px rgba(0,0,0,.4)}
 .hero h1 b{font-weight:800;color:var(--green-on-dark)}
+/* 헤드라인 바로 아래 부제목 */
+.hero-sub{margin-top:13px;font-size:15.5px;font-weight:600;color:#c8d2cd;letter-spacing:-.035em;text-shadow:0 1px 10px rgba(0,0,0,.65)}
+.hero-sub b{font-weight:800;color:var(--green-on-dark)}
 
 /* 핵심 메시지: 사진 견적 */
 .hero-promise{
@@ -139,8 +142,7 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 .svc3-ico{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center}
 .svc3-ico svg{width:38px;height:38px}
 .svc3-item span{font-size:15.5px;font-weight:800;letter-spacing:-.04em;color:#fff}
-.svc3-note{margin-top:13px;font-size:14px;font-weight:600;color:#c8d2cd;letter-spacing:-.035em;text-shadow:0 1px 9px rgba(0,0,0,.65)}
-.svc3-note b{font-weight:800;color:var(--green-on-dark)}
+.svc3-note{margin-top:13px;font-size:13.5px;font-weight:600;color:#aeb8b3;letter-spacing:-.035em;text-shadow:0 1px 9px rgba(0,0,0,.65)}
 
 /* HERO CTA */
 .hero-cta{max-width:520px;margin:10px auto 0;display:flex;flex-direction:column;gap:10px}
@@ -371,13 +373,13 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
     top:0;bottom:auto;height:168px;
     background:linear-gradient(180deg,
       rgba(6,10,8,.30) 0%,
-      rgba(6,10,8,.16) 38%,
-      rgba(6,10,8,.54) 62%,
-      rgba(6,10,8,.88) 84%,
+      rgba(6,10,8,.15) 32%,
+      rgba(6,10,8,.56) 52%,
+      rgba(6,10,8,.90) 80%,
       rgba(10,14,12,1) 100%);
   }
-  /* 헤드라인이 밴드 하단부에 절반쯤 겹치도록 위치 */
-  .hero.has-photo .hero-eyebrow{margin-bottom:62px}
+  /* 헤드라인을 밴드 안쪽으로 더 끌어올려 사진 위에 얹는다 */
+  .hero.has-photo .hero-eyebrow{margin-bottom:44px}
   .hero h1{text-shadow:0 2px 16px rgba(0,0,0,.85),0 1px 4px rgba(0,0,0,.7)}
   .svc3-note{text-shadow:0 1px 9px rgba(0,0,0,.7)}
 
@@ -385,8 +387,9 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
   .hero-in{padding:20px 10px 32px}
   .hero-eyebrow{font-size:11.5px;padding:6px 13px;margin-bottom:15px}
   .hero h1{font-size:27px;line-height:1.34;letter-spacing:-.045em;margin-bottom:0}
+  .hero-sub{margin-top:10px;font-size:13.5px;letter-spacing:-.05em;line-height:1.5}
 
-  .svc3{gap:8px;margin-top:20px;max-width:none}
+  .svc3{gap:8px;margin-top:18px;max-width:none}
   .svc3-note{margin-top:11px;font-size:12.5px;letter-spacing:-.05em}
   .svc3-item{padding:15px 4px 13px;gap:9px;border-radius:13px}
   .svc3-ico{width:54px;height:54px}
@@ -413,12 +416,6 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
   .sec-num{font-size:11px;margin-bottom:9px}
   .sec-hd h2{font-size:23px}
   .sec-hd p{font-size:13.5px;margin-top:8px}
-
-  /* 첫 섹션은 히어로 직후라 라벨을 빼고 여백을 줄여
-     '실제 작업 사례'가 첫 화면에서 바로 읽히게 한다 */
-  #work{padding-top:26px}
-  #work .sec-num{display:none}
-  #work .sec-hd{margin-bottom:18px}
 
   /* 가로 스크롤 갤러리
      scroll-snap 이 padding-left 를 무시하고 카드를 컨테이너 끝(0px)에 붙여버리기 때문에
@@ -556,6 +553,7 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
     <span class="hero-eyebrow"><span class="dot"></span>서울 · 인천 · 경기 24시간 상담</span>
 
     <h1>정리하기 어려운 공간<br><b>정리맨</b>이 대신합니다</h1>
+    <p class="hero-sub"><b>모두 다 싹</b> 치워드립니다, 깔끔한 뒷마무리까지 책임지고 작업합니다.</p>
 
     <div class="svc3">
       <a href="#service" class="svc3-item">
@@ -571,7 +569,7 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
         <span>특수청소</span>
       </a>
     </div>
-    <p class="svc3-note">깔끔한 뒷마무리, 모두다 <b>싹</b> 치워드립니다</p>
+    <p class="svc3-note">2-3일 전 예약하시면 차질 없이 처리해드립니다</p>
 
     <div class="hero-promise">
       <svg viewBox="0 0 48 48"><use href="#ic-camera"/></svg>
