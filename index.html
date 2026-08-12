@@ -188,9 +188,9 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 .cta-call:hover{background:var(--green-dark)}
 .cta-call:active{transform:scale(.985)}
 .cta-call svg{width:26px;height:26px;stroke:#fff;fill:none;stroke-width:1.7;flex-shrink:0}
-.cta-call .cc-t{text-align:left}
+.cta-call .cc-t{text-align:left;min-width:0}
 .cta-call .cc-k{display:block;font-size:12.5px;font-weight:700;color:rgba(255,255,255,.86);letter-spacing:-.01em;margin-bottom:2px}
-.cta-call .cc-v{display:block;font-size:29px;font-weight:800;letter-spacing:-.035em;font-variant-numeric:tabular-nums;line-height:1.05}
+.cta-call .cc-v{display:block;font-size:29px;font-weight:800;letter-spacing:-.035em;font-variant-numeric:tabular-nums;line-height:1.05;white-space:nowrap}
 .cta-kko{display:flex;align-items:center;justify-content:center;gap:9px;background:var(--kakao);color:#191600;border-radius:12px;height:56px;font-size:17px;font-weight:800;letter-spacing:-.03em;transition:transform .16s,filter .16s}
 .cta-kko:hover{filter:brightness(.96)}
 .cta-kko:active{transform:scale(.985)}
@@ -501,6 +501,36 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
   .ftr-top{flex-direction:column;gap:22px}
   .ftr-tel{font-size:24px}
 }
+
+/* ===== 1안 : 전화 버튼을 두 영역으로 분할 (왼쪽 전화 / 오른쪽 문자) ===== */
+.cta-call-row{display:flex;border-radius:12px;overflow:hidden;box-shadow:0 12px 32px rgba(17,163,85,.42)}
+.cta-call-row .cta-call{flex:1;border-radius:0;box-shadow:none}
+.cta-sms{
+  flex:0 0 92px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  background:var(--green-dark);color:#fff;
+  border-left:1px solid rgba(255,255,255,.3);
+  font-size:13.5px;font-weight:800;letter-spacing:-.04em;line-height:1.25;text-align:center;
+  transition:background .16s,transform .16s;
+}
+.cta-sms:hover{background:#0a7a3d}
+.cta-sms:active{transform:scale(.97)}
+.cta-sms svg{width:21px;height:21px;stroke:#fff;fill:none}
+/* 하단 고정 바도 전화 / 문자 / 카톡 3분할 */
+.mcta .m-sms{background:var(--green-dark);color:#fff}
+.mcta .m-sms svg{stroke:#fff;fill:none;stroke-width:1.8}
+@media(max-width:640px){
+  /* 문자 영역이 폭을 가져가므로 전화번호가 한 줄에 들어가도록 유동 크기를 쓴다.
+     화면이 좁을수록 번호가 작아지고, 넓어지면 25px에서 멈춘다. */
+  .cta-sms{flex:0 0 72px;font-size:12px;gap:4px}
+  .cta-sms svg{width:18px;height:18px}
+  .cta-call-row{min-width:0}
+  .cta-call-row .cta-call{padding:12px 12px;gap:9px;min-width:0}
+  .cta-call-row .cta-call svg{width:20px;height:20px}
+  .cta-call-row .cc-k{font-size:11.5px;margin-bottom:1px}
+  .cta-call-row .cc-v{font-size:clamp(18px, calc(13vw - 23px), 25px);letter-spacing:-.04em}
+  .mcta .m-call{flex:1}
+  .mcta a{font-size:15px;gap:5px}
+}
 </style>
 </head>
 <body>
@@ -622,13 +652,19 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
     </div>
 
     <div class="hero-cta">
-      <a href="tel:010-4535-9907" class="cta-call">
-        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.6 2.8a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.8.6a2 2 0 0 1 1.7 2z"/></svg>
-        <span class="cc-t">
-          <span class="cc-k">전화 · 문자 상담</span>
-          <span class="cc-v">010-4535-9907</span>
-        </span>
-      </a>
+      <div class="cta-call-row">
+        <a href="tel:010-4535-9907" class="cta-call">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.6 2.8a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.8.6a2 2 0 0 1 1.7 2z"/></svg>
+          <span class="cc-t">
+            <span class="cc-k">전화 상담</span>
+            <span class="cc-v">010-4535-9907</span>
+          </span>
+        </a>
+        <a href="sms:010-4535-9907" class="cta-sms">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.9 9.9 0 0 1-2.8-.4L3 21l1.5-4.2A8.3 8.3 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4z"/></svg>
+          <span>문자<br>보내기</span>
+        </a>
+      </div>
       <a href="https://open.kakao.com/o/seIDHWzi" target="_blank" rel="noopener" class="cta-kko">
         <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 3.185-9 7.115 0 2.557 1.707 4.8 4.34 6.033-.188.643-.68 2.327-.778 2.673-.117.411.144.405.3.332.122-.057 1.954-1.317 2.734-1.854.453.111.924.17 1.404.17 4.97 0 9-3.186 9-7.116C21 6.185 16.97 3 12 3z"/></svg>
         카카오톡으로 사진 보내기
@@ -727,8 +763,8 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
     <div class="proc">
       <div class="proc-item"><span class="proc-n">1</span><h3>문의</h3><p>전화 · 문자 · 카카오톡 중 편하신 방법으로 연락 주세요.</p></div>
       <div class="proc-item"><span class="proc-n">2</span><h3>견적</h3><p>사진으로 예상 범위를 안내하고, 필요 시 방문해 확정합니다.</p></div>
-      <div class="proc-item"><span class="proc-n">3</span><h3>작업</h3><p>분류 · 반출 · 폐기 · 소독까지 하루 안에 마무리합니다.</p></div>
-      <div class="proc-item"><span class="proc-n">4</span><h3>확인</h3><p>함께 점검하고, 미흡한 부분은 추가 비용 없이 재작업합니다.</p></div>
+      <div class="proc-item"><span class="proc-n">3</span><h3>작업</h3><p>분류 · 반출 · 폐기 · 소독까지 신속하게 마무리합니다.</p></div>
+      <div class="proc-item"><span class="proc-n">4</span><h3>확인</h3><p>직접 오시지 않아도 됩니다. 마무리된 현장을 상세한 사진으로 보내드립니다.</p></div>
     </div>
   </div>
 </section>
@@ -873,7 +909,11 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 <div class="mcta">
   <a href="tel:010-4535-9907" class="m-call">
     <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.6 2.8a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.8.6a2 2 0 0 1 1.7 2z"/></svg>
-    전화 · 문자 상담
+    전화
+  </a>
+  <a href="sms:010-4535-9907" class="m-sms">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.9 9.9 0 0 1-2.8-.4L3 21l1.5-4.2A8.3 8.3 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4z"/></svg>
+    문자
   </a>
   <a href="https://open.kakao.com/o/seIDHWzi" target="_blank" rel="noopener" class="m-kko">
     <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 3.185-9 7.115 0 2.557 1.707 4.8 4.34 6.033-.188.643-.68 2.327-.778 2.673-.117.411.144.405.3.332.122-.057 1.954-1.317 2.734-1.854.453.111.924.17 1.404.17 4.97 0 9-3.186 9-7.116C21 6.185 16.97 3 12 3z"/></svg>
