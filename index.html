@@ -138,9 +138,48 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 .svc3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:660px;margin:34px auto 0}
 .svc3-item{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.24);border-radius:14px;padding:18px 8px 16px;display:flex;flex-direction:column;align-items:center;gap:11px;backdrop-filter:blur(10px) saturate(1.2);-webkit-backdrop-filter:blur(10px) saturate(1.2);transition:background .18s,border-color .18s,transform .18s}
 .svc3-item:hover{background:rgba(17,163,85,.2);border-color:rgba(61,220,132,.55);transform:translateY(-3px)}
-.svc3-ico{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center}
+.svc3-ico{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;background-size:cover;background-position:center;overflow:hidden;flex-shrink:0}
 .svc3-ico svg{width:38px;height:38px}
-.svc3-item span{font-size:15.5px;font-weight:800;letter-spacing:-.04em;color:#fff}
+.svc3-item span{font-size:17px;font-weight:800;letter-spacing:-.045em;color:#fff;line-height:1.3}
+
+/* ── 실제 현장 사진이 적용되면: 카드 전체를 사진으로 채우고
+      하단을 어둡게 페이드시킨 뒤 그 위에 글자를 얹는다.
+      최상단 히어로 밴드와 동일한 연출. ── */
+.svc3-item.has-photo{
+  position:relative;overflow:hidden;
+  padding:0;gap:0;min-height:152px;
+  justify-content:flex-end;
+  background:rgba(255,255,255,.06);
+  border-color:rgba(255,255,255,.22);
+}
+.svc3-item.has-photo:hover{background:rgba(255,255,255,.06)}
+.svc3-item.has-photo .svc3-ico{
+  position:absolute;inset:0;width:100%;height:100%;
+  border:none;border-radius:0;background-color:transparent;
+  filter:blur(1.5px) saturate(1.05) brightness(.95);
+  transform:scale(1.07);transition:transform .45s ease;
+}
+.svc3-item.has-photo:hover .svc3-ico{transform:scale(1.13)}
+.svc3-item.has-photo .svc3-ico svg{display:none}
+.svc3-item.has-photo::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,
+    rgba(6,10,8,.10) 0%,
+    rgba(6,10,8,.26) 40%,
+    rgba(6,10,8,.78) 74%,
+    rgba(6,10,8,.95) 100%);
+}
+.svc3-item.has-photo>span:last-child{
+  position:relative;z-index:2;padding:0 6px 15px;
+  font-size:19.5px;letter-spacing:-.05em;
+  text-shadow:0 2px 12px rgba(0,0,0,.85),0 1px 3px rgba(0,0,0,.65);
+}
+/* 라벨 위 초록 강조 바 */
+.svc3-item.has-photo>span:last-child::before{
+  content:"";display:block;width:20px;height:3px;border-radius:2px;
+  background:var(--green-on-dark);margin:0 auto 9px;
+  box-shadow:0 0 10px rgba(61,220,132,.55);
+}
 .svc3-note{margin-top:13px;font-size:13.5px;font-weight:600;color:#aeb8b3;letter-spacing:-.035em;text-shadow:0 1px 9px rgba(0,0,0,.65)}
 
 /* HERO CTA */
@@ -217,9 +256,11 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 .svc{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
 .svc-item{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:30px 26px;transition:border-color .2s,box-shadow .2s,transform .2s}
 .svc-item:hover{border-color:var(--green-line);box-shadow:0 12px 30px rgba(17,163,85,.10);transform:translateY(-3px)}
-.svc-ico{width:60px;height:60px;border-radius:16px;background:var(--green-soft);border:1px solid var(--green-line);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.svc-ico{width:60px;height:60px;border-radius:16px;background:var(--green-soft);border:1px solid var(--green-line);display:flex;align-items:center;justify-content:center;margin-bottom:18px;background-size:cover;background-position:center;overflow:hidden;flex-shrink:0}
 .svc-ico svg{width:38px;height:38px}
-.svc-item h3{font-size:20px;font-weight:800;letter-spacing:-.035em;margin-bottom:11px}
+.svc-ico.has-img{width:118px;height:88px;border-radius:10px;border-color:var(--line);background-color:var(--wash-2)}
+.svc-ico.has-img svg{display:none}
+.svc-item h3{font-size:21px;font-weight:800;letter-spacing:-.035em;margin-bottom:11px}
 .svc-item p{font-size:14px;color:var(--ink-2);line-height:1.75}
 .svc-kw{margin-top:16px;padding-top:14px;border-top:1px solid var(--line-soft);font-size:12.5px;color:var(--muted);line-height:1.85}
 
@@ -390,10 +431,13 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 
   .svc3{gap:8px;margin-top:18px;max-width:none}
   .svc3-note{margin-top:11px;font-size:12.5px;letter-spacing:-.05em}
-  .svc3-item{padding:15px 4px 13px;gap:9px;border-radius:13px}
+  .svc3-item{padding:12px 6px 12px;gap:8px;border-radius:13px}
   .svc3-ico{width:54px;height:54px}
   .svc3-ico svg{width:34px;height:34px}
-  .svc3-item span{font-size:13.5px;letter-spacing:-.055em}
+  .svc3-item span{font-size:14.5px;letter-spacing:-.06em}
+  .svc3-item.has-photo{min-height:118px}
+  .svc3-item.has-photo>span:last-child{font-size:16px;padding:0 4px 12px;letter-spacing:-.06em}
+  .svc3-item.has-photo>span:last-child::before{width:17px;height:2.5px;margin-bottom:7px}
 
   .hero-promise{margin-top:18px;padding:11px 13px;gap:10px;border-radius:11px;max-width:none}
   .hero-promise svg{width:28px;height:28px}
@@ -446,7 +490,8 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
   .svc-item{padding:22px 20px;border-radius:12px}
   .svc-ico{width:54px;height:54px;margin-bottom:14px;border-radius:14px}
   .svc-ico svg{width:34px;height:34px}
-  .svc-item h3{font-size:18px}
+  .svc-ico.has-img{width:104px;height:78px;border-radius:9px}
+  .svc-item h3{font-size:19px}
   .rev-item{padding:20px 18px;border-radius:12px}
   .proc-item{padding-top:14px}
 
@@ -555,15 +600,15 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
     <p class="hero-sub">정리하기 어려운 공간, 정리맨이 대신합니다</p>
 
     <div class="svc3">
-      <a href="#service" class="svc3-item">
+      <a href="#service" class="svc3-item" data-svc="yupum">
         <span class="svc3-ico"><svg viewBox="0 0 48 48"><use href="#ic-box"/></svg></span>
         <span>유품정리</span>
       </a>
-      <a href="#service" class="svc3-item">
+      <a href="#service" class="svc3-item" data-svc="trash">
         <span class="svc3-ico"><svg viewBox="0 0 48 48"><use href="#ic-broom"/></svg></span>
         <span>쓰레기집 청소</span>
       </a>
-      <a href="#service" class="svc3-item">
+      <a href="#service" class="svc3-item" data-svc="special">
         <span class="svc3-ico"><svg viewBox="0 0 48 48"><use href="#ic-spray"/></svg></span>
         <span>특수청소</span>
       </a>
@@ -652,19 +697,19 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
       <h2>서비스</h2>
     </div>
     <div class="svc">
-      <div class="svc-item">
+      <div class="svc-item" data-svc="yupum">
         <div class="svc-ico"><svg viewBox="0 0 48 48"><use href="#ic-box"/></svg></div>
         <h3>유품 정리</h3>
         <p>고인의 물품을 분류하고 공간을 비워드립니다. 보관을 원하시는 품목은 따로 정리해 전달하며, 유족이 현장에 계시지 않아도 진행할 수 있습니다.</p>
         <div class="svc-kw">고인유품정리 · 부모님유품정리 · 요양원 입소 집정리 · 유품 폐기 및 수거</div>
       </div>
-      <div class="svc-item">
+      <div class="svc-item" data-svc="trash">
         <div class="svc-ico"><svg viewBox="0 0 48 48"><use href="#ic-broom"/></svg></div>
         <h3>쓰레기집 청소</h3>
         <p>장기간 방치된 생활 폐기물을 반출하고 소독까지 마칩니다. 무표시 차량과 야간 작업으로 주변에 알려지지 않게 진행합니다.</p>
         <div class="svc-kw">쓰레기집청소 · 원룸 폐기물 · 빈집정리 · 저장강박 집청소</div>
       </div>
-      <div class="svc-item">
+      <div class="svc-item" data-svc="special">
         <div class="svc-ico"><svg viewBox="0 0 48 48"><use href="#ic-spray"/></svg></div>
         <h3>특수 청소</h3>
         <p>고독사, 혈흔, 화재 현장을 전용 약품과 장비로 복구합니다. 오염 자재 철거와 탈취까지 원상 복구를 기준으로 작업합니다.</p>
@@ -845,6 +890,68 @@ var supabaseKey='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsIn
 var supabase=window.supabase.createClient(supabaseUrl,supabaseKey);
 
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+function imgExists(src){return new Promise(r=>{if(!src)return r(null);const i=new Image();i.onload=()=>r(src);i.onerror=()=>r(null);i.src=src;});}
+
+/* ================= 3대 서비스 썸네일 =================
+   유품정리 / 쓰레기집 청소 / 특수청소 블록의 아이콘을 실제 현장 사진으로 교체한다.
+
+   사진을 가져오는 방법은 두 가지이며, 아래 순서대로 찾는다.
+
+   ① 폴더에 파일을 직접 넣기  (가장 우선)
+      index.html 과 같은 위치에 아래 이름으로 올리면 된다.
+        service-yupum   → 유품정리
+        service-trash   → 쓰레기집 청소
+        service-special → 특수청소
+      확장자는 jpg · webp · png 모두 인식한다. 예) service-trash.jpg
+
+   ② '실제 작업 사례'에 등록된 썸네일 재사용
+      pick 칸에 사례 제목의 일부를 적으면 그 사례의 사진을 가져온다.
+        예) pick:'관악구 원룸'  →  제목에 '관악구 원룸'이 들어간 사례 사진 사용
+      pick 을 비워두면 카테고리를 자동으로 대조해 가장 최근 사례 사진을 쓴다.
+
+   ③ 둘 다 없으면 기존 컬러 아이콘이 그대로 표시된다.        */
+const SVC_SOURCES=[
+  {key:'yupum',   file:'service-yupum',   pick:'', match:['유품','고인','요양원']},
+  {key:'trash',   file:'service-trash',   pick:'', match:['쓰레기','폐기물','빈집','원룸']},
+  {key:'special', file:'service-special', pick:'', match:['특수','고독사','방역','화재']}
+];
+let caseRows=[];   // '실제 작업 사례'에서 불러온 데이터 보관
+
+async function applyServiceThumbs(){
+  for(const src of SVC_SOURCES){
+    let url=null;
+
+    // ① 폴더에 올린 전용 파일
+    for(const e of ['jpg','webp','png','jpeg']){
+      const hit=await imgExists(`./${src.file}.${e}`);
+      if(hit){url=hit;break;}
+    }
+
+    // ② 작업 사례 썸네일 (pick 지정 → 없으면 카테고리 자동 매칭)
+    if(!url){
+      const withImg=caseRows.filter(c=>c.image_url&&String(c.image_url).trim());
+      let hit=null;
+      if(src.pick){
+        hit=withImg.find(c=>String(c.title||'').includes(src.pick));
+      }
+      if(!hit){
+        hit=withImg.find(c=>src.match.some(k=>
+          String(c.category||'').includes(k)||String(c.title||'').includes(k)));
+      }
+      if(hit) url=hit.image_url;
+    }
+
+    if(!url) continue;   // ③ 사진이 없으면 아이콘 유지
+
+    document.querySelectorAll(`[data-svc="${src.key}"]`).forEach(card=>{
+      const ico=card.querySelector('.svc3-ico, .svc-ico');
+      if(!ico) return;
+      ico.style.backgroundImage=`url('${url}')`;
+      ico.classList.add('has-img');
+      card.classList.add('has-photo');   // 카드 전체를 사진 배경으로 전환
+    });
+  }
+}
 
 /* ================= 히어로 배경 =================
    우선순위: ./hero.mp4(영상) > hero1·hero2·hero3…(슬라이드쇼) > hero.jpg(단일) > 그린 그라데이션
@@ -984,6 +1091,8 @@ async function loadCases(){
   let rows=null;
   try{const r=await supabase.from('cases').select('*').order('created_at',{ascending:false});rows=r.data;}catch(e){console.error(e);}
   const data=(!rows||!rows.length)?fallbackCases:rows;
+  caseRows=data;
+  applyServiceThumbs();          // 사례 데이터를 확보한 뒤 3대 서비스 썸네일 적용
 
   g.innerHTML=data.map(it=>{
     const fig=it.image_url
